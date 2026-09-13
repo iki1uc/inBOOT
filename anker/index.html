@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>▣ IKI1UC · PE · arg.sync · STATION-ROUTER</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --bg:#0a0e14; --bg2:#0e141c; --bg3:#141c28;
+    --fg:#c8d8e8; --dim:#5a7288; --dim2:#3a4a5a;
+    --cyan:#5fc8ff; --gold:#f0c878; --violet:#a888ff;
+    --green:#7ce0a8; --pink:#ff88b0; --red:#ff5a7a;
+    --orange:#ffa040;
+    --line:#1a2432; --line2:#0f1620;
+    --mono:'Consolas','Courier New',monospace;
+  }
+  html,body{height:100%;overflow:hidden;}
+  body{
+    background:#000;
+    color:var(--fg);
+    font-family:var(--mono);
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* ═══ PE DESKTOP ═══════════════════════════ */
+  #pe{
+    width:100vw; height:100vh;
+    background:var(--bg);
+    display:flex; flex-direction:column;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* ── TOP: BOOT BAR ──────────────────────── */
+  #topbar{
+    height:26px;
+    background:linear-gradient(180deg,#0e141c,#060a10);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center;
+    padding:0 10px;
+    font-size:11px; letter-spacing:1px;
+    gap:12px;
+    flex-shrink:0;
+  }
+  #topbar .logo{
+    color:var(--gold);
+    font-weight:bold;
+    letter-spacing:2px;
+  }
+  #topbar .logo b{color:var(--cyan);}
+  #topbar .sep{
+    width:1px; height:14px;
+    background:var(--line);
+  }
+  #topbar .status{
+    color:var(--dim);
+    font-size:10px;
+    display:flex; gap:14px;
+    margin-left:auto;
+  }
+  #topbar .status b{color:var(--green);font-weight:bold;}
+  #topbar .status .warn{color:var(--gold);}
+  #topbar .status .err{color:var(--red);}
+  #topbar #clock{color:var(--cyan);}
+
+  /* ── MAIN: 3 SPALTEN ────────────────────── */
+  #main{
+    flex:1;
+    display:grid;
+    grid-template-columns: 220px 1fr 260px;
+    overflow:hidden;
+    min-height:0;
+  }
+
+  /* ── LEFT: ROOT-TREE ────────────────────── */
+  #tree{
+    background:var(--bg2);
+    border-right:1px solid var(--line);
+    overflow-y:auto;
+    padding:6px 0;
+    font-size:11px;
+  }
+  #tree::-webkit-scrollbar{width:6px;}
+  #tree::-webkit-scrollbar-thumb{background:var(--line);}
+  #tree::-webkit-scrollbar-track{background:transparent;}
+
+  .tree-hdr{
+    padding:6px 12px 4px;
+    color:var(--dim);
+    font-size:9px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+  }
+  .tree-item{
+    padding:4px 12px 4px 22px;
+    color:var(--fg);
+    cursor:pointer;
+    display:flex; justify-content:space-between;
+    align-items:center;
+    font-size:11px;
+    border-left:2px solid transparent;
+    transition:.15s;
+    position:relative;
+  }
+  .tree-item::before{
+    content:'▸';
+    position:absolute;
+    left:8px;
+    color:var(--dim2);
+    font-size:9px;
+  }
+  .tree-item:hover{
+    background:rgba(95,200,255,0.06);
+    border-left-color:var(--cyan);
+  }
+  .tree-item.active{
+    background:rgba(95,200,255,0.1);
+    border-left-color:var(--cyan);
+    color:var(--cyan);
+  }
+  .tree-item .ind{
+    color:var(--dim2);
+    font-size:9px;
+  }
+  .tree-item.on .ind{color:var(--green);}
+  .tree-item.off .ind{color:var(--red);}
+
+  /* ── CENTER: WORKSPACE ──────────────────── */
+  #work{
+    display:flex; flex-direction:column;
+    overflow:hidden;
+    background:var(--bg);
+    min-height:0;
+  }
+  #workHdr{
+    height:24px;
+    background:var(--bg2);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center;
+    padding:0 12px;
+    font-size:10px; letter-spacing:1.5px;
+    color:var(--gold);
+    text-transform:uppercase;
+    gap:12px;
+    flex-shrink:0;
+  }
+  #workHdr .path{
+    color:var(--dim);
+    font-size:10px;
+    letter-spacing:0;
+  }
+  #workHdr .path b{color:var(--cyan);}
+  #workBody{
+    flex:1;
+    padding:12px;
+    overflow-y:auto;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+    align-content:start;
+  }
+  #workBody::-webkit-scrollbar{width:8px;}
+  #workBody::-webkit-scrollbar-thumb{background:var(--line);}
+  #workBody::-webkit-scrollbar-track{background:var(--bg);}
+
+  .panel{
+    background:var(--bg2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:10px 12px;
+    min-width:0;
+  }
+  .panel h3{
+    font-size:10px; letter-spacing:1.5px;
+    color:var(--cyan);
+    text-transform:uppercase;
+    margin-bottom:8px;
+    padding-bottom:5px;
+    border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between;
+    align-items:center;
+  }
+  .panel h3 .badge{
+    font-size:9px;
+    color:var(--dim);
+    background:var(--bg3);
+    padding:1px 6px;
+    border-radius:3px;
+    letter-spacing:0.5px;
+  }
+  .panel h3 .badge.ok{color:var(--green);}
+  .panel h3 .badge.warn{color:var(--gold);}
+  .panel h3 .badge.err{color:var(--red);}
+
+  /* arg.sync Panel */
+  .sync-row{
+    display:grid;
+    grid-template-columns:60px 1fr 70px;
+    gap:8px;
+    align-items:center;
+    padding:5px 0;
+    border-bottom:1px dashed var(--line2);
+    font-size:10.5px;
+  }
+  .sync-row:last-child{border-bottom:none;}
+  .sync-row .lbl{color:var(--dim);font-size:10px;letter-spacing:1px;}
+  .sync-row .bar{
+    height:6px;
+    background:var(--bg3);
+    border-radius:3px;
+    overflow:hidden;
+    position:relative;
+  }
+  .sync-row .bar .fill{
+    height:100%;
+    transition:width .3s;
+    border-radius:3px;
+  }
+  .sync-row .bar .fill.arg{background:linear-gradient(90deg,#3a5a3a,#7ce0a8);}
+  .sync-row .bar .fill.xarg{background:linear-gradient(90deg,#5a4a2a,#f0c878);}
+  .sync-row .bar .fill.tmparg{background:linear-gradient(90deg,#3a3a5a,#a888ff);}
+  .sync-row .val{
+    text-align:right;
+    font-weight:bold;
+    color:var(--fg);
+    font-size:10.5px;
+  }
+  .sync-row .val.arg{color:var(--green);}
+  .sync-row .val.xarg{color:var(--gold);}
+  .sync-row .val.tmparg{color:var(--violet);}
+
+  /* Stations-Grid */
+  .stations{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:5px;
+  }
+  .station{
+    background:var(--bg3);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:6px 4px;
+    text-align:center;
+    cursor:pointer;
+    font-size:9px;
+    transition:.15s;
+  }
+  .station:hover{
+    border-color:var(--cyan);
+    background:rgba(95,200,255,0.08);
+  }
+  .station.active{
+    border-color:var(--cyan);
+    background:rgba(95,200,255,0.14);
+    color:var(--cyan);
+  }
+  .station .ic{
+    font-size:15px;
+    display:block;
+    margin-bottom:2px;
+    filter:grayscale(0.3);
+  }
+  .station.active .ic{filter:none;}
+  .station .nm{
+    color:var(--fg);
+    font-weight:bold;
+    letter-spacing:0.5px;
+  }
+  .station .sub{
+    color:var(--dim2);
+    font-size:8px;
+  }
+
+  /* Vector-Translation Rows */
+  .vec-row{
+    display:grid;
+    grid-template-columns: 70px 20px 1fr 50px;
+    gap:6px;
+    align-items:center;
+    padding:4px 0;
+    border-bottom:1px dashed var(--line2);
+    font-size:10px;
+  }
+  .vec-row:last-child{border-bottom:none;}
+  .vec-row .src{
+    color:var(--gold);
+    font-weight:bold;
+    letter-spacing:1px;
+  }
+  .vec-row .arr{color:var(--dim2);text-align:center;}
+  .vec-row .dst{
+    color:var(--green);
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.5px;
+  }
+  .vec-row .val{
+    color:var(--cyan);
+    text-align:right;
+    font-weight:bold;
+  }
+
+  /* Move-Grammar */
+  .move-cell{
+    display:inline-block;
+    padding:2px 7px;
+    margin:2px 3px 2px 0;
+    background:var(--bg3);
+    border:1px solid var(--line);
+    border-radius:3px;
+    font-size:9.5px;
+    color:var(--cyan);
+    cursor:pointer;
+    transition:.15s;
+    letter-spacing:0.5px;
+  }
+  .move-cell:hover{
+    border-color:var(--cyan);
+    background:rgba(95,200,255,0.1);
+  }
+  .move-cell.used{
+    background:rgba(124,224,168,0.1);
+    border-color:var(--green);
+    color:var(--green);
+  }
+
+  /* Controls */
+  .ctrl-bar{
+    display:flex; flex-wrap:wrap;
+    gap:4px;
+    margin-top:8px;
+  }
+  .ctrl-bar button{
+    background:var(--bg3);
+    color:var(--fg);
+    border:1px solid var(--line);
+    padding:4px 10px;
+    border-radius:3px;
+    font-family:inherit;
+    font-size:10px;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:.15s;
+    text-transform:uppercase;
+  }
+  .ctrl-bar button:hover{
+    border-color:var(--cyan);
+    background:rgba(95,200,255,0.1);
+    color:var(--cyan);
+  }
+  .ctrl-bar button.pri{
+    border-color:rgba(240,200,120,0.4);
+    color:var(--gold);
+  }
+  .ctrl-bar button.pri:hover{
+    background:rgba(240,200,120,0.1);
+    border-color:var(--gold);
+    color:#fff;
+  }
+
+  /* ── RIGHT: SYS PANEL ───────────────────── */
+  #sys{
+    background:var(--bg2);
+    border-left:1px solid var(--line);
+    overflow-y:auto;
+    padding:8px 10px;
+    font-size:10.5px;
+  }
+  #sys::-webkit-scrollbar{width:6px;}
+  #sys::-webkit-scrollbar-thumb{background:var(--line);}
+
+  .sys-blk{
+    background:var(--bg3);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:7px 9px;
+    margin-bottom:6px;
+  }
+  .sys-blk .h{
+    font-size:9px;
+    letter-spacing:1.5px;
+    color:var(--dim);
+    text-transform:uppercase;
+    margin-bottom:5px;
+    display:flex; justify-content:space-between;
+  }
+  .sys-row{
+    display:flex; justify-content:space-between;
+    padding:1.5px 0;
+    font-size:10px;
+  }
+  .sys-row .k{color:var(--dim);}
+  .sys-row .v{color:var(--fg);font-weight:bold;}
+  .sys-row .v.ok{color:var(--green);}
+  .sys-row .v.warn{color:var(--gold);}
+  .sys-row .v.err{color:var(--red);}
+  .sys-row .v.cy{color:var(--cyan);}
+  .sys-row .v.vi{color:var(--violet);}
+
+  /* ── BOTTOM: CLI ────────────────────────── */
+  #cli{
+    height:150px;
+    background:#05080c;
+    border-top:1px solid var(--line);
+    display:flex; flex-direction:column;
+    flex-shrink:0;
+  }
+  #cliHdr{
+    height:20px;
+    background:var(--bg2);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center;
+    padding:0 10px;
+    font-size:9px; letter-spacing:1.5px;
+    color:var(--dim);
+    text-transform:uppercase;
+    gap:12px;
+  }
+  #cliHdr .tab{
+    color:var(--cyan);
+    cursor:pointer;
+    letter-spacing:1.5px;
+  }
+  #cliHdr .tab.active{
+    color:var(--gold);
+    border-bottom:1px solid var(--gold);
+    padding-bottom:1px;
+  }
+  #log{
+    flex:1;
+    padding:6px 12px;
+    overflow-y:auto;
+    font-size:10.5px;
+    line-height:1.5;
+    color:var(--dim);
+    font-family:var(--mono);
+  }
+  #log::-webkit-scrollbar{width:6px;}
+  #log::-webkit-scrollbar-thumb{background:var(--line);}
+  #log .ln{white-space:pre-wrap;word-break:break-all;}
+  #log .ts{color:var(--dim2);margin-right:6px;}
+  #log .ok{color:var(--green);}
+  #log .warn{color:var(--gold);}
+  #log .err{color:var(--red);}
+  #log .info{color:var(--cyan);}
+  #log .arg{color:var(--green);}
+  #log .xarg{color:var(--gold);}
+  #log .tmparg{color:var(--violet);}
+
+  #cliInput{
+    height:24px;
+    background:var(--bg3);
+    border-top:1px solid var(--line);
+    display:flex; align-items:center;
+    padding:0 10px;
+    font-size:11px;
+    flex-shrink:0;
+  }
+  #cliInput .prompt{color:var(--gold);margin-right:6px;font-weight:bold;}
+  #cliInput input{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:var(--fg);
+    font-family:var(--mono);
+    font-size:11px;
+    outline:none;
+  }
+  #cliInput input::placeholder{color:var(--dim2);}
+
+  /* ═══ BOOT OVERLAY ═══════════════════════ */
+  #boot{
+    position:fixed; inset:0;
+    background:#000;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:14px;
+    z-index:9999;
+    font-size:12px;
+    color:var(--green);
+    letter-spacing:2px;
+    transition:opacity .6s;
+  }
+  #boot.done{opacity:0;pointer-events:none;}
+  #boot .logo{
+    font-size:42px;
+    color:var(--gold);
+    letter-spacing:8px;
+    font-weight:bold;
+    text-shadow:0 0 30px rgba(240,200,120,0.6);
+  }
+  #boot .sub{
+    color:var(--cyan);
+    font-size:11px;
+    letter-spacing:4px;
+  }
+  #boot .lines{
+    width:460px; max-width:80%;
+    font-size:11px;
+    line-height:1.7;
+    text-align:left;
+    color:var(--green);
+    letter-spacing:0.5px;
+  }
+  #boot .lines b{color:var(--gold);}
+  #boot .lines .dim{color:var(--dim2);}
+  #boot .progress{
+    width:460px; max-width:80%;
+    height:3px;
+    background:var(--bg3);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  #boot .progress .bar{
+    height:100%; width:0%;
+    background:linear-gradient(90deg,var(--cyan),var(--gold));
+    transition:width .3s;
+  }
+  #boot .cursor{
+    display:inline-block;
+    width:10px;
+    animation:blink .8s infinite;
+  }
+  @keyframes blink{0%,50%{opacity:1;}51%,100%{opacity:0;}}
+
+  /* ═══ RESPONSIVE ═════════════════════════ */
+  @media(max-width:1100px){
+    #main{grid-template-columns: 190px 1fr 220px;}
+  }
+  @media(max-width:820px){
+    #main{grid-template-columns: 1fr;}
+    #tree, #sys{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ BOOT OVERLAY ═══ -->
+<div id="boot">
+  <div class="logo">▣ IKI1UC</div>
+  <div class="sub">PE · PREINSTALLATION ENVIRONMENT</div>
+  <div class="lines" id="bootLines">
+    <div>▸ NC-BIOS <b>ok</b> <span class="dim">· root tree mounted</span></div>
+    <div>▸ 3.js / 9.js / 81.js <b>ok</b> <span class="dim">· achs-engines</span></div>
+    <div>▸ arg.sync kernel <b>lade...</b> <span class="dim">· arg / xarg / tmparg</span></div>
+  </div>
+  <div class="progress"><div class="bar" id="bootBar"></div></div>
+</div>
+
+<!-- ═══ PE DESKTOP ═══ -->
+<div id="pe">
+
+  <!-- TOP BAR -->
+  <div id="topbar">
+    <span class="logo">▣ IKI1UC<b>::PE</b></span>
+    <span class="sep"></span>
+    <span style="color:var(--dim);">root-tree &gt; sys.html</span>
+    <div class="status">
+      <span>ROOT <b id="sRoot">0</b></span>
+      <span>MODE <b class="warn" id="sMode">IDLE</b></span>
+      <span>ARG.SYNC <b id="sSync">0%</b></span>
+      <span>FL76 <b id="sFl">76</b></span>
+      <span id="clock">--:--:--</span>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+
+    <!-- LEFT: ROOT-TREE -->
+    <div id="tree">
+      <div class="tree-hdr">▸ Root-Baum</div>
+      <div class="tree-item active" data-st="root"><span>◈ ROOT</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="sys"><span>⚙ SYS.html</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="stage"><span>▤ stage.html</span><span class="ind warn" style="color:var(--gold)">●</span></div>
+
+      <div class="tree-hdr">▸ Stationen</div>
+      <div class="tree-item" data-st="BOERSE"><span>📈 BOERSE</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="DOM"><span>🏛 DOM</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="EOS"><span>🌌 EOS</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="EVO"><span>🔮 EVO</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="MARKT"><span>🏪 MARKT</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="INDUSTRY"><span>🏭 INDUSTRY</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="RESPO"><span>🌀 RESPO</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="TOOL48"><span>🛠 TOOL48</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="FUNKTION"><span>⚙ FUNKTION</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="ORBIT"><span>👁 ORBIT-8</span><span class="ind on">●</span></div>
+
+      <div class="tree-hdr">▸ Achsen</div>
+      <div class="tree-item" data-st="b"><span>📐 b · Breite</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="h"><span>↗ h · Hoch</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="t"><span>↕ t · Tiefe</span><span class="ind on">●</span></div>
+
+      <div class="tree-hdr">▸ RAW</div>
+      <div class="tree-item" data-st="RAW"><span>◆ d.hdf.rom</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="RAW"><span>◆ e.hdf.rom</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="RAW"><span>◆ i.hdf.rom</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="RAW"><span>◆ n.hdf.rom</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="RAW"><span>◆ o.hdf.rom</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="RAW"><span>◆ r.hdf.rom</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="RAW"><span>◆ s.hdf.rom</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="RAW"><span>◆ u.hdf.rom</span><span class="ind on">●</span></div>
+      <div class="tree-item" data-st="RAW"><span>◆ w.hdf.rom</span><span class="ind on">●</span></div>
+
+      <div class="tree-hdr">▸ Links</div>
+      <div class="tree-item" data-st="mind"><span>🧠 mind.html</span><span class="ind" style="color:var(--cyan)">↗</span></div>
+      <div class="tree-item" data-st="stage9"><span>▶ Läufer</span><span class="ind" style="color:var(--violet)">↗</span></div>
+    </div>
+
+    <!-- CENTER: WORKSPACE -->
+    <div id="work">
+      <div id="workHdr">
+        <span id="workTitle">▣ arg.sync · KERNEL</span>
+        <span class="path">/root/<b id="workPath">sys</b></span>
+      </div>
+      <div id="workBody">
+
+        <!-- arg.sync Panel -->
+        <div class="panel">
+          <h3>arg · xarg · tmparg <span class="badge ok" id="argBadge">synced</span></h3>
+          <div id="syncRows"></div>
+          <div class="ctrl-bar">
+            <button class="pri" id="btnSync">⟳ arg.sync</button>
+            <button id="btnAuto" class="pri">▶ auto</button>
+            <button id="btnReset">⟲ reset</button>
+          </div>
+        </div>
+
+        <!-- Stations Grid -->
+        <div class="panel">
+          <h3>Stationen <span class="badge" id="statBadge">12 aktiv</span></h3>
+          <div class="stations" id="stations"></div>
+        </div>
+
+        <!-- Vector Translation -->
+        <div class="panel">
+          <h3>Vector · Translation <span class="badge" id="vecBadge">live</span></h3>
+          <div id="vecRows"></div>
+        </div>
+
+        <!-- Chess-Move Grammar -->
+        <div class="panel">
+          <h3>Move-Grammatik <span class="badge" id="moveBadge">schach ohne schach</span></h3>
+          <div id="moves" style="margin-bottom:8px;"></div>
+          <div style="font-size:9.5px;color:var(--dim);line-height:1.5;">
+            Bewegungen ohne Figuren · Grammatik ohne Partie ·
+            Markt, Industry, Wetter, Soccer teilen denselben Move-Raum.
+          </div>
+          <div class="ctrl-bar">
+            <button id="btnMove">▶ move</button>
+            <button id="btnSeq">⇉ seq</button>
+          </div>
+        </div>
+
+        <!-- RAW-Bridge -->
+        <div class="panel" style="grid-column:1 / -1;">
+          <h3>RAW · Bridge <span class="badge" id="rawBadge">8 rom-quellen</span></h3>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;font-size:10px;">
+            <div class="sys-row"><span class="k">d.hdf</span><span class="v cy" id="rawD">—</span></div>
+            <div class="sys-row"><span class="k">e.hdf</span><span class="v cy" id="rawE">—</span></div>
+            <div class="sys-row"><span class="k">i.hdf</span><span class="v cy" id="rawI">—</span></div>
+            <div class="sys-row"><span class="k">n.hdf</span><span class="v cy" id="rawN">—</span></div>
+            <div class="sys-row"><span class="k">o.hdf</span><span class="v cy" id="rawO">—</span></div>
+            <div class="sys-row"><span class="k">r.hdf</span><span class="v cy" id="rawR">—</span></div>
+            <div class="sys-row"><span class="k">s.hdf</span><span class="v cy" id="rawS">—</span></div>
+            <div class="sys-row"><span class="k">u.hdf</span><span class="v cy" id="rawU">—</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: SYS PANEL -->
+    <div id="sys">
+      <div class="sys-blk">
+        <div class="h"><span>SYS · KERNEL</span><span style="color:var(--green)">● on</span></div>
+        <div class="sys-row"><span class="k">mode</span><span class="v cy" id="sysMode">NC.mode</span></div>
+        <div class="sys-row"><span class="k">axis</span><span class="v vi" id="sysAxis">tmp.a</span></div>
+        <div class="sys-row"><span class="k">loop</span><span class="v">1.loop</span></div>
+        <div class="sys-row"><span class="k">zone</span><span class="v">c.zone</span></div>
+      </div>
+
+      <div class="sys-blk">
+        <div class="h"><span>ROOT</span><span style="color:var(--gold)">★</span></div>
+        <div class="sys-row"><span class="k">tiefe</span><span class="v ok" id="sysRoot">stabil</span></div>
+        <div class="sys-row"><span class="k">kraft</span><span class="v cy" id="sysKraft">0</span></div>
+        <div class="sys-row"><span class="k">stage</span><span class="v warn">root-only</span></div>
+      </div>
+
+      <div class="sys-blk">
+        <div class="h"><span>LIVE WERTE</span></div>
+        <div class="sys-row"><span class="k">score</span><span class="v cy" id="sysScore">0.00</span></div>
+        <div class="sys-row"><span class="k">masse</span><span class="v vi" id="sysMasse">0</span></div>
+        <div class="sys-row"><span class="k">kraft</span><span class="v vi" id="sysKraft2">0</span></div>
+        <div class="sys-row"><span class="k">waage</span><span class="v ok" id="sysWaage">0.50</span></div>
+        <div class="sys-row"><span class="k">energie</span><span class="v ok" id="sysEner">0</span></div>
+        <div class="sys-row"><span class="k">entropie</span><span class="v warn" id="sysEnt">0.00</span></div>
+      </div>
+
+      <div class="sys-blk">
+        <div class="h"><span>WETTER · SOCCER</span></div>
+        <div class="sys-row"><span class="k">wetter</span><span class="v cy" id="sysWetter">klar</span></div>
+        <div class="sys-row"><span class="k">wind</span><span class="v" id="sysWind">0 km/h</span></div>
+        <div class="sys-row"><span class="k">soccer</span><span class="v warn" id="sysSoccer">0:0</span></div>
+      </div>
+
+      <div class="sys-blk">
+        <div class="h"><span>FL76 · TICK</span></div>
+        <div class="sys-row"><span class="k">raw</span><span class="v" id="sysFlRaw">76 ms</span></div>
+        <div class="sys-row"><span class="k">smooth</span><span class="v ok" id="sysFlSm">76 ms</span></div>
+        <div class="sys-row"><span class="k">fenster</span><span class="v ok" id="sysFlWin">kaiser</span></div>
+      </div>
+
+      <div class="sys-blk">
+        <div class="h"><span>TASTEN</span></div>
+        <div class="sys-row"><span class="k">R</span><span class="v">root-mode</span></div>
+        <div class="sys-row"><span class="k">U</span><span class="v">user-mode</span></div>
+        <div class="sys-row"><span class="k">Y</span><span class="v">sync</span></div>
+        <div class="sys-row"><span class="k">Space</span><span class="v">move</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM: CLI -->
+  <div id="cli">
+    <div id="cliHdr">
+      <span class="tab active" data-tab="sync">ARG.SYNC</span>
+      <span class="tab" data-tab="sys">SYS</span>
+      <span class="tab" data-tab="move">MOVE</span>
+      <span class="tab" data-tab="raw">RAW</span>
+      <span style="margin-left:auto;color:var(--dim2);font-size:9px;">log · 100 zeilen</span>
+    </div>
+    <div id="log"></div>
+    <div id="cliInput">
+      <span class="prompt">root&gt;</span>
+      <input id="cmdInput" placeholder="befehl: sync · move · status · help" autocomplete="off">
+    </div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+// ═══════════════════════════════════════════════════════════════════
+// ▣ IKI1UC · PE · arg.sync · STATION-ROUTER
+// Abgespeckt aber funktional. Windows-PE-artig. Root-basiert.
+// ═══════════════════════════════════════════════════════════════════
+
+// ─── STATIONEN (vom Root-Baum abgeleitet) ─────────────────────
+const STATIONS = [
+  { id:'BOERSE',   ic:'📈', name:'BOERSE',   sub:'Börse',    vec:'MOMENTUM',   w:0.14 },
+  { id:'DOM',      ic:'🏛', name:'DOM',      sub:'Struktur', vec:'AXIS',       w:0.10 },
+  { id:'EOS',      ic:'🌌', name:'EOS',      sub:'Orbit',    vec:'ROTATION',   w:0.08 },
+  { id:'EVO',      ic:'🔮', name:'EVO',      sub:'Axiom',    vec:'GROWTH',     w:0.12 },
+  { id:'MARKT',    ic:'🏪', name:'MARKT',    sub:'Markt',    vec:'PRICE',      w:0.15 },
+  { id:'INDUSTRY', ic:'🏭', name:'INDUSTRY', sub:'Industry', vec:'PRODUCTION', w:0.11 },
+  { id:'RESPO',    ic:'🌀', name:'RESPO',    sub:'Service',  vec:'SERVICE',    w:0.09 },
+  { id:'TOOL48',   ic:'🛠', name:'TOOL48',   sub:'Tools',    vec:'WORKFLOW',   w:0.06 },
+  { id:'FUNKTION', ic:'⚙', name:'FUNKTION', sub:'Function', vec:'CALL',       w:0.05 },
+  { id:'ORBIT',    ic:'👁', name:'ORBIT-8',  sub:'Orbit 8',  vec:'LAYER',      w:0.04 },
+  { id:'b',        ic:'📐', name:'b',        sub:'Breite',   vec:'WIDTH',      w:0.03 },
+  { id:'h',        ic:'↗',  name:'h',        sub:'Hoch',     vec:'HEIGHT',     w:0.02 },
+  { id:'t',        ic:'↕',  name:'t',        sub:'Tiefe',    vec:'DEPTH',      w:0.01 },
+];
+
+// ─── MOVE-GRAMMATIK (Schach ohne Schach) ─────────────────────
+// Bewegungen, keine Figuren. Regeln, keine Partien.
+const MOVES = [
+  { id:'L',  name:'LIN',   verb:'linear',   axiom:'gerade',    weight:1.0 },
+  { id:'D',  name:'DIA',   verb:'diagonal', axiom:'schräg',    weight:1.2 },
+  { id:'K',  name:'KRZ',   verb:'kreuz',    axiom:'ortho',     weight:0.9 },
+  { id:'S',  name:'SPR',   verb:'spring',   axiom:'rider',     weight:1.5 },
+  { id:'R',  name:'ROT',   verb:'rotate',   axiom:'kreisel',   weight:1.1 },
+  { id:'O',  name:'ORB',   verb:'orbit',    axiom:'kreisen',   weight:1.4 },
+  { id:'W',  name:'WAV',   verb:'wave',     axiom:'welle',     weight:1.3 },
+  { id:'B',  name:'BRK',   verb:'break',    axiom:'bruch',     weight:0.7 },
+  { id:'C',  name:'CAS',   verb:'cast',     axiom:'guss',      weight:1.0 },
+  { id:'F',  name:'FUS',   verb:'fusion',   axiom:'verband',   weight:1.6 },
+];
+
+// ─── VECTOR-TRANSLATION (Markt/Industry/Wetter/Soccer → Vektor) ─
+const VEC_MAP = [
+  { src:'MARKT',     arr:'→', dst:'[px, vol, mom]',   fn:()=>[rand(80,120), rand(10,90), rand(-5,5)] },
+  { src:'INDUSTRY',  arr:'→', dst:'[rate, load, temp]', fn:()=>[rand(40,100), rand(0,80), rand(20,90)] },
+  { src:'BOERSE',    arr:'→', dst:'[idx, delta, bid]', fn:()=>[rand(1000,9000), rand(-50,50), rand(1,99)] },
+  { src:'WETTER',    arr:'→', dst:'[wind, rain, tmp]', fn:()=>[rand(0,40), rand(0,100), rand(-10,35)] },
+  { src:'SOCCER',    arr:'→', dst:'[x, y, dz]',       fn:()=>[rand(-50,50), rand(-30,30), rand(0,10)] },
+  { src:'RAW',       arr:'→', dst:'[a, d, e, i]',     fn:()=>[rand(0,9), rand(0,9), rand(0,9), rand(0,9)] },
+  { src:'ORBIT',     arr:'→', dst:'[θ, r, ω]',        fn:()=>[rand(0,360), rand(10,90), rand(0,10)] },
+  { src:'RESPO',     arr:'→', dst:'[svc, hit, q]',    fn:()=>[rand(0,81), rand(0,90), rand(0,100)] },
+];
+
+// ─── STATE ────────────────────────────────────────────────────
+const S = {
+  tick: 0,
+  activeStation: 'root',
+  arg: 0.5, xarg: 0.3, tmparg: 0.2,
+  auto: false,
+  autoTimer: null,
+  lastAuto: 0,
+  rate: 4,
+  // System-Werte
+  score: 0.42, masse: 128, kraft: 27, waage: 0.5, energie: 64, entropie: 0.42,
+  // Wetter/Soccer
+  wetter: 'klar', wind: 12, soccer: '0:0',
+  // Moves
+  moveHistory: [],
+  usedMoves: new Set(),
+  // FL76
+  flRaw: 76, flSmooth: 76, lastFrameT: 0,
+  // raw hdf
+  rawVals: {},
+};
+
+// ─── UTILS ────────────────────────────────────────────────────
+function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function choice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+// ═════════════════════════════════════════════════════════════
+// LOG
+// ═════════════════════════════════════════════════════════════
+const logEl = document.getElementById('log');
+function log(msg, cls = '') {
+  const t = new Date().toLocaleTimeString('de-DE');
+  const div = document.createElement('div');
+  div.className = 'ln';
+  div.innerHTML = `<span class="ts">[${t}]</span><span class="${cls}">${msg}</span>`;
+  logEl.appendChild(div);
+  logEl.scrollTop = logEl.scrollHeight;
+  while (logEl.children.length > 100) logEl.removeChild(logEl.firstChild);
+}
+
+// ═════════════════════════════════════════════════════════════
+// ARG.SYNC KERNEL
+// ═════════════════════════════════════════════════════════════
+function argSync() {
+  // Basis: aus Aktivität der Stationen ableiten
+  const totals = STATIONS.reduce((acc, s) => {
+    acc.arg += s.w * 0.6;
+    acc.xarg += s.w * 0.3;
+    acc.tmparg += s.w * 0.1;
+    return acc;
+  }, { arg:0, xarg:0, tmparg:0 });
+
+  // Normalisieren + zufällige Dynamik
+  const sum = totals.arg + totals.xarg + totals.tmparg;
+  S.arg    = clamp01(totals.arg / sum + (Math.random() - 0.5) * 0.08);
+  S.xarg   = clamp01(totals.xarg / sum + (Math.random() - 0.5) * 0.08);
+  S.tmparg = clamp01(totals.tmparg / sum + (Math.random() - 0.5) * 0.08);
+
+  // Re-Normalisieren
+  const s2 = S.arg + S.xarg + S.tmparg;
+  S.arg    = S.arg / s2;
+  S.xarg   = S.xarg / s2;
+  S.tmparg = S.tmparg / s2;
+
+  // Score-Ableitung
+  S.score = (S.arg * 0.5 + S.xarg * 0.3 + S.tmparg * 0.2);
+  S.masse = Math.round(81 + S.arg * 200);
+  S.kraft = Math.round(S.xarg * 100 + S.arg * 50);
+  S.waage = clamp01(S.arg / (S.arg + S.xarg + 0.001));
+  S.energie = Math.round(S.masse * 0.5);
+  S.entropie = clamp01(1 - S.arg);
+
+  // Wetter + Soccer ableiten
+  const wetterStates = ['klar','bewölkt','regen','sturm','nebel'];
+  S.wetter = wetterStates[Math.floor(S.xarg * wetterStates.length) % wetterStates.length];
+  S.wind = Math.round(S.tmparg * 60 + rand(0,10));
+  S.soccer = `${Math.floor(S.arg*5)}:${Math.floor(S.xarg*5)}`;
+
+  // RAW-Werte pro hdf
+  ['d','e','i','n','o','r','s','u','w'].forEach(k => {
+    S.rawVals[k] = rand(0, 255);
+  });
+
+  // UI updaten
+  renderSyncRows();
+  renderVecRows();
+  renderSysPanel();
+  updateTopbar();
+
+  log(`⟳ arg.sync · arg=${(S.arg*100).toFixed(1)}% · xarg=${(S.xarg*100).toFixed(1)}% · tmparg=${(S.tmparg*100).toFixed(1)}%`, 'arg');
+}
+
+function clamp01(x) { return Math.max(0, Math.min(1, x)); }
+
+// ═════════════════════════════════════════════════════════════
+// RENDER: ARG.SYNC ROWS
+// ═════════════════════════════════════════════════════════════
+function renderSyncRows() {
+  const el = document.getElementById('syncRows');
+  const rows = [
+    { k:'arg',    v:S.arg,    cls:'arg' },
+    { k:'xarg',   v:S.xarg,   cls:'xarg' },
+    { k:'tmparg', v:S.tmparg, cls:'tmparg' },
+  ];
+  el.innerHTML = rows.map(r => `
+    <div class="sync-row">
+      <span class="lbl">${r.k}</span>
+      <div class="bar"><div class="fill ${r.cls}" style="width:${(r.v*100).toFixed(1)}%"></div></div>
+      <span class="val ${r.cls}">${(r.v*100).toFixed(1)}%</span>
+    </div>
+  `).join('');
+
+  document.getElementById('argBadge').textContent =
+    S.arg > 0.4 ? 'synced' : (S.arg > 0.2 ? 'partial' : 'idle');
+  document.getElementById('argBadge').className =
+    'badge ' + (S.arg > 0.4 ? 'ok' : S.arg > 0.2 ? 'warn' : 'err');
+}
+
+// ═════════════════════════════════════════════════════════════
+// RENDER: VECTOR TRANSLATION
+// ═════════════════════════════════════════════════════════════
+function renderVecRows() {
+  const el = document.getElementById('vecRows');
+  el.innerHTML = VEC_MAP.map(v => {
+    const val = v.fn();
+    const valStr = '[' + val.join(', ') + ']';
+    return `
+      <div class="vec-row">
+        <span class="src">${v.src}</span>
+        <span class="arr">${v.arr}</span>
+        <span class="dst">${v.dst}</span>
+        <span class="val">${valStr}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ═════════════════════════════════════════════════════════════
+// RENDER: STATIONS
+// ═════════════════════════════════════════════════════════════
+function renderStations() {
+  const el = document.getElementById('stations');
+  el.innerHTML = STATIONS.map(s => `
+    <div class="station ${S.activeStation === s.id ? 'active' : ''}" data-st="${s.id}">
+      <span class="ic">${s.ic}</span>
+      <span class="nm">${s.name}</span>
+      <span class="sub">${s.sub}</span>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('.station').forEach(st => {
+    st.addEventListener('click', () => selectStation(st.dataset.st));
+  });
+}
+
+function selectStation(id) {
+  S.activeStation = id;
+  document.getElementById('workPath').textContent = id;
+  document.querySelectorAll('.station').forEach(s => {
+    s.classList.toggle('active', s.dataset.st === id);
+  });
+  document.querySelectorAll('#tree .tree-item').forEach(t => {
+    t.classList.toggle('active', t.dataset.st === id);
+  });
+  const st = STATIONS.find(x => x.id === id);
+  if (st) {
+    log(`▸ Station ${st.name} · Vektor ${st.vec} · Gewicht ${st.w}`, 'info');
+  }
+  renderStations();
+}
+
+// ═════════════════════════════════════════════════════════════
+// RENDER: MOVES
+// ═════════════════════════════════════════════════════════════
+function renderMoves() {
+  const el = document.getElementById('moves');
+  el.innerHTML = MOVES.map(m => `
+    <span class="move-cell ${S.usedMoves.has(m.id) ? 'used' : ''}" data-mv="${m.id}" title="${m.verb} · axiom: ${m.axiom}">
+      ${m.id} · ${m.name}
+    </span>
+  `).join('');
+
+  el.querySelectorAll('.move-cell').forEach(c => {
+    c.addEventListener('click', () => useMove(c.dataset.mv));
+  });
+
+  document.getElementById('moveBadge').textContent = `${S.usedMoves.size}/${MOVES.length} · ${S.moveHistory.length} moves`;
+}
+
+function useMove(id) {
+  const m = MOVES.find(x => x.id === id);
+  if (!m) return;
+  S.usedMoves.add(id);
+  S.moveHistory.push({ id, name: m.name, t: S.tick });
+  // Kleiner Impact auf arg.sync
+  S.arg = clamp01(S.arg + m.weight * 0.02);
+  S.xarg = clamp01(S.xarg + m.weight * 0.015);
+  log(`♟ MOVE ${m.name} (${m.verb}) · axiom=${m.axiom} · w=${m.weight}`, 'info');
+  renderMoves();
+  renderSyncRows();
+}
+
+function sequenceMoves() {
+  // 5 Moves in Folge
+  for (let i = 0; i < 5; i++) {
+    const m = choice(MOVES);
+    setTimeout(() => useMove(m.id), i * 120);
+  }
+}
+
+// ═════════════════════════════════════════════════════════════
+// RENDER: SYS PANEL
+// ═════════════════════════════════════════════════════════════
+function renderSysPanel() {
+  document.getElementById('sysScore').textContent = S.score.toFixed(3);
+  document.getElementById('sysMasse').textContent = S.masse;
+  document.getElementById('sysKraft').textContent = S.kraft;
+  document.getElementById('sysKraft2').textContent = S.kraft;
+  document.getElementById('sysWaage').textContent = S.waage.toFixed(2);
+  document.getElementById('sysEner').textContent = S.energie;
+  document.getElementById('sysEnt').textContent = S.entropie.toFixed(3);
+  document.getElementById('sysWetter').textContent = S.wetter;
+  document.getElementById('sysWind').textContent = S.wind + ' km/h';
+  document.getElementById('sysSoccer').textContent = S.soccer;
+
+  document.getElementById('rawD').textContent = S.rawVals.d;
+  document.getElementById('rawE').textContent = S.rawVals.e;
+  document.getElementById('rawI').textContent = S.rawVals.i;
+  document.getElementById('rawN').textContent = S.rawVals.n;
+  document.getElementById('rawO').textContent = S.rawVals.o;
+  document.getElementById('rawR').textContent = S.rawVals.r;
+  document.getElementById('rawS').textContent = S.rawVals.s;
+  document.getElementById('rawU').textContent = S.rawVals.u;
+}
+
+// ═════════════════════════════════════════════════════════════
+// TOPBAR UPDATE
+// ═════════════════════════════════════════════════════════════
+function updateTopbar() {
+  document.getElementById('sRoot').textContent = Math.round(S.arg * 100);
+  document.getElementById('sMode').textContent = S.auto ? 'AUTO' : (S.activeStation.toUpperCase());
+  document.getElementById('sSync').textContent = Math.round((S.arg*0.5 + S.xarg*0.3 + S.tmparg*0.2) * 100) + '%';
+}
+
+// ═════════════════════════════════════════════════════════════
+// AUTO MODE
+// ═════════════════════════════════════════════════════════════
+function toggleAuto() {
+  S.auto = !S.auto;
+  if (S.auto) {
+    document.getElementById('btnAuto').textContent = '⏸ stop';
+    S.autoTimer = setInterval(() => {
+      // Zufällige Aktion
+      const r = Math.random();
+      if (r < 0.4) argSync();
+      else if (r < 0.7) useMove(choice(MOVES).id);
+      else selectStation(choice(STATIONS).id);
+    }, 900);
+    log('▶ AUTO gestartet · arg.sync läuft', 'ok');
+  } else {
+    document.getElementById('btnAuto').textContent = '▶ auto';
+    if (S.autoTimer) { clearInterval(S.autoTimer); S.autoTimer = null; }
+    log('⏸ AUTO gestoppt', 'warn');
+  }
+}
+
+// ═════════════════════════════════════════════════════════════
+// RESET
+// ═════════════════════════════════════════════════════════════
+function reset() {
+  S.usedMoves.clear();
+  S.moveHistory = [];
+  S.arg = 0.5; S.xarg = 0.3; S.tmparg = 0.2;
+  renderMoves();
+  argSync();
+  log('⟲ RESET · zurück zu Basis-Werten', 'warn');
+}
+
+// ═════════════════════════════════════════════════════════════
+// CLOCK
+// ═════════════════════════════════════════════════════════════
+function updateClock() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
+}
+setInterval(updateClock, 1000);
+
+// ═════════════════════════════════════════════════════════════
+// FL76
+// ═════════════════════════════════════════════════════════════
+function tickFl(now) {
+  if (S.lastFrameT > 0) {
+    S.flRaw = now - S.lastFrameT;
+    S.flSmooth = S.flSmooth * 0.88 + S.flRaw * 0.12;
+  }
+  S.lastFrameT = now;
+  const fl = Math.round(S.flSmooth);
+  document.getElementById('sFl').textContent = fl;
+  document.getElementById('sysFlRaw').textContent = Math.round(S.flRaw) + ' ms';
+  document.getElementById('sysFlSm').textContent = fl + ' ms';
+  const win = fl >= 60 && fl <= 90 ? 'kaiser' : (fl < 40 || fl > 120 ? 'outside' : 'edge');
+  document.getElementById('sysFlWin').textContent = win;
+  document.getElementById('sysFlWin').className = 'v ' + (win === 'kaiser' ? 'ok' : win === 'edge' ? 'warn' : 'err');
+  requestAnimationFrame(tickFl);
+}
+
+// ═════════════════════════════════════════════════════════════
+// LOOP
+// ═════════════════════════════════════════════════════════════
+function loop() {
+  S.tick++;
+  if (S.tick % 30 === 0) updateClock();
+  requestAnimationFrame(loop);
+}
+
+// ═════════════════════════════════════════════════════════════
+// CLI
+// ═════════════════════════════════════════════════════════════
+function handleCmd(cmd) {
+  const c = cmd.trim().toLowerCase();
+  if (!c) return;
+  log(`root> ${cmd}`, 'info');
+  if (c === 'help') {
+    log('befehle: sync · move · seq · status · wetter · soccer · reset · auto · raw · stations', 'ok');
+  } else if (c === 'sync') argSync();
+  else if (c === 'move') useMove(choice(MOVES).id);
+  else if (c === 'seq') sequenceMoves();
+  else if (c === 'status') {
+    log(`status · arg=${(S.arg*100).toFixed(1)}% · xarg=${(S.xarg*100).toFixed(1)}% · tmparg=${(S.tmparg*100).toFixed(1)}% · moves=${S.moveHistory.length}`, 'ok');
+  }
+  else if (c === 'wetter') log(`wetter: ${S.wetter} · wind ${S.wind} km/h`, 'ok');
+  else if (c === 'soccer') log(`soccer: ${S.soccer}`, 'ok');
+  else if (c === 'reset') reset();
+  else if (c === 'auto') toggleAuto();
+  else if (c === 'raw') log(`raw: d=${S.rawVals.d} e=${S.rawVals.e} i=${S.rawVals.i} n=${S.rawVals.n} o=${S.rawVals.o} r=${S.rawVals.r} s=${S.rawVals.s} u=${S.rawVals.u}`, 'ok');
+  else if (c === 'stations') log(`aktiv: ${S.activeStation} · ${STATIONS.length} stationen geladen`, 'ok');
+  else log(`unbekannt: ${c} · tippe "help"`, 'err');
+}
+
+document.getElementById('cmdInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    handleCmd(e.target.value);
+    e.target.value = '';
+  }
+});
+
+// ─── CLI TABS (nur Kosmetik + Filter) ───────────────────────
+document.querySelectorAll('#cliHdr .tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('#cliHdr .tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    log(`▸ Log-Tab: ${t.dataset.tab.toUpperCase()}`, 'info');
+  });
+});
+
+// ═════════════════════════════════════════════════════════════
+// TREE
+// ═════════════════════════════════════════════════════════════
+document.querySelectorAll('#tree .tree-item').forEach(t => {
+  t.addEventListener('click', () => {
+    const st = t.dataset.st;
+    if (st === 'mind') { log('↗ öffne mind.html', 'info'); window.open('mind.html', '_blank'); return; }
+    if (st === 'stage9') { log('↗ öffne Läufer / UNI', 'info'); return; }
+    if (st === 'root') { log('◈ ROOT ausgewählt', 'ok'); selectStation('root'); return; }
+    if (st === 'sys') { log('⚙ SYS.html als Kernel aktiv', 'ok'); return; }
+    if (st === 'stage') { log('▤ stage.html · nur root nutzt stage', 'warn'); return; }
+    if (st === 'RAW') { log('◆ RAW-Bridge gelesen', 'info'); return; }
+    selectStation(st);
+  });
+});
+
+// ═════════════════════════════════════════════════════════════
+// BUTTONS
+// ═════════════════════════════════════════════════════════════
+document.getElementById('btnSync').addEventListener('click', argSync);
+document.getElementById('btnAuto').addEventListener('click', toggleAuto);
+document.getElementById('btnReset').addEventListener('click', reset);
+document.getElementById('btnMove').addEventListener('click', () => useMove(choice(MOVES).id));
+document.getElementById('btnSeq').addEventListener('click', sequenceMoves);
+
+// ═════════════════════════════════════════════════════════════
+// KEYBOARD
+// ═════════════════════════════════════════════════════════════
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'r' || e.key === 'R') { log('◈ ROOT-Modus aktiviert', 'ok'); selectStation('root'); }
+  if (e.key === 'u' || e.key === 'U') { log('👤 USER-Modus', 'warn'); argSync(); }
+  if (e.key === 'y' || e.key === 'Y') argSync();
+  if (e.key === ' ') { e.preventDefault(); useMove(choice(MOVES).id); }
+  if (e.key === 'a' || e.key === 'A') toggleAuto();
+  if (e.key === '?') handleCmd('help');
+});
+
+// ═════════════════════════════════════════════════════════════
+// BOOT SEQUENZ
+// ═════════════════════════════════════════════════════════════
+const BOOT_LINES = [
+  ['▸ NC-BIOS <b>ok</b> <span class="dim">· root tree mounted · 81 slots</span>', 300],
+  ['▸ 3.js / 9.js / 81.js <b>ok</b> <span class="dim">· achs-engines geladen</span>', 350],
+  ['▸ SYS.html <b>als kernel aktiv</b> <span class="dim">· stage nur root</span>', 300],
+  ['▸ arg.sync kernel <b>bereit</b> <span class="dim">· arg / xarg / tmparg</span>', 350],
+  ['▸ stationen <b>13 ok</b> <span class="dim">· Börse · Markt · Industry · RAW</span>', 300],
+  ['▸ vector-translation <b>online</b> <span class="dim">· 8 quelchannels</span>', 350],
+  ['▸ move-grammatik <b>aktiv</b> <span class="dim">· schach ohne schach</span>', 300],
+  ['▸ FL76 <b>76 ms</b> <span class="dim">· kaiser-fenster</span>', 250],
+];
+
+function bootSequence() {
+  const linesEl = document.getElementById('bootLines');
+  const barEl = document.getElementById('bootBar');
+  linesEl.innerHTML = '';
+  let i = 0;
+  let totalTime = 0;
+
+  const totalDuration = BOOT_LINES.reduce((a, b) => a + b[1], 0);
+
+  function next() {
+    if (i >= BOOT_LINES.length) {
+      barEl.style.width = '100%';
+      setTimeout(() => {
+        document.getElementById('boot').classList.add('done');
+      }, 400);
+      return;
+    }
+    const [txt, delay] = BOOT_LINES[i];
+    const div = document.createElement('div');
+    div.innerHTML = txt;
+    linesEl.appendChild(div);
+    totalTime += delay;
+    barEl.style.width = ((totalTime / totalDuration) * 100).toFixed(1) + '%';
+    i++;
+    setTimeout(next, delay);
+  }
+  next();
+}
+
+// ═════════════════════════════════════════════════════════════
+// INIT
+// ═════════════════════════════════════════════════════════════
+function init() {
+  bootSequence();
+
+  renderStations();
+  renderMoves();
+  argSync();  // initiale Werte
+  updateClock();
+
+  // Startlogs
+  log('▣ IKI1UC · PE geladen', 'ok');
+  log('root-tree > sys.html · arg.sync kernel aktiv', 'info');
+  log('13 stationen · 10 moves · 8 vec-kanäle · RAW-Bridge bereit', 'ok');
+  log('befehle: tippe "help" in die konsole', 'ok');
+  log('tasten: R=root · U=user · Y=sync · Space=move · A=auto', 'info');
+
+  requestAnimationFrame(tickFl);
+  requestAnimationFrame(loop);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+// ═════════════════════════════════════════════════════════════
+// PUBLIC API
+// ═════════════════════════════════════════════════════════════
+window.PE = {
+  sync: () => argSync(),
+  move: () => useMove(choice(MOVES).id),
+  seq: () => sequenceMoves(),
+  auto: () => toggleAuto(),
+  reset: () => reset(),
+  selectStation: (id) => selectStation(id),
+  state: () => ({ ...S }),
+  stations: () => STATIONS.map(s => ({ ...s })),
+  moves: () => MOVES.map(m => ({ ...m, used: S.usedMoves.has(m.id) })),
+  vectors: () => VEC_MAP.map(v => ({ src: v.src, dst: v.dst, val: v.fn() })),
+  cmd: (c) => handleCmd(c),
+};
+console.log('%c▣ IKI1UC · PE geladen', 'color:#5fc8ff;font-weight:bold;font-size:14px;');
+console.log('→ window.PE.sync() · .move() · .state() · .cmd("help")');
+</script>
+</body>
+</html>

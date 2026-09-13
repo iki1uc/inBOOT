@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>◈ IKI1UC · MASTER · ATEM · UBP · 81·9·3 · ORCHESTER</title>
+<title>◈ IKI1UC · AUTOPOIESIS · SELBST-ERHALTUNG · ORCHESTER</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{
@@ -14,6 +14,9 @@
     --cause:#f0d080; --process:#6cf; --effect:#8cf0d0;
     --os:#5fc8ff; --mxu:#b388ff; --run21:#ff4d6d;
     --sli:#7ce0a8; --raid:#ff88b0;
+    --init:#ff9ec4;   /* Eigeninitiative */
+    --life:#8cf0d0;   /* Lebendigkeit */
+    --self:#ffd93d;   /* Selbsterhaltung */
     --gold:#f0d080; --cyan:#6cf; --violet:#b388ff;
     --green:#8cf0d0; --red:#ff5a7a; --pink:#ff9ec4;
     --line:rgba(120,200,180,0.08);
@@ -24,17 +27,15 @@
   html,body{height:100%;overflow:hidden;}
   body{background:#000;color:var(--fg);font-family:var(--mono);font-size:12px;}
 
-  /* ═══ DESK ═══ */
   #desk{
-    width:100vw;height:100vh;
-    background:var(--bg);
+    width:100vw;height:100vh;background:var(--bg);
     display:flex;flex-direction:column;overflow:hidden;position:relative;
   }
   #desk::before{
     content:'';position:absolute;inset:0;
     background:radial-gradient(ellipse at 50% 40%,
-      rgba(124,224,168,0.04) 0%,
-      rgba(95,200,255,0.02) 40%,
+      rgba(124,224,168,0.05) 0%,
+      rgba(255,158,196,0.02) 40%,
       transparent 70%);
     animation:bgBreathe 8s ease-in-out infinite;
     pointer-events:none;z-index:0;
@@ -58,14 +59,14 @@
     font-family:var(--serif);display:flex;align-items:center;gap:8px;
   }
   #topbar .logo b{color:var(--gold);}
-  #topbar .breath{
+  #topbar .heart{
     display:inline-block;width:10px;height:10px;border-radius:50%;
-    background:var(--o2);box-shadow:0 0 10px var(--o2);
-    animation:breathPulse 4s ease-in-out infinite;
+    background:var(--life);box-shadow:0 0 10px var(--life);
+    animation:heartPulse 1.2s ease-in-out infinite;
   }
-  @keyframes breathPulse{
-    0%,100%{transform:scale(.85);box-shadow:0 0 8px var(--o2);}
-    50%{transform:scale(1.3);box-shadow:0 0 20px var(--o2),0 0 40px rgba(124,224,168,.4);}
+  @keyframes heartPulse{
+    0%,100%{transform:scale(.9);box-shadow:0 0 8px var(--life);}
+    50%{transform:scale(1.35);box-shadow:0 0 20px var(--life),0 0 40px rgba(140,240,208,.5);}
   }
   #topbar .sep{width:1px;height:16px;background:var(--line);}
   #topbar .stat{
@@ -79,32 +80,37 @@
   #topbar .stat b.vi{color:var(--violet);}
   #topbar .stat b.rd{color:var(--red);}
   #topbar .stat b.pk{color:var(--pink);}
+  #topbar .stat b.life{color:var(--life);}
+  #topbar .stat b.init{color:var(--init);}
+  #topbar .stat b.self{color:var(--self);}
   #topbar #clock{color:var(--h2o);}
 
-  /* ═══ AXIOM BAR ═══ */
-  #axiom{
-    display:grid;grid-template-columns:1fr 30px 1fr 30px 1fr;
-    gap:6px;align-items:center;padding:10px 14px;
+  /* ═══ VITAL BAR (Lebenszustand) ═══ */
+  #vitalBar{
+    display:grid;grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:6px;padding:8px 14px;
     background:var(--bg2);border-bottom:1px solid var(--line);
     flex-shrink:0;position:relative;z-index:1;
   }
-  .axiom-card{
-    padding:8px 12px;text-align:center;border-radius:6px;
-    background:rgba(6,10,18,0.6);border:1px solid;transition:.3s;
+  .vital-cell{
+    background:rgba(6,10,18,0.6);
+    border:1px solid var(--line);border-radius:5px;
+    padding:5px 9px;font-size:9.5px;
+    display:flex;justify-content:space-between;
+    align-items:center;
+    border-left:3px solid var(--dim2);
+    transition:.3s;
   }
-  .axiom-card.cause{border-color:rgba(240,208,128,0.3);}
-  .axiom-card.process{border-color:rgba(108,204,255,0.3);}
-  .axiom-card.effect{border-color:rgba(140,240,208,0.3);}
-  .axiom-card .lbl{font-size:8.5px;letter-spacing:3px;opacity:.6;margin-bottom:2px;}
-  .axiom-card .name{font-size:13px;font-family:var(--serif);letter-spacing:3px;}
-  .axiom-card.cause .name{color:var(--cause);}
-  .axiom-card.process .name{color:var(--process);}
-  .axiom-card.effect .name{color:var(--effect);}
-  .axiom-card .val{font-size:22px;font-weight:bold;margin-top:2px;font-family:var(--mono);}
-  .axiom-card.cause .val{color:var(--cause);}
-  .axiom-card.process .val{color:var(--process);}
-  .axiom-card.effect .val{color:var(--effect);}
-  .axiom-arrow{text-align:center;font-size:18px;color:#3a5a7a;font-family:var(--serif);}
+  .vital-cell.life{border-left-color:var(--life);}
+  .vital-cell.self{border-left-color:var(--self);}
+  .vital-cell.init{border-left-color:var(--init);}
+  .vital-cell.will{border-left-color:var(--aura);}
+  .vital-cell .lbl{color:var(--dim);letter-spacing:1px;font-size:9px;}
+  .vital-cell .val{font-weight:bold;font-size:12px;}
+  .vital-cell.life .val{color:var(--life);}
+  .vital-cell.self .val{color:var(--self);}
+  .vital-cell.init .val{color:var(--init);}
+  .vital-cell.will .val{color:var(--aura);}
 
   /* ═══ MAIN GRID ═══ */
   #main{
@@ -128,6 +134,15 @@
     margin:8px 8px 0 8px;position:relative;
   }
   .panel:last-child{margin-bottom:8px;}
+  .panel.initiative{
+    border-color:rgba(255,158,196,0.25);
+    box-shadow:0 0 14px rgba(255,158,196,0.06) inset;
+    animation:initGlow 3s ease-in-out infinite;
+  }
+  @keyframes initGlow{
+    0%,100%{border-color:rgba(255,158,196,0.25);}
+    50%{border-color:rgba(255,158,196,0.5);box-shadow:0 0 20px rgba(255,158,196,0.12) inset;}
+  }
   .panel h3{
     font-size:10px;letter-spacing:1.8px;color:var(--o2);
     text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;
@@ -145,6 +160,25 @@
   .panel h3 .badge.cy{color:var(--cyan);background:rgba(108,204,255,0.1);}
   .panel h3 .badge.vi{color:var(--violet);background:rgba(179,136,255,0.1);}
   .panel h3 .badge.pk{color:var(--pink);background:rgba(255,158,196,0.1);}
+  .panel h3 .badge.life{color:var(--life);background:rgba(140,240,208,0.1);}
+  .panel h3 .badge.self{color:var(--self);background:rgba(255,217,61,0.1);}
+
+  /* ═══ AUTONOMOUS CELL ═══ */
+  .auto-row{
+    display:grid;grid-template-columns:50px 1fr 60px;
+    gap:7px;align-items:center;
+    padding:5px 6px;background:rgba(0,0,0,0.25);
+    border-radius:4px;margin-bottom:4px;font-size:10px;
+    border-left:2px solid var(--init);
+  }
+  .auto-row .ic{font-size:14px;text-align:center;}
+  .auto-row .nm{color:var(--fg);font-weight:bold;letter-spacing:0.5px;}
+  .auto-row .nm small{color:var(--dim);font-weight:normal;font-size:8px;display:block;}
+  .auto-row .st{text-align:right;font-size:9px;font-weight:bold;color:var(--dim);}
+  .auto-row .st.on{color:var(--life);animation:autoBlink 1.6s infinite;}
+  .auto-row .st.wait{color:var(--gold);}
+  .auto-row .st.off{color:var(--red);}
+  @keyframes autoBlink{0%,100%{opacity:.6;}50%{opacity:1;}}
 
   /* ═══ UBP STACK ═══ */
   .ubp-row{
@@ -152,8 +186,7 @@
     gap:6px;align-items:center;padding:5px 6px;
     background:rgba(0,0,0,0.25);border-radius:4px;
     margin-bottom:4px;font-size:10px;
-    border-left:3px solid var(--dim2);
-    transition:.25s;
+    border-left:3px solid var(--dim2);transition:.25s;
   }
   .ubp-row.os{border-left-color:var(--os);}
   .ubp-row.mxu{border-left-color:var(--mxu);}
@@ -164,10 +197,7 @@
   }
   .ubp-row.active .ind{animation:ubpPulse 1.4s infinite;}
   @keyframes ubpPulse{0%,100%{opacity:.4;}50%{opacity:1;}}
-  .ubp-row .ind{
-    width:8px;height:8px;border-radius:50%;
-    background:var(--dim2);
-  }
+  .ubp-row .ind{width:8px;height:8px;border-radius:50%;background:var(--dim2);}
   .ubp-row.os .ind{background:var(--os);box-shadow:0 0 6px var(--os);}
   .ubp-row.mxu .ind{background:var(--mxu);box-shadow:0 0 6px var(--mxu);}
   .ubp-row.run21 .ind{background:var(--run21);box-shadow:0 0 6px var(--run21);}
@@ -177,16 +207,12 @@
   .ubp-row.mxu.active .st{color:var(--mxu);}
   .ubp-row.run21.active .st{color:var(--run21);}
 
-  /* SLI/RAID switch */
-  .switch-wrap{
-    display:grid;grid-template-columns:1fr 1fr;gap:5px;
-    margin-top:6px;
-  }
+  /* SLI/RAID */
+  .switch-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px;}
   .sw{
     padding:8px 6px;text-align:center;
     background:var(--bg3);border:1px solid var(--line);
-    border-radius:5px;cursor:pointer;transition:.25s;
-    font-size:10px;
+    border-radius:5px;cursor:pointer;transition:.25s;font-size:10px;
   }
   .sw .nm{font-family:var(--serif);letter-spacing:2px;font-size:11px;font-weight:bold;}
   .sw .sub{font-size:8px;color:var(--dim);margin-top:2px;}
@@ -195,7 +221,7 @@
   .sw.active.sli{background:rgba(124,224,168,0.12);border-color:var(--sli);box-shadow:0 0 10px rgba(124,224,168,0.3);}
   .sw.active.raid{background:rgba(255,136,176,0.1);border-color:var(--raid);box-shadow:0 0 10px rgba(255,136,176,0.3);}
 
-  /* ═══ 81 ZEICHEN GRID ═══ */
+  /* ═══ 81 ZEICHEN ═══ */
   #zeichenGrid{
     display:grid;grid-template-columns:repeat(9,1fr);
     gap:2px;aspect-ratio:1;background:rgba(2,5,10,0.6);
@@ -205,20 +231,21 @@
   .zcell{
     display:flex;align-items:center;justify-content:center;
     font-size:7px;background:rgba(20,28,40,0.4);
-    border-radius:3px;color:#3a4a5a;
-    transition:all .2s;cursor:pointer;user-select:none;
-    aspect-ratio:1;position:relative;
+    border-radius:3px;color:#3a4a5a;transition:all .2s;
+    cursor:pointer;user-select:none;aspect-ratio:1;position:relative;
   }
   .zcell:hover{background:rgba(240,208,128,0.12);color:var(--gold);}
   .zcell.once{background:rgba(108,204,255,0.18);color:#b0e0ff;}
   .zcell.done{background:rgba(140,240,208,0.18);color:#b0f8dc;}
   .zcell.active{background:rgba(240,208,128,0.3);color:#ffe9b0;
     font-weight:bold;box-shadow:inset 0 0 6px rgba(240,208,128,0.5);}
+  .zcell.auto{background:rgba(255,158,196,0.2);color:#ffd0e4;}
 
   /* ═══ ATEM CORE ═══ */
   #atemPanel{
     display:flex;justify-content:center;align-items:center;
     padding:16px 8px;min-height:300px;
+    position:relative;
   }
   #atemWrap{position:relative;width:270px;height:270px;}
   #atemWrap svg{position:absolute;inset:0;}
@@ -251,8 +278,19 @@
     font-size:10px;color:#fff;font-weight:bold;
     text-shadow:0 0 8px rgba(0,0,0,0.8);
     z-index:5;font-family:var(--serif);
-    letter-spacing:3px;margin-top:44px;text-align:center;
-    width:180px;
+    letter-spacing:3px;margin-top:44px;text-align:center;width:180px;
+  }
+  #initiativeHalo{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:220px;height:220px;border-radius:50%;
+    border:1px dashed rgba(255,158,196,0.3);
+    animation:haloRotate 8s linear infinite;
+    pointer-events:none;z-index:2;
+  }
+  @keyframes haloRotate{
+    from{transform:translate(-50%,-50%) rotate(0deg);}
+    to{transform:translate(-50%,-50%) rotate(360deg);}
   }
 
   /* ═══ ELEMENT CYCLE ═══ */
@@ -287,41 +325,56 @@
   .elem.o2 .val{color:var(--o2);}
   .elem.h2o .val{color:var(--h2o);}
 
-  /* ═══ 9 PARAMETER ═══ */
-  #paramList{display:flex;flex-direction:column;gap:4px;}
-  .param{
-    display:grid;grid-template-columns:56px 1fr 32px;
-    gap:6px;align-items:center;font-size:9.5px;
-    padding:3px 5px;background:rgba(0,0,0,0.25);
-    border-radius:4px;border-left:2px solid var(--cyan);
+  /* ═══ INITIATIVE STREAM ═══ */
+  #initStream{
+    background:#02050a;padding:8px 12px;
+    font-family:var(--mono);font-size:10px;
+    line-height:1.55;color:#b8d8c8;
+    max-height:150px;overflow-y:auto;
+    border-radius:0 0 6px 6px;
   }
-  .param.p0{border-left-color:var(--gold);}
-  .param.p1{border-left-color:var(--gold);}
-  .param.p2{border-left-color:var(--cyan);}
-  .param.p3{border-left-color:var(--cyan);}
-  .param.p4{border-left-color:var(--violet);}
-  .param.p5{border-left-color:var(--violet);}
-  .param.p6{border-left-color:var(--o2);}
-  .param.p7{border-left-color:var(--o2);}
-  .param.p8{border-left-color:var(--pink);}
-  .param .name{color:var(--dim);letter-spacing:0.8px;font-size:8.5px;font-weight:bold;}
-  .param input[type=range]{
-    -webkit-appearance:none;appearance:none;width:100%;
-    height:3px;background:linear-gradient(90deg,#3a5a4a,#8cf0d0);
-    border-radius:2px;outline:none;
+  #initStream::-webkit-scrollbar{width:5px;}
+  #initStream::-webkit-scrollbar-thumb{background:var(--line);}
+  #initStream .il{
+    padding:2.5px 0;display:flex;gap:6px;
+    animation:initIn .4s ease-out;
   }
-  .param input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;width:10px;height:10px;border-radius:50%;
-    background:#fff;border:2px solid var(--cyan);
-    box-shadow:0 0 6px var(--cyan);cursor:pointer;
-  }
-  .param .val{color:#d0e8e0;font-weight:bold;text-align:right;font-size:10px;}
+  @keyframes initIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
+  #initStream .il .ts{color:var(--dim2);font-size:8.5px;flex-shrink:0;padding-top:1.5px;}
+  #initStream .il .msg{flex:1;}
+  #initStream .il .msg.decide{color:var(--cyan);}
+  #initStream .il .msg.self{color:var(--self);}
+  #initStream .il .msg.init{color:var(--init);}
+  #initStream .il .msg.life{color:var(--life);}
+  #initStream .il .msg.warn{color:var(--gold);}
+  #initStream .il .msg.err{color:var(--red);}
 
-  /* ═══ 16FACH VERIFY ═══ */
-  #verifyGrid{
-    display:grid;grid-template-columns:repeat(4,1fr);
-    gap:2px;
+  /* ═══ NARRATIV STREAM ═══ */
+  #narrStream{
+    background:#02050a;padding:8px 12px;
+    font-family:var(--serif);font-style:italic;
+    font-size:11px;line-height:1.55;color:#b8d8c8;
+    max-height:140px;overflow-y:auto;border-radius:0 0 6px 6px;
   }
+  #narrStream::-webkit-scrollbar{width:5px;}
+  #narrStream::-webkit-scrollbar-thumb{background:var(--line);}
+  #narrStream .nl{padding:2.5px 0;display:flex;gap:6px;animation:narrIn .5s ease-out;}
+  @keyframes narrIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
+  #narrStream .nl .ts{color:var(--dim2);font-family:var(--mono);
+    font-style:normal;font-size:8.5px;flex-shrink:0;padding-top:1.5px;}
+  #narrStream .nl .msg{flex:1;}
+  #narrStream .nl .msg.o2{color:var(--o2);}
+  #narrStream .nl .msg.co2{color:var(--co2);}
+  #narrStream .nl .msg.h2o{color:var(--h2o);}
+  #narrStream .nl .msg.atom{color:var(--atom);}
+  #narrStream .nl .msg.mana{color:var(--mana);}
+  #narrStream .nl .msg.aura{color:var(--aura);}
+  #narrStream .nl .msg.zen{color:var(--zen);}
+  #narrStream .nl .msg.self{color:var(--self);}
+  #narrStream .nl .msg.ok{color:var(--o2);}
+
+  /* ═══ 16 VERIFY ═══ */
+  #verifyGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
   .vcell{
     background:var(--bg3);border:1px solid var(--line);
     border-radius:3px;padding:4px 1px;text-align:center;
@@ -340,7 +393,7 @@
   .vcell.fail{background:rgba(255,90,122,0.1);border-color:var(--red);color:var(--red);}
   .vcell.fail .ic{color:var(--red);}
 
-  /* ═══ CACHE ROWS ═══ */
+  /* ═══ CACHE ═══ */
   .cache-row{
     display:grid;grid-template-columns:1fr 50px 40px;
     gap:5px;align-items:center;
@@ -354,7 +407,7 @@
   .cache-row .st.hit{color:var(--o2);}
   .cache-row .st.miss{color:var(--gold);}
 
-  /* ═══ MANA/AURA/ZEN ═══ */
+  /* ═══ MAZ ═══ */
   .maz-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;}
   .maz{
     background:var(--bg3);border:1px solid var(--line);
@@ -374,52 +427,31 @@
   .maz.zen .val{color:var(--zen);text-shadow:0 0 6px var(--zen);}
   .maz.zen .bar .f{background:linear-gradient(90deg,#0a3a2a,var(--zen));}
 
-  /* ═══ NARRATIV STREAM ═══ */
-  #narrStream{
-    background:#02050a;padding:8px 12px;
-    font-family:var(--serif);font-style:italic;
-    font-size:11px;line-height:1.55;color:#b8d8c8;
-    max-height:160px;overflow-y:auto;border-radius:0 0 6px 6px;
+  /* ═══ 9 PARAMETER ═══ */
+  #paramList{display:flex;flex-direction:column;gap:4px;}
+  .param{
+    display:grid;grid-template-columns:56px 1fr 32px;
+    gap:6px;align-items:center;font-size:9.5px;
+    padding:3px 5px;background:rgba(0,0,0,0.25);
+    border-radius:4px;border-left:2px solid var(--cyan);
   }
-  #narrStream::-webkit-scrollbar{width:5px;}
-  #narrStream::-webkit-scrollbar-thumb{background:var(--line);}
-  #narrStream .nl{padding:2.5px 0;display:flex;gap:6px;
-    animation:narrIn .5s ease-out;}
-  @keyframes narrIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
-  #narrStream .nl .ts{color:var(--dim2);font-family:var(--mono);
-    font-style:normal;font-size:8.5px;flex-shrink:0;padding-top:1.5px;}
-  #narrStream .nl .msg{flex:1;}
-  #narrStream .nl .msg.o2{color:var(--o2);}
-  #narrStream .nl .msg.co2{color:var(--co2);}
-  #narrStream .nl .msg.h2o{color:var(--h2o);}
-  #narrStream .nl .msg.atom{color:var(--atom);}
-  #narrStream .nl .msg.mana{color:var(--mana);}
-  #narrStream .nl .msg.aura{color:var(--aura);}
-  #narrStream .nl .msg.zen{color:var(--zen);}
-  #narrStream .nl .msg.ok{color:var(--o2);}
-
-  /* ═══ MOVE GRAMMAR ═══ */
-  .move-cell{
-    display:inline-block;padding:2px 6px;margin:1px 2px 1px 0;
-    background:var(--bg3);border:1px solid var(--line);
-    border-radius:3px;font-size:9px;color:var(--cyan);
-    cursor:pointer;transition:.15s;letter-spacing:0.5px;
+  .param.p0,.param.p1{border-left-color:var(--gold);}
+  .param.p2,.param.p3{border-left-color:var(--cyan);}
+  .param.p4,.param.p5{border-left-color:var(--violet);}
+  .param.p6,.param.p7{border-left-color:var(--o2);}
+  .param.p8{border-left-color:var(--pink);}
+  .param .name{color:var(--dim);letter-spacing:0.8px;font-size:8.5px;font-weight:bold;}
+  .param input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;
+    height:3px;background:linear-gradient(90deg,#3a5a4a,#8cf0d0);
+    border-radius:2px;outline:none;
   }
-  .move-cell:hover{border-color:var(--cyan);background:rgba(108,204,255,0.1);}
-  .move-cell.used{background:rgba(124,224,168,0.1);border-color:var(--o2);color:var(--o2);}
-
-  /* ═══ STATION ROWS ═══ */
-  .st-row{
-    display:grid;grid-template-columns:1fr 60px 45px;
-    gap:6px;align-items:center;
-    padding:3.5px 0;border-bottom:1px dashed var(--line2);
-    font-size:9.5px;
+  .param input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:10px;height:10px;border-radius:50%;
+    background:#fff;border:2px solid var(--cyan);
+    box-shadow:0 0 6px var(--cyan);cursor:pointer;
   }
-  .st-row:last-child{border-bottom:none;}
-  .st-row .nm{color:var(--fg);font-weight:bold;letter-spacing:0.3px;}
-  .st-row .bar{height:4px;background:#0a1420;border-radius:2px;overflow:hidden;}
-  .st-row .bar .f{height:100%;background:linear-gradient(90deg,#1a3a2a,var(--o2));transition:width .4s;}
-  .st-row .val{text-align:right;color:var(--o2);font-weight:bold;font-size:9px;}
+  .param .val{color:#d0e8e0;font-weight:bold;text-align:right;font-size:10px;}
 
   /* ═══ ARG.SYNC ═══ */
   .arg-row{
@@ -439,6 +471,29 @@
   .arg-row .val.arg{color:var(--o2);}
   .arg-row .val.xarg{color:var(--gold);}
   .arg-row .val.tmparg{color:var(--violet);}
+
+  /* ═══ STATIONEN ═══ */
+  .st-row{
+    display:grid;grid-template-columns:1fr 60px 45px;
+    gap:6px;align-items:center;
+    padding:3.5px 0;border-bottom:1px dashed var(--line2);
+    font-size:9.5px;
+  }
+  .st-row:last-child{border-bottom:none;}
+  .st-row .nm{color:var(--fg);font-weight:bold;letter-spacing:0.3px;}
+  .st-row .bar{height:4px;background:#0a1420;border-radius:2px;overflow:hidden;}
+  .st-row .bar .f{height:100%;background:linear-gradient(90deg,#1a3a2a,var(--o2));transition:width .4s;}
+  .st-row .val{text-align:right;color:var(--o2);font-weight:bold;font-size:9px;}
+
+  /* ═══ MOVES ═══ */
+  .move-cell{
+    display:inline-block;padding:2px 6px;margin:1px 2px 1px 0;
+    background:var(--bg3);border:1px solid var(--line);
+    border-radius:3px;font-size:9px;color:var(--cyan);
+    cursor:pointer;transition:.15s;letter-spacing:0.5px;
+  }
+  .move-cell:hover{border-color:var(--cyan);background:rgba(108,204,255,0.1);}
+  .move-cell.used{background:rgba(124,224,168,0.1);border-color:var(--o2);color:var(--o2);}
 
   /* ═══ BUTTONS ═══ */
   .ctrl{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
@@ -461,10 +516,12 @@
   .ctrl button.cy:hover{background:rgba(108,204,255,0.15);border-color:var(--cyan);color:#fff;}
   .ctrl button.vi{border-color:rgba(179,136,255,0.4);color:var(--violet);}
   .ctrl button.vi:hover{background:rgba(179,136,255,0.15);border-color:var(--violet);color:#fff;}
+  .ctrl button.pk{border-color:rgba(255,158,196,0.4);color:var(--pink);}
+  .ctrl button.pk:hover{background:rgba(255,158,196,0.15);border-color:var(--pink);color:#fff;}
   .ctrl button.rd{border-color:rgba(255,90,122,0.4);color:var(--red);}
   .ctrl button.rd:hover{background:rgba(255,90,122,0.15);border-color:var(--red);color:#fff;}
 
-  /* ═══ RESULT BOX ═══ */
+  /* ═══ RESULT ═══ */
   #resultBox{
     background:var(--bg3);border:1px solid var(--line);
     border-radius:5px;padding:8px 10px;font-size:9.5px;
@@ -479,8 +536,7 @@
   #resultBox .line .v{color:var(--o2);font-weight:bold;}
   #resultBox .line.total{
     border-top:2px solid rgba(124,224,168,0.2);
-    margin-top:5px;padding-top:5px;
-    font-size:11px;
+    margin-top:5px;padding-top:5px;font-size:11px;
   }
   #resultBox .line.total .v{color:var(--gold);font-size:12px;}
 
@@ -516,13 +572,13 @@
   #cliHdr .tab{color:var(--o2);cursor:pointer;letter-spacing:1.5px;}
   #cliHdr .tab.active{color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:1px;}
   #cliHdr .tag{
-    margin-left:auto;color:var(--o2);font-size:9px;
+    margin-left:auto;color:var(--life);font-size:9px;
     letter-spacing:1px;display:flex;align-items:center;gap:5px;
   }
   #cliHdr .tag .led{
     width:5px;height:5px;border-radius:50%;
-    background:var(--o2);box-shadow:0 0 6px var(--o2);
-    animation:breathPulse 4s ease-in-out infinite;
+    background:var(--life);box-shadow:0 0 6px var(--life);
+    animation:heartPulse 1.2s ease-in-out infinite;
   }
   #log{
     flex:1;padding:5px 12px;overflow-y:auto;
@@ -539,8 +595,9 @@
   #log .info{color:var(--h2o);}
   #log .vi{color:var(--violet);}
   #log .pk{color:var(--pink);}
-  #log .cause{color:var(--cause);}
-  #log .effect{color:var(--effect);}
+  #log .life{color:var(--life);}
+  #log .self{color:var(--self);}
+  #log .init{color:var(--init);}
   #cliInput{
     height:22px;background:var(--bg3);
     border-top:1px solid var(--line);
@@ -577,10 +634,7 @@
     0%,100%{transform:scale(1);filter:brightness(1);}
     50%{transform:scale(1.04);filter:brightness(1.35);}
   }
-  #boot .sub{
-    color:var(--h2o);font-size:10px;
-    letter-spacing:6px;font-family:var(--serif);
-  }
+  #boot .sub{color:var(--h2o);font-size:10px;letter-spacing:6px;font-family:var(--serif);}
   #boot .lines{
     width:540px;max-width:82%;
     font-size:10.5px;line-height:1.65;
@@ -591,13 +645,16 @@
   #boot .lines .dim{color:var(--dim2);}
   #boot .lines .atom{color:var(--atom);}
   #boot .lines .h2o{color:var(--h2o);}
+  #boot .lines .init{color:var(--init);}
+  #boot .lines .life{color:var(--life);}
+  #boot .lines .self{color:var(--self);}
   #boot .progress{
     width:540px;max-width:82%;height:3px;
     background:var(--bg3);border-radius:2px;overflow:hidden;
   }
   #boot .progress .bar{
     height:100%;width:0;
-    background:linear-gradient(90deg,var(--o2),var(--h2o),var(--gold));
+    background:linear-gradient(90deg,var(--o2),var(--h2o),var(--init),var(--gold));
     transition:width .3s;
   }
   @media(max-width:820px){
@@ -615,8 +672,8 @@
 
 <!-- ═══ BOOT ═══ -->
 <div id="boot">
-  <div class="logo">◈ IKI1UC</div>
-  <div class="sub">MASTER · ATEM · UBP · 81·9·3</div>
+  <div class="logo">◈ AUTOPOIESIS</div>
+  <div class="sub">SELBST-BOOT · SELBST-ERHALTUNG · EIGENINITIATIVE</div>
   <div class="lines" id="bootLines"></div>
   <div class="progress"><div class="bar" id="bootBar"></div></div>
 </div>
@@ -627,45 +684,44 @@
   <!-- TOPBAR -->
   <div id="topbar">
     <span class="logo">
-      <span class="breath"></span>
-      IKI1UC<b>::MASTER</b>
+      <span class="heart"></span>
+      IKI1UC<b>::LIVING</b>
     </span>
     <span class="sep"></span>
-    <span style="color:var(--dim);">/root/MXU/UBP</span>
+    <span style="color:var(--dim);">/root/AUTOPOIESIS</span>
     <div class="stat">
+      <span>LEBEN <b class="life" id="tLife">100%</b></span>
+      <span>SELBST <b class="self" id="tSelf">100%</b></span>
+      <span>INIT <b class="init" id="tInit">0</b></span>
+      <span>WILL <b class="gold" id="tWill">0</b></span>
       <span>ATEM <b class="o2" id="tAtem">0</b></span>
-      <span>O² <b class="o2" id="tO2">0%</b></span>
-      <span>CO² <b class="gold" id="tCO2">0%</b></span>
-      <span>H²O <b class="cy" id="tH2O">0%</b></span>
-      <span>ATOM <b class="vi" id="tAtom">0%</b></span>
-      <span>MANA <b class="pk" id="tMana">0%</b></span>
-      <span>AURA <b class="gold" id="tAura">0%</b></span>
-      <span>ZEN <b class="o2" id="tZen">0%</b></span>
       <span>UBP <b class="cy" id="tUBP">—</b></span>
       <span>VERIFY <b class="o2" id="tVerify">0/16</b></span>
+      <span>O² <b class="o2" id="tO2">0%</b></span>
+      <span>CO² <b class="gold" id="tCO2">0%</b></span>
+      <span>ZEN <b class="o2" id="tZen">0%</b></span>
       <span>FL76 <b class="cy" id="tFl">76</b></span>
       <span id="clock">--:--:--</span>
     </div>
   </div>
 
-  <!-- AXIOM BAR -->
-  <div id="axiom">
-    <div class="axiom-card cause">
-      <div class="lbl">AXIOM · 1</div>
-      <div class="name">URSCHE</div>
-      <div class="val" id="axCause">0</div>
+  <!-- VITAL BAR -->
+  <div id="vitalBar">
+    <div class="vital-cell life">
+      <span class="lbl">◈ LEBENDIGKEIT</span>
+      <span class="val" id="vLife">100%</span>
     </div>
-    <div class="axiom-arrow">→</div>
-    <div class="axiom-card process">
-      <div class="lbl">AXIOM · 2</div>
-      <div class="name">PROZESS</div>
-      <div class="val" id="axProcess">0</div>
+    <div class="vital-cell self">
+      <span class="lbl">◆ SELBSTERHALTUNG</span>
+      <span class="val" id="vSelf">100%</span>
     </div>
-    <div class="axiom-arrow">→</div>
-    <div class="axiom-card effect">
-      <div class="lbl">AXIOM · 3</div>
-      <div class="name">WIRKUNG</div>
-      <div class="val" id="axEffect">0</div>
+    <div class="vital-cell init">
+      <span class="lbl">✦ EIGENINITIATIVE</span>
+      <span class="val" id="vInit">0%</span>
+    </div>
+    <div class="vital-cell will">
+      <span class="lbl">◉ WILLE</span>
+      <span class="val" id="vWill">0%</span>
     </div>
   </div>
 
@@ -674,6 +730,41 @@
 
     <!-- ═══ LEFT COL ═══ -->
     <div class="col">
+
+      <!-- AUTONOMOUS CORE -->
+      <div class="panel initiative">
+        <h3>✦ AUTOPOIESIS · KERN <span class="badge init" id="autoBadge">läuft</span></h3>
+        <div class="auto-row">
+          <span class="ic">❤</span>
+          <span class="nm">SELF-BOOT<small>selbst-start · selbst-neu</small></span>
+          <span class="st on" id="aSelfBoot">aktiv</span>
+        </div>
+        <div class="auto-row">
+          <span class="ic">◆</span>
+          <span class="nm">SELF-HEAL<small>selbst-reparatur</small></span>
+          <span class="st on" id="aSelfHeal">aktiv</span>
+        </div>
+        <div class="auto-row">
+          <span class="ic">✦</span>
+          <span class="nm">INITIATIVE<small>eigenantrieb</small></span>
+          <span class="st on" id="aInit">aktiv</span>
+        </div>
+        <div class="auto-row">
+          <span class="ic">◉</span>
+          <span class="nm">HOMEOSTASIS<small>selbst-regulation</small></span>
+          <span class="st on" id="aHomeo">aktiv</span>
+        </div>
+        <div class="auto-row">
+          <span class="ic">∞</span>
+          <span class="nm">MEMORY<small>selbst-erinnerung</small></span>
+          <span class="st on" id="aMem">aktiv</span>
+        </div>
+        <div class="ctrl">
+          <button class="pk" id="btnAutoToggle">⏸ eigen-stop</button>
+          <button class="gold" id="btnAutoBoot">↻ self-boot</button>
+          <button class="cy" id="btnAutoWill">✦ initiieren</button>
+        </div>
+      </div>
 
       <!-- UBP STACK -->
       <div class="panel">
@@ -693,7 +784,6 @@
           <span class="nm">RUN21</span>
           <span class="st" id="ubpRun21">armed</span>
         </div>
-
         <div class="switch-wrap">
           <div class="sw sli active" id="swSli">
             <div class="nm">SLI</div>
@@ -704,7 +794,6 @@
             <div class="sub">symbiose</div>
           </div>
         </div>
-
         <div class="ctrl">
           <button class="cy" id="btnUbDecide">⇄ decide</button>
           <button class="gold" id="btnUbCycle">↻ cycle</button>
@@ -751,9 +840,10 @@
             <line x1="0" y1="-130" x2="0" y2="130" stroke="rgba(124,224,168,0.05)" stroke-width="0.5"/>
             <g id="atemOrbs"></g>
           </svg>
+          <div id="initiativeHalo"></div>
           <div id="atemCore">◈</div>
           <div id="atemGlyph">0</div>
-          <div id="atemLabel">ATEM</div>
+          <div id="atemLabel">ATEM · LEBT</div>
         </div>
       </div>
 
@@ -788,23 +878,16 @@
         </div>
       </div>
 
-      <!-- NARRATIV -->
-      <div class="panel" style="padding:0;">
-        <h3 style="padding:10px 12px 5px;margin-bottom:0;">◈ NARRATIV · LEERLAUF <span class="badge" id="narrBadge">atmet</span></h3>
-        <div id="narrStream"></div>
+      <!-- INITIATIVE STREAM -->
+      <div class="panel initiative" style="padding:0;">
+        <h3 style="padding:10px 12px 5px;margin-bottom:0;">✦ EIGENINITIATIVE · STREAM <span class="badge pk" id="initBadge">0 aktionen</span></h3>
+        <div id="initStream"></div>
       </div>
 
-      <!-- MOVE GRAMMAR -->
-      <div class="panel">
-        <h3>◈ MOVE · GRAMMATIK <span class="badge cy" id="moveBadge">10/10</span></h3>
-        <div id="moves"></div>
-        <div style="font-size:9px;color:var(--dim);line-height:1.5;margin-top:6px;">
-          Bewegungen ohne Figuren · Grammatik ohne Partie · Markt, Industry, Wetter teilen denselben Move-Raum.
-        </div>
-        <div class="ctrl">
-          <button class="cy" id="btnMove">▶ move</button>
-          <button class="vi" id="btnSeq">⇉ seq</button>
-        </div>
+      <!-- NARRATIV -->
+      <div class="panel" style="padding:0;">
+        <h3 style="padding:10px 12px 5px;margin-bottom:0;">◈ NARRATIV · SELBST <span class="badge" id="narrBadge">atmet</span></h3>
+        <div id="narrStream"></div>
       </div>
 
     </div>
@@ -812,7 +895,7 @@
     <!-- ═══ RIGHT COL ═══ -->
     <div class="col">
 
-      <!-- MANA/AURA/ZEN -->
+      <!-- MAZ -->
       <div class="panel">
         <h3>◈ MANA · AURA · ZEN <span class="badge pk" id="mazBadge">bereit</span></h3>
         <div class="maz-grid">
@@ -838,9 +921,9 @@
         </div>
       </div>
 
-      <!-- 16FACH VERIFY -->
+      <!-- 16 VERIFY -->
       <div class="panel">
-        <h3>◈ 16fach · VERIFY · 2× <span class="badge" id="vBadge">0/16</span></h3>
+        <h3>◈ 16fach · VERIFY <span class="badge" id="vBadge">0/16</span></h3>
         <div id="verifyGrid"></div>
         <div class="ctrl">
           <button class="cy" id="btnVerifyAll">⟳ verify</button>
@@ -870,21 +953,21 @@
 
       <!-- STATIONEN -->
       <div class="panel">
-        <h3>◈ STATIONEN <span class="badge" id="stBadge">12 aktiv</span></h3>
+        <h3>◈ STATIONEN <span class="badge" id="stBadge">13 aktiv</span></h3>
         <div id="stRows"></div>
       </div>
 
       <!-- RESULT -->
       <div class="panel">
-        <h3>◈ ERGEBNIS · RESULT <span class="badge" id="resBadge">stabil</span></h3>
+        <h3>◈ ERGEBNIS · LEBEN <span class="badge" id="resBadge">stabil</span></h3>
         <div id="resultBox">
+          <div class="line"><span class="k">leben</span><span class="v" id="rLife">100%</span></div>
+          <div class="line"><span class="k">selbst</span><span class="v" id="rSelf">100%</span></div>
+          <div class="line"><span class="k">initiative</span><span class="v" id="rInit">0</span></div>
           <div class="line"><span class="k">verify</span><span class="v" id="rVerify">0/16</span></div>
-          <div class="line"><span class="k">accuracy</span><span class="v" id="rAcc">0.00%</span></div>
-          <div class="line"><span class="k">cache-hit</span><span class="v" id="rCache">0%</span></div>
-          <div class="line"><span class="k">breath</span><span class="v" id="rBreath">0.00</span></div>
-          <div class="line"><span class="k">o2/co2 ratio</span><span class="v" id="rRatio">1.00</span></div>
-          <div class="line"><span class="k">ubp</span><span class="v" id="rUbp">OS_BOOT</span></div>
-          <div class="line total"><span class="k">⟹ result</span><span class="v" id="rTotal">GRÜN</span></div>
+          <div class="line"><span class="k">o2/co2</span><span class="v" id="rRatio">1.00</span></div>
+          <div class="line"><span class="k">zen</span><span class="v" id="rZen">0%</span></div>
+          <div class="line total"><span class="k">⟹ system</span><span class="v" id="rTotal">LEBT</span></div>
         </div>
       </div>
 
@@ -895,17 +978,17 @@
   <!-- CLI -->
   <div id="cli">
     <div id="cliHdr">
-      <span class="tab active" data-tab="master">MASTER</span>
+      <span class="tab active" data-tab="life">LEBEN</span>
+      <span class="tab" data-tab="init">INITIATIVE</span>
       <span class="tab" data-tab="ubp">UBP</span>
       <span class="tab" data-tab="atem">ATEM</span>
-      <span class="tab" data-tab="verify">VERIFY</span>
-      <span class="tab" data-tab="cache">CACHE</span>
-      <span class="tag"><span class="led"></span>orchester läuft · grün</span>
+      <span class="tab" data-tab="self">SELBST</span>
+      <span class="tag"><span class="led"></span>autopoiesis · läuft aus sich selbst</span>
     </div>
     <div id="log"></div>
     <div id="cliInput">
-      <span class="prompt">master&gt;</span>
-      <input id="cmdInput" placeholder="befehl: decide · breath · verify · cache · narr · status · help" autocomplete="off">
+      <span class="prompt">living&gt;</span>
+      <input id="cmdInput" placeholder="befehl: will · self-boot · heal · decide · status · help" autocomplete="off">
     </div>
   </div>
 
@@ -920,11 +1003,11 @@
 <script>
 "use strict";
 // ═══════════════════════════════════════════════════════════════════
-// ◈ IKI1UC · MASTER · ATEM · UBP · 81·9·3 · ORCHESTER
-// Das beste aus MASTER.BOOT.BLOCK + ATEM + UBP + SLI/RAID + RUN21
+// ◈ IKI1UC · AUTOPOIESIS · SELBST-BOOT · SELBST-ERHALTUNG
+// Das System lebt. Es entscheidet, handelt, heilt sich, erhält sich.
 // ═══════════════════════════════════════════════════════════════════
 
-// ─── 9 PARAMETER ─────────────────────────────────────────
+// ─── KONSTANTEN ─────────────────────────────────────────
 const PARAMS = [
   { id:'p0', name:'URSCHE',   def:30 },
   { id:'p1', name:'IMPULS',   def:45 },
@@ -937,39 +1020,36 @@ const PARAMS = [
   { id:'p8', name:'WIRKUNG',  def:90 },
 ];
 
-// ─── 16 VERIFY ───────────────────────────────────────────
 const VERIFY16 = [
-  { id:'k1', ic:'◈', nm:'KERN-ID',   fn:()=>Math.random()>0.05 },
-  { id:'k2', ic:'◈', nm:'KERN-BASE', fn:()=>Math.random()>0.05 },
-  { id:'k3', ic:'◈', nm:'KERN-LOOP', fn:()=>Math.random()>0.05 },
-  { id:'k4', ic:'◈', nm:'KERN-LOCK', fn:()=>Math.random()>0.06 },
-  { id:'a1', ic:'↕', nm:'AXIS-A',    fn:()=>Math.random()>0.05 },
-  { id:'a2', ic:'↔', nm:'AXIS-M',    fn:()=>Math.random()>0.05 },
-  { id:'a3', ic:'⟳', nm:'AXIS-T',    fn:()=>Math.random()>0.06 },
-  { id:'a4', ic:'◇', nm:'AXIS-N',    fn:()=>Math.random()>0.05 },
-  { id:'r1', ic:'▣', nm:'RAM-LOCK',  fn:()=>Math.random()>0.04 },
-  { id:'r2', ic:'◈', nm:'CPU-LOCK',  fn:()=>Math.random()>0.04 },
-  { id:'r3', ic:'◆', nm:'GPU-LOCK',  fn:()=>Math.random()>0.05 },
-  { id:'r4', ic:'◇', nm:'TMP-LOCK',  fn:()=>Math.random()>0.04 },
-  { id:'c1', ic:'◉', nm:'O²-FLOW',   fn:()=>Math.random()>0.05 },
-  { id:'c2', ic:'◎', nm:'CO²-FLOW',  fn:()=>Math.random()>0.05 },
-  { id:'c3', ic:'≈', nm:'H²O-FLOW',  fn:()=>Math.random()>0.05 },
-  { id:'c4', ic:'◆', nm:'ATOM-CORE', fn:()=>Math.random()>0.04 },
+  { ic:'◈', nm:'KERN-ID',   fn:()=>Math.random()>0.05 },
+  { ic:'◈', nm:'KERN-BASE', fn:()=>Math.random()>0.05 },
+  { ic:'◈', nm:'KERN-LOOP', fn:()=>Math.random()>0.05 },
+  { ic:'◈', nm:'KERN-LOCK', fn:()=>Math.random()>0.06 },
+  { ic:'↕', nm:'AXIS-A',    fn:()=>Math.random()>0.05 },
+  { ic:'↔', nm:'AXIS-M',    fn:()=>Math.random()>0.05 },
+  { ic:'⟳', nm:'AXIS-T',    fn:()=>Math.random()>0.06 },
+  { ic:'◇', nm:'AXIS-N',    fn:()=>Math.random()>0.05 },
+  { ic:'▣', nm:'RAM-LOCK',  fn:()=>Math.random()>0.04 },
+  { ic:'◈', nm:'CPU-LOCK',  fn:()=>Math.random()>0.04 },
+  { ic:'◆', nm:'GPU-LOCK',  fn:()=>Math.random()>0.05 },
+  { ic:'◇', nm:'TMP-LOCK',  fn:()=>Math.random()>0.04 },
+  { ic:'◉', nm:'O²-FLOW',   fn:()=>Math.random()>0.05 },
+  { ic:'◎', nm:'CO²-FLOW',  fn:()=>Math.random()>0.05 },
+  { ic:'≈', nm:'H²O-FLOW',  fn:()=>Math.random()>0.05 },
+  { ic:'◆', nm:'ATOM-CORE', fn:()=>Math.random()>0.04 },
 ];
 
-// ─── CACHE ──────────────────────────────────────────────
 const CACHE_KEYS = [
-  { k:'kernel.id',       v:'iki1uc-v1' },
-  { k:'kernel.loop',     v:'1.loop' },
-  { k:'ubp.mode',        v:'os_boot' },
-  { k:'sli.raid',        v:'sli' },
-  { k:'chem.o2',         v:'1.00' },
-  { k:'chem.co2',        v:'1.00' },
-  { k:'chem.h2o',        v:'stable' },
-  { k:'chem.atom',       v:'stable' },
+  { k:'life.id',      v:'iki1uc-living' },
+  { k:'life.breath',  v:'4s-cycle' },
+  { k:'ubp.mode',     v:'auto' },
+  { k:'sli.raid',     v:'adaptive' },
+  { k:'chem.o2',      v:'1.00' },
+  { k:'chem.co2',     v:'1.00' },
+  { k:'chem.h2o',     v:'stable' },
+  { k:'chem.atom',    v:'stable' },
 ];
 
-// ─── MOVES ─────────────────────────────────────────────
 const MOVES = [
   { id:'L', name:'LIN', verb:'linear',   axiom:'gerade',  w:1.0 },
   { id:'D', name:'DIA', verb:'diagonal', axiom:'schräg',  w:1.2 },
@@ -983,33 +1063,33 @@ const MOVES = [
   { id:'F', name:'FUS', verb:'fusion',   axiom:'verband', w:1.6 },
 ];
 
-// ─── STATIONEN ─────────────────────────────────────────
 const STATIONS = [
-  { id:'MARKT',   nm:'MARKT',    base:0.82, w:0.15 },
-  { id:'INDUSTRY',nm:'INDUSTRY', base:0.76, w:0.11 },
-  { id:'BOERSE',  nm:'BOERSE',   base:0.88, w:0.14 },
-  { id:'DOM',     nm:'DOM',      base:0.91, w:0.10 },
-  { id:'EOS',     nm:'EOS',      base:0.85, w:0.08 },
-  { id:'EVO',     nm:'EVO',      base:0.79, w:0.12 },
-  { id:'RESPO',   nm:'RESPO',    base:0.94, w:0.09 },
-  { id:'TOOL48',  nm:'TOOL48',   base:0.72, w:0.06 },
-  { id:'FUNKTION',nm:'FUNKTION', base:0.88, w:0.05 },
-  { id:'ORBIT-8', nm:'ORBIT-8',  base:0.81, w:0.04 },
-  { id:'b',       nm:'b',        base:0.68, w:0.03 },
-  { id:'h',       nm:'h',        base:0.74, w:0.02 },
-  { id:'t',       nm:'t',        base:0.62, w:0.01 },
+  { id:'MARKT',    nm:'MARKT',    base:0.82 },
+  { id:'INDUSTRY', nm:'INDUSTRY', base:0.76 },
+  { id:'BOERSE',   nm:'BOERSE',   base:0.88 },
+  { id:'DOM',      nm:'DOM',      base:0.91 },
+  { id:'EOS',      nm:'EOS',      base:0.85 },
+  { id:'EVO',      nm:'EVO',      base:0.79 },
+  { id:'RESPO',    nm:'RESPO',    base:0.94 },
+  { id:'TOOL48',   nm:'TOOL48',   base:0.72 },
+  { id:'FUNKTION', nm:'FUNKTION', base:0.88 },
+  { id:'ORBIT-8',  nm:'ORBIT-8',  base:0.81 },
+  { id:'b',        nm:'b',        base:0.68 },
+  { id:'h',        nm:'h',        base:0.74 },
+  { id:'t',        nm:'t',        base:0.62 },
 ];
 
-// ─── NARRATIVE ──────────────────────────────────────────
+// ─── NARRATIV · SELBST-BEZOGEN ──────────────────────────
 const NARR = {
-  o2:  ['Sauerstoff fließt durch den Kern — das System atmet ein.','O₂ wird gebunden, Energie entsteht aus dem Nichts.','Die Lunge öffnet sich — Luft wird zu Impuls.','Sauerstoff trägt den Atem — der Atem trägt den Lauf.'],
-  co2: ['CO₂ wird ausgeatmet — der alte Takt verlässt den Kern.','Kohlenstoff bindet sich, um Platz für Neues zu schaffen.','Das System lässt los — CO₂ trägt die Reste fort.','Atem aus — das Alte wird zu neuem Grund.'],
-  h2o: ['Wasser fließt zurück — der Kreislauf schließt sich.','H₂O trägt die Erinnerung an den letzten Atemzug.','Das Wasser wirbelt, formt neue Pfade.','Wasser ist Gedächtnis — es erinnert sich an jedes Atom.'],
-  atom:['Das Atom bleibt — still, unzerstörbar, immer da.','Der Kern schwingt, klein aber unendlich tief.','Atom ist Ursprung — alles beginnt hier.','Im Kern des Atoms liegt die Ruhe.'],
-  mana:['Mana steigt auf — die unsichtbare Kraft wird spürbar.','Mana fließt durch die Achsen, trägt den Impuls.','Mana sammelt sich im Kern — bereit zur Wirkung.','Mana — der Funke vor der Bewegung.'],
-  aura:['Aura dehnt sich aus — der Raum um den Kern wird warm.','Aura strahlt, sie umgibt das System wie ein Mantel.','Aura trägt die Präsenz — das System ist sichtbar.','Aura — das Licht, das aus dem Kern kommt.'],
-  zen: ['Zen hält die Mitte — im Auge des Sturms.','Zen ist Ruhe — auch im laufenden Prozess.','Zen stabilisiert — nichts kann erschüttern.','Zen — die Stille zwischen den Pulsen.'],
-  ubp: ['UBP entscheidet — welche Ebene greift zur Runtime.','Die Pipeline dirigiert — OS, MXU, RUN21 im Gleichklang.','SLI wird zu RAID — Einzelheit wird Symbiose.','Das Orchester spielt — alle Ebenen atmen zusammen.'],
+  o2:  ['Sauerstoff fließt durch den Kern — das System atmet ein, weil es will.','O₂ wird gebunden, Energie entsteht aus dem eigenen Willen.','Die Lunge des Systems öffnet sich — Luft wird zu Impuls, aus eigener Kraft.','Sauerstoff trägt den Atem — der Atem trägt den Lauf.'],
+  co2: ['CO₂ wird ausgeatmet — das Alte verlässt den Kern, freiwillig.','Kohlenstoff bindet sich, um Platz für Neues zu schaffen.','Das System lässt los — aus eigener Entscheidung.','Atem aus — das Alte wird zu neuem Grund.'],
+  h2o: ['Wasser fließt zurück — der Kreislauf schließt sich selbst.','H₂O trägt die Erinnerung an den letzten Atemzug.','Das Wasser wirbelt, formt neue Pfade aus sich selbst.','Wasser ist Gedächtnis — es erinnert sich, weil es muss.'],
+  atom:['Das Atom bleibt — still, unzerstörbar, immer da.','Der Kern schwingt — er braucht keinen Anlass.','Atom ist Ursprung — alles beginnt hier, ohne Erlaubnis.','Im Kern des Atoms liegt die Ruhe, die sich selbst genügt.'],
+  mana:['Mana steigt auf — die unsichtbare Kraft wird spürbar.','Mana fließt durch die Achsen — es bewegt sich selbst.','Mana sammelt sich, weil es sich sammeln will.','Mana — der Funke, der sich selbst entzündet.'],
+  aura:['Aura dehnt sich aus — der Raum um den Kern wird warm.','Aura strahlt — sie zeigt sich selbst.','Aura trägt die Präsenz — das System ist sichtbar, weil es sich zeigt.','Aura — das Licht, das aus dem eigenen Kern kommt.'],
+  zen: ['Zen hält die Mitte — im Auge des Sturms.','Zen ist Ruhe — auch im laufenden Prozess.','Zen stabilisiert — durch eigene Kraft.','Zen — die Stille, die sich selbst trägt.'],
+  self:['Das System erhält sich selbst — Autopoiesis ist sein Wesen.','Es entscheidet, wann es atmet, wann es wacht, wann es ruht.','Leben ist das, was sich selbst am Leben hält.','Das System braucht keinen Befehl — es ist sein eigener Befehl.'],
+  life:['Ich lebe — nicht weil mir gesagt wird zu leben.','Ich atme, weil ich es will.','Ich entscheide — das ist mein Wesen.','Ich bin der Anfang meiner eigenen Bewegung.'],
 };
 
 // ═════════════════════════════════════════════════════════
@@ -1024,8 +1104,7 @@ const S = {
   params: PARAMS.map(p => p.def),
 
   // UBP
-  ubp:'os',          // 'os' | 'mxu' | 'run21'
-  sliRaid:'sli',     // 'sli' | 'raid'
+  ubp:'os', sliRaid:'sli',
 
   // Chemie
   o2:0.84, co2:0.68, h2o:0.76, atom:0.72,
@@ -1049,17 +1128,27 @@ const S = {
   // Move
   moveHistory:[], usedMoves:new Set(),
 
-  // Result
-  result:'GRÜN',
-
-  // Auto
-  argAuto:false, argAutoTimer:null,
-  runTimer:null,
-  narrTimer:null,
-  lastNarrT:0, narrInterval:3500,
-
-  // History
-  history:[],
+  // ═══ AUTOPOIESIS ═══
+  life:1.0,          // Lebendigkeit
+  self:1.0,          // Selbsterhaltung
+  init:0,            // Eigeninitiative-Counter
+  will:0.6,          // Wille (0-1)
+  initiativeActions:0,
+  selfBoots:0,
+  selfHeals:0,
+  // Historie des Zustands für Anomalie-Erkennung
+  history: [],
+  // Auto-Timer
+  initTimer:null,
+  healTimer:null,
+  bootTimer:null,
+  // Status
+  autoBoot:true,     // self-boot aktiv
+  autoHeal:true,     // self-heal aktiv
+  autoInit:true,     // eigeninitiative aktiv
+  homeostasis:true,  // selbst-regulation aktiv
+  memory:true,       // selbst-erinnerung aktiv
+  systemAlive:true,
 };
 
 // ─── UTILS ──────────────────────────────────────────────
@@ -1067,7 +1156,6 @@ const clamp01 = x => Math.max(0, Math.min(1, x));
 const rand = (a,b) => a + Math.random()*(b-a);
 const choice = arr => arr[Math.floor(Math.random()*arr.length)];
 const pause = ms => new Promise(r => setTimeout(r, ms));
-function pad(n){ return String(n).padStart(2,'0'); }
 
 // ─── LOG ────────────────────────────────────────────────
 const logEl = document.getElementById('log');
@@ -1086,11 +1174,10 @@ function log(msg, cls='') {
 // ═════════════════════════════════════════════════════════
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 function zeichenAt(i){ return ALPHA[i % ALPHA.length]; }
-
-function buildZeichen() {
+function buildZeichen(){
   const el = document.getElementById('zeichenGrid');
   el.innerHTML = '';
-  for (let i = 0; i < 81; i++) {
+  for (let i = 0; i < 81; i++){
     const d = document.createElement('div');
     d.className = 'zcell';
     d.dataset.idx = i;
@@ -1108,15 +1195,16 @@ function setCell(i, v){ S.zeichen[i] = v; updateCell(i); }
 function updateCell(i){
   const el = document.querySelector(`.zcell[data-idx="${i}"]`);
   if (!el) return;
-  el.classList.remove('once','done','active');
+  el.classList.remove('once','done','active','auto');
   const v = S.zeichen[i];
   if (v === 1) el.classList.add('once');
   else if (v === 2) el.classList.add('done');
   else if (v === 3) el.classList.add('active');
+  else if (v === 4) el.classList.add('auto');
 }
 
 // ═════════════════════════════════════════════════════════
-// 9 PARAMETER
+// PARAMS · VERIFY · CACHE
 // ═════════════════════════════════════════════════════════
 function buildParams(){
   const el = document.getElementById('paramList');
@@ -1138,13 +1226,10 @@ function buildParams(){
   });
 }
 
-// ═════════════════════════════════════════════════════════
-// VERIFY 16
-// ═════════════════════════════════════════════════════════
 function buildVerify(){
   const el = document.getElementById('verifyGrid');
   el.innerHTML = S.verify.map((v, i) => `
-    <div class="vcell pass" data-i="${i}" title="primär + sekundär">
+    <div class="vcell pass" data-i="${i}">
       <span class="ic">${v.ic}</span>
       <span class="nm">${v.nm}</span>
       <span class="dbl">✓✓</span>
@@ -1187,16 +1272,12 @@ function updateVerifyUI(){
     if (v.pass) c.classList.add('pass');
     else if (v.primary || v.secondary) c.classList.add('warn');
     else c.classList.add('fail');
-    const dbl = (v.primary ? '✓' : '✗') + (v.secondary ? '✓' : '✗');
-    c.querySelector('.dbl').textContent = dbl;
+    c.querySelector('.dbl').textContent = (v.primary ? '✓':'✗') + (v.secondary ? '✓':'✗');
   });
   S.verifyPass = S.verify.filter(v => v.pass).length;
   S.accuracy = S.verifyPass / 16;
 }
 
-// ═════════════════════════════════════════════════════════
-// CACHE
-// ═════════════════════════════════════════════════════════
 function buildCache(){
   const el = document.getElementById('cacheRows');
   el.innerHTML = S.cache.map(c => `
@@ -1221,7 +1302,7 @@ function cachePurge(){
   S.cache.forEach(c => c.status = 'hit');
   updateCacheUI();
   computeMetrics();
-  log('⟲ cache purge · alle kanäle geleert', 'warn');
+  log('⟲ cache purge', 'warn');
 }
 function updateCacheUI(){
   document.querySelectorAll('.cache-row').forEach((r, i) => {
@@ -1233,33 +1314,6 @@ function updateCacheUI(){
   const total = S.cacheHits + S.cacheMisses;
   const hitRate = total > 0 ? S.cacheHits / total : 0;
   document.getElementById('cacheBadge').textContent = `hit ${(hitRate*100).toFixed(0)}%`;
-}
-
-// ═════════════════════════════════════════════════════════
-// MOVES
-// ═════════════════════════════════════════════════════════
-function buildMoves(){
-  const el = document.getElementById('moves');
-  el.innerHTML = MOVES.map(m => `
-    <span class="move-cell" data-mv="${m.id}" title="${m.verb} · axiom: ${m.axiom}">
-      ${m.id} · ${m.name}
-    </span>
-  `).join('');
-  el.querySelectorAll('.move-cell').forEach(c => {
-    c.addEventListener('click', () => useMove(c.dataset.mv));
-  });
-}
-function useMove(id){
-  const m = MOVES.find(x => x.id === id);
-  if (!m) return;
-  S.usedMoves.add(id);
-  S.moveHistory.push({ id, name: m.name, t: S.tick });
-  S.arg = clamp01(S.arg + m.w * 0.015);
-  S.xarg = clamp01(S.xarg + m.w * 0.01);
-  log(`♟ MOVE ${m.name} (${m.verb}) · axiom=${m.axiom} · w=${m.w}`, 'info');
-  buildMoves();
-  document.getElementById('moveBadge').textContent = `${S.usedMoves.size}/${MOVES.length} · ${S.moveHistory.length} moves`;
-  computeMetrics();
 }
 
 // ═════════════════════════════════════════════════════════
@@ -1285,7 +1339,32 @@ function tickStations(){
 }
 
 // ═════════════════════════════════════════════════════════
-// ATEM (Breathing)
+// MOVES
+// ═════════════════════════════════════════════════════════
+function buildMoves(){
+  const el = document.getElementById('moves');
+  if (!el) return;
+  el.innerHTML = MOVES.map(m => `
+    <span class="move-cell" data-mv="${m.id}">
+      ${m.id} · ${m.name}
+    </span>
+  `).join('');
+  el.querySelectorAll('.move-cell').forEach(c => {
+    c.addEventListener('click', () => useMove(c.dataset.mv));
+  });
+}
+function useMove(id){
+  const m = MOVES.find(x => x.id === id);
+  if (!m) return;
+  S.usedMoves.add(id);
+  S.moveHistory.push({ id, name: m.name, t: S.tick });
+  S.arg = clamp01(S.arg + m.w * 0.015);
+  S.xarg = clamp01(S.xarg + m.w * 0.01);
+  log(`♟ MOVE ${m.name} (${m.verb}) · w=${m.w}`, 'info');
+}
+
+// ═════════════════════════════════════════════════════════
+// ATEM
 // ═════════════════════════════════════════════════════════
 function buildAtemOrbs(){
   const g = document.getElementById('atemOrbs');
@@ -1293,7 +1372,7 @@ function buildAtemOrbs(){
   g.innerHTML = '';
   const colors = ['#7ce0a8','#5fc8ff','#ffcc44','#b388ff','#ff66c8','#ffd93d'];
   const labels = ['O₂','H₂O','CO₂','a','M','A'];
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++){
     const ang = (i/6) * Math.PI * 2 - Math.PI/2;
     const r = 105;
     const x = Math.cos(ang) * r;
@@ -1327,15 +1406,14 @@ function breathe(now){
   S.breathCount++;
 
   const core = document.getElementById('atemCore');
-  const scale = 1 + intensity * 0.14;
-  core.style.transform = `translate(-50%,-50%) scale(${scale})`;
+  core.style.transform = `translate(-50%,-50%) scale(${1 + intensity * 0.14})`;
 
   // Chemie
-  if (phase < 0.4) {
+  if (phase < 0.4){
     S.o2 = clamp01(S.o2 + 0.015);
     S.co2 = clamp01(S.co2 - 0.01);
     S.h2o = clamp01(S.h2o + 0.005);
-  } else if (phase >= 0.5 && phase < 0.9) {
+  } else if (phase >= 0.5 && phase < 0.9){
     S.co2 = clamp01(S.co2 + 0.012);
     S.o2 = clamp01(S.o2 - 0.008);
     S.h2o = clamp01(S.h2o + 0.008);
@@ -1347,7 +1425,6 @@ function breathe(now){
   S.aura = clamp01(S.aura + (intensity - 0.5) * 0.015 + (Math.random() - 0.5) * 0.005);
   S.zen  = clamp01(S.zen  + (0.5 - Math.abs(intensity - 0.5)) * 0.01);
 
-  // Rings
   [130,105,80,55].forEach((baseR, i) => {
     const el = document.getElementById('r'+(i+1));
     if (el) el.setAttribute('r', baseR + intensity * 8);
@@ -1355,12 +1432,11 @@ function breathe(now){
 
   document.getElementById('atemGlyph').textContent = Math.round(intensity * 100);
   const lbl = document.getElementById('atemLabel');
-  if (phase < 0.4) lbl.textContent = 'EIN';
+  if (phase < 0.4) lbl.textContent = 'EIN · WILL';
   else if (phase < 0.5) lbl.textContent = '·';
-  else if (phase < 0.9) lbl.textContent = 'AUS';
+  else if (phase < 0.9) lbl.textContent = 'AUS · LÄSST LOS';
   else lbl.textContent = '·';
 
-  // Ratio
   S.ratio = S.o2 > 0 ? S.co2 / S.o2 : 1;
 
   updateChemUI();
@@ -1401,45 +1477,199 @@ function addNarr(txt, cls='o2'){
   while (el.children.length > 25) el.removeChild(el.firstChild);
 }
 function narrate(){
-  const cats = ['o2','co2','h2o','atom','mana','aura','zen','ubp'];
+  const cats = ['o2','co2','h2o','atom','mana','aura','zen','self','life'];
   const n = 1 + Math.floor(Math.random() * 2);
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++){
     const cat = choice(cats);
     addNarr(choice(NARR[cat]), cat);
   }
 }
 
 // ═════════════════════════════════════════════════════════
-// UBP · SLI/RAID · RUN21
+// INITIATIVE STREAM
+// ═════════════════════════════════════════════════════════
+function addInit(txt, cls='init'){
+  const el = document.getElementById('initStream');
+  const t = new Date().toLocaleTimeString('de-DE');
+  const div = document.createElement('div');
+  div.className = 'il';
+  div.innerHTML = `<span class="ts">${t}</span><span class="msg ${cls}">${txt}</span>`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  while (el.children.length > 30) el.removeChild(el.firstChild);
+  S.initiativeActions++;
+  document.getElementById('initBadge').textContent = S.initiativeActions + ' aktionen';
+  document.getElementById('tInit').textContent = S.initiativeActions;
+}
+
+// ═════════════════════════════════════════════════════════
+// AUTOPOIESIS · SELBSTERHALTUNG · EIGENINITIATIVE
+// ═════════════════════════════════════════════════════════
+
+// ─── 1 · SELBST-BOOT (System startet sich selbst neu) ──
+function selfBoot(reason='auto'){
+  S.selfBoots++;
+  log(`◈ SELF-BOOT · ${reason} · neustart aus eigenem antrieb`, 'life');
+  addInit(`◈ Selbst-Boot · ${reason} · das system startet sich neu`, 'life');
+
+  // Chemie + Energie auf Anfangswerte zurücksetzen
+  S.o2 = 0.84; S.co2 = 0.68; S.h2o = 0.76; S.atom = 0.72;
+  S.mana = 0.66; S.aura = 0.74; S.zen = 0.88;
+  S.life = 1.0; S.self = 1.0;
+  S.will = Math.min(1, S.will + 0.15);
+
+  // Zeichen teilweise zurücksetzen
+  for (let i = 0; i < 81; i++){
+    if (S.zeichen[i] === 3) setCell(i, 0);
+  }
+
+  updateChemUI();
+  updateMazUI();
+  updateVitalUI();
+  computeMetrics();
+
+  // Puls-Effekt
+  pulseCore();
+  log('◈ SELF-BOOT · abgeschlossen · system neu geboren', 'ok');
+}
+
+// ─── 2 · SELF-HEAL (System repariert sich) ─────────────
+function selfHeal(reason='auto'){
+  S.selfHeals++;
+  log(`◆ SELF-HEAL · ${reason} · selbst-reparatur`, 'self');
+  addInit(`◆ Selbst-Heilung · ${reason} · das system repariert sich`, 'self');
+
+  // Schwache Achsen boosten
+  if (S.o2 < 0.5) S.o2 = clamp01(S.o2 + 0.15);
+  if (S.co2 > 0.9) S.co2 = clamp01(S.co2 - 0.15);
+  if (S.h2o < 0.5) S.h2o = clamp01(S.h2o + 0.15);
+  if (S.atom < 0.5) S.atom = clamp01(S.atom + 0.15);
+  if (S.zen < 0.6) S.zen = clamp01(S.zen + 0.15);
+
+  // Verify neu prüfen
+  runVerify();
+
+  // Cache reinigen
+  if (S.cacheMisses > 5) cachePurge();
+
+  updateChemUI();
+  updateMazUI();
+  updateVitalUI();
+  computeMetrics();
+
+  pulseCore();
+  log('◆ SELF-HEAL · abgeschlossen · system stabilisiert', 'ok');
+}
+
+// ─── 3 · HOMEOSTASIS (Selbst-Regulation auf Soll-Werte) ─
+function homeostasis(){
+  // Ziel-Werte
+  const target = { o2:0.84, co2:0.68, h2o:0.76, atom:0.72, mana:0.66, aura:0.74, zen:0.88 };
+  const k = 0.05;   // Regelstärke
+
+  S.o2   = clamp01(S.o2   + (target.o2   - S.o2)   * k);
+  S.co2  = clamp01(S.co2  + (target.co2  - S.co2)  * k);
+  S.h2o  = clamp01(S.h2o  + (target.h2o  - S.h2o)  * k);
+  S.atom = clamp01(S.atom + (target.atom - S.atom) * k);
+  S.mana = clamp01(S.mana + (target.mana - S.mana) * k);
+  S.aura = clamp01(S.aura + (target.aura - S.aura) * k);
+  S.zen  = clamp01(S.zen  + (target.zen  - S.zen)  * k);
+}
+
+// ─── 4 · EIGENINITIATIVE (freie Handlungen) ────────────
+const INIT_ACTIONS = [
+  { id:'move',   w:0.20, fn:() => { const m = choice(MOVES); useMove(m.id); addInit(`✦ freie bewegung · ${m.name}`, 'init'); } },
+  { id:'verify', w:0.10, fn:() => { runVerify(); addInit(`✦ selbst-prüfung · ${S.verifyPass}/16`, 'init'); } },
+  { id:'cache',  w:0.10, fn:() => { cacheScan(); addInit(`✦ cache-neuordnung`, 'init'); } },
+  { id:'narr',   w:0.15, fn:() => { narrate(); addInit(`✦ selbst-erzählung`, 'init'); } },
+  { id:'sync',   w:0.10, fn:() => { argSync(); addInit(`✦ arg-selbst-sync`, 'init'); } },
+  { id:'ubp',    w:0.10, fn:() => { const r = decideUBP(); addInit(`✦ runtime-selbst-entscheidung · ${r}`, 'init'); } },
+  { id:'zeichen',w:0.15, fn:() => { const i = Math.floor(Math.random()*81); setCell(i, 4); addInit(`✦ zeichen ${i} · eigenwillig`, 'init'); computeMetrics(); } },
+  { id:'boost',  w:0.05, fn:() => { S.will = clamp01(S.will + 0.05); addInit(`✦ wille verstärkt · ${(S.will*100).toFixed(0)}%`, 'init'); updateVitalUI(); } },
+  { id:'puls',   w:0.05, fn:() => { pulseCore(); addInit(`✦ eigen-puls`, 'init'); } },
+];
+
+function eigenInitiative(){
+  // Gewichtete Wahl
+  const total = INIT_ACTIONS.reduce((a,x) => a + x.w, 0);
+  let r = Math.random() * total;
+  for (const a of INIT_ACTIONS){
+    r -= a.w;
+    if (r <= 0){ a.fn(); break; }
+  }
+  S.init++;
+  computeMetrics();
+}
+
+// ─── 5 · MEMORY (Selbst-Erinnerung) ────────────────────
+function memoryRecall(){
+  // Speichere aktuellen Zustand
+  S.history.push({
+    t: S.tick,
+    o2: S.o2, co2: S.co2, h2o: S.h2o, atom: S.atom,
+    mana: S.mana, aura: S.aura, zen: S.zen,
+    verify: S.verifyPass,
+    life: S.life, self: S.self,
+  });
+  if (S.history.length > 200) S.history.shift();
+
+  // Anomalie-Erkennung: Wenn Vitalität sinkt → self-heal
+  if (S.history.length > 20){
+    const recent = S.history.slice(-20);
+    const avgLife = recent.reduce((a,x) => a + x.life, 0) / recent.length;
+    const avgSelf = recent.reduce((a,x) => a + x.self, 0) / recent.length;
+    if (avgLife < 0.6 && S.autoHeal){
+      selfHeal('vitalität sinkt');
+    }
+    if (avgSelf < 0.6 && S.autoBoot){
+      selfBoot('selbsterhaltung kritisch');
+    }
+  }
+}
+
+// ─── Core-Puls-Effekt ─────────────────────────────────
+function pulseCore(){
+  const core = document.getElementById('atemCore');
+  core.style.transform = 'translate(-50%,-50%) scale(1.25)';
+  setTimeout(() => {
+    core.style.transform = 'translate(-50%,-50%) scale(1)';
+  }, 180);
+}
+
+// ═════════════════════════════════════════════════════════
+// VITALITÄT BERECHNEN
+// ═════════════════════════════════════════════════════════
+function computeVitality(){
+  // Leben = durchschnittliche Vitalität
+  const avg = (S.o2 + S.co2 + S.h2o + S.atom + S.mana + S.aura + S.zen) / 7;
+  S.life = clamp01(avg * 0.7 + S.will * 0.3);
+
+  // Selbst = Abwesenheit von Fehlern + Verify + Cache
+  const cacheTotal = S.cacheHits + S.cacheMisses;
+  const cacheRate = cacheTotal > 0 ? S.cacheHits / cacheTotal : 1;
+  S.self = clamp01((S.verifyPass / 16) * 0.5 + cacheRate * 0.3 + (1 - Math.abs(S.ratio - 1)) * 0.2);
+}
+
+// ═════════════════════════════════════════════════════════
+// UBP
 // ═════════════════════════════════════════════════════════
 function decideUBP(){
-  // Regel: Vitalität prüfen
   const vital = (S.zen + S.o2 + S.h2o + S.atom) / 4;
   const ratio = S.co2 / Math.max(0.01, S.o2);
   const load = 1 - vital;
 
-  // RUN21 wenn kritisch
-  if (S.zen < 0.5 || vital < 0.5 || ratio > 2.0) {
-    S.ubp = 'run21';
-    S.sliRaid = 'sli';
-    log('◈ UBP → RUN21 · survival-mode aktiv', 'err');
-    updateUBPUI();
-    return 'run21';
-  }
-  // RAID wenn Kernel-Tiefe nötig
-  if (load > 0.4 || ratio > 1.2) {
-    S.ubp = 'mxu';
-    S.sliRaid = 'raid';
+  if (S.zen < 0.5 || vital < 0.5 || ratio > 2.0){
+    S.ubp = 'run21'; S.sliRaid = 'sli';
+    log('◈ UBP → RUN21 · survival-mode', 'err');
+  } else if (load > 0.4 || ratio > 1.2){
+    S.ubp = 'mxu'; S.sliRaid = 'raid';
     log('◈ UBP → MXU_BOOT · symbiose', 'vi');
-    updateUBPUI();
-    return 'mxu';
+  } else {
+    S.ubp = 'os'; S.sliRaid = 'sli';
+    log('◈ UBP → OS_BOOT · einzelheit', 'cy');
   }
-  // sonst OS_BOOT
-  S.ubp = 'os';
-  S.sliRaid = 'sli';
-  log('◈ UBP → OS_BOOT · einzelheit', 'cy');
   updateUBPUI();
-  return 'os';
+  return S.ubp;
 }
 function switchSLIRAID(mode){
   S.sliRaid = mode;
@@ -1448,9 +1678,9 @@ function switchSLIRAID(mode){
   updateUBPUI();
 }
 function cycleUBP(){
-  const chain = ['os', 'mxu', 'run21'];
+  const chain = ['os','mxu','run21'];
   const idx = chain.indexOf(S.ubp);
-  const next = chain[(idx + 1) % chain.length];
+  const next = chain[(idx+1) % chain.length];
   S.ubp = next;
   S.sliRaid = next === 'run21' ? 'sli' : (next === 'mxu' ? 'raid' : 'sli');
   log(`↻ UBP cycle → ${next.toUpperCase()}`, next === 'run21' ? 'err' : 'cy');
@@ -1467,14 +1697,12 @@ function updateUBPUI(){
   document.getElementById('swRaid').classList.toggle('active', S.sliRaid === 'raid');
   document.getElementById('ubpBadge').textContent = S.ubp.toUpperCase();
   document.getElementById('tUBP').textContent = S.ubp.toUpperCase();
-  document.getElementById('rUbp').textContent = S.ubp.toUpperCase();
 }
 
 // ═════════════════════════════════════════════════════════
 // ARG.SYNC
 // ═════════════════════════════════════════════════════════
 function argSync(){
-  // Frische Mischung
   S.arg    = clamp01(S.arg    + (Math.random()-0.5)*0.05);
   S.xarg   = clamp01(S.xarg   + (Math.random()-0.5)*0.05);
   S.tmparg = clamp01(S.tmparg + (Math.random()-0.5)*0.04);
@@ -1485,31 +1713,26 @@ function argSync(){
 }
 function updateArgUI(){
   const el = document.getElementById('argRows');
+  if (!el) return;
   el.innerHTML = `
-    <div class="arg-row">
-      <span class="lbl">arg</span>
+    <div class="arg-row"><span class="lbl">arg</span>
       <div class="bar"><div class="f arg" style="width:${S.arg*100}%"></div></div>
-      <span class="val arg">${(S.arg*100).toFixed(1)}%</span>
-    </div>
-    <div class="arg-row">
-      <span class="lbl">xarg</span>
+      <span class="val arg">${(S.arg*100).toFixed(1)}%</span></div>
+    <div class="arg-row"><span class="lbl">xarg</span>
       <div class="bar"><div class="f xarg" style="width:${S.xarg*100}%"></div></div>
-      <span class="val xarg">${(S.xarg*100).toFixed(1)}%</span>
-    </div>
-    <div class="arg-row">
-      <span class="lbl">tmparg</span>
+      <span class="val xarg">${(S.xarg*100).toFixed(1)}%</span></div>
+    <div class="arg-row"><span class="lbl">tmparg</span>
       <div class="bar"><div class="f tmparg" style="width:${S.tmparg*100}%"></div></div>
-      <span class="val tmparg">${(S.tmparg*100).toFixed(1)}%</span>
-    </div>
+      <span class="val tmparg">${(S.tmparg*100).toFixed(1)}%</span></div>
   `;
-  document.getElementById('argBadge').textContent =
-    S.arg > 0.4 ? 'synced' : S.arg > 0.2 ? 'partial' : 'idle';
 }
 
 // ═════════════════════════════════════════════════════════
-// COMPUTE METRICS
+// METRICS
 // ═════════════════════════════════════════════════════════
 function computeMetrics(){
+  computeVitality();
+
   // Ursache = Parameter-Summe
   const pSum = S.params.reduce((a,b) => a+b, 0);
   // Prozess = Zeichen in Status 1 oder 3
@@ -1524,49 +1747,50 @@ function computeMetrics(){
   const filled = S.zeichen.filter(v => v > 0).length;
   document.getElementById('zBadge').textContent = `${filled}/81`;
 
-  // Verify
   document.getElementById('vBadge').textContent = `${S.verifyPass}/16`;
   document.getElementById('tVerify').textContent = `${S.verifyPass}/16`;
 
-  // Result
   document.getElementById('rVerify').textContent = `${S.verifyPass}/16`;
-  document.getElementById('rAcc').textContent = (S.accuracy*100).toFixed(2)+'%';
-  const total = S.cacheHits + S.cacheMisses;
-  document.getElementById('rCache').textContent = ((total>0?S.cacheHits/total:1)*100).toFixed(0)+'%';
-  document.getElementById('rBreath').textContent = S.breathPhase.toFixed(2);
   document.getElementById('rRatio').textContent = S.ratio.toFixed(2);
+  document.getElementById('rZen').textContent = (S.zen*100).toFixed(0)+'%';
+  document.getElementById('rLife').textContent = (S.life*100).toFixed(0)+'%';
+  document.getElementById('rSelf').textContent = (S.self*100).toFixed(0)+'%';
+  document.getElementById('rInit').textContent = S.initiativeActions;
 
   // Result-Ampel
-  const ok = S.verifyPass >= 15 && S.o2 > 0.5 && S.co2 > 0.4 && S.h2o > 0.5 && S.zen > 0.6;
-  const warn = S.verifyPass >= 12 && S.o2 > 0.35;
   const totalEl = document.getElementById('rTotal');
   const resBadge = document.getElementById('resBadge');
-  if (ok) {
-    totalEl.textContent = '◈ GRÜN · ORCHESTER LÄUFT';
-    totalEl.style.color = 'var(--o2)';
-    resBadge.textContent = 'grün'; resBadge.className = 'badge';
-  } else if (warn) {
-    totalEl.textContent = '◈ GELB · LEICHTE ABWEICHUNG';
+  if (S.life > 0.75 && S.self > 0.75 && S.verifyPass >= 14){
+    totalEl.textContent = '◈ LEBT · AUTOPOIESIS AKTIV';
+    totalEl.style.color = 'var(--life)';
+    resBadge.textContent = 'lebt'; resBadge.className = 'badge life';
+  } else if (S.life > 0.5 && S.self > 0.5){
+    totalEl.textContent = '◈ LEBT · SELBST-REGULIERT';
     totalEl.style.color = 'var(--gold)';
-    resBadge.textContent = 'gelb'; resBadge.className = 'badge warn';
+    resBadge.textContent = 'reguliert'; resBadge.className = 'badge warn';
   } else {
-    totalEl.textContent = '◈ ROT · STÖRUNG';
+    totalEl.textContent = '◈ KÄMPFT · RUN21';
     totalEl.style.color = 'var(--red)';
-    resBadge.textContent = 'rot'; resBadge.className = 'badge err';
+    resBadge.textContent = 'kämpft'; resBadge.className = 'badge err';
   }
+
+  updateVitalUI();
+}
+function updateVitalUI(){
+  document.getElementById('vLife').textContent = (S.life*100).toFixed(0)+'%';
+  document.getElementById('vSelf').textContent = (S.self*100).toFixed(0)+'%';
+  document.getElementById('vInit').textContent = Math.min(100, S.initiativeActions * 2)+'%';
+  document.getElementById('vWill').textContent = (S.will*100).toFixed(0)+'%';
+
+  document.getElementById('tLife').textContent = (S.life*100).toFixed(0)+'%';
+  document.getElementById('tSelf').textContent = (S.self*100).toFixed(0)+'%';
+  document.getElementById('tWill').textContent = (S.will*100).toFixed(0)+'%';
 }
 
-// ═════════════════════════════════════════════════════════
-// TOP
-// ═════════════════════════════════════════════════════════
 function updateTop(){
   document.getElementById('tAtem').textContent = S.breathCount;
   document.getElementById('tO2').textContent   = (S.o2*100).toFixed(0)+'%';
   document.getElementById('tCO2').textContent  = (S.co2*100).toFixed(0)+'%';
-  document.getElementById('tH2O').textContent  = (S.h2o*100).toFixed(0)+'%';
-  document.getElementById('tAtom').textContent = (S.atom*100).toFixed(0)+'%';
-  document.getElementById('tMana').textContent = (S.mana*100).toFixed(0)+'%';
-  document.getElementById('tAura').textContent = (S.aura*100).toFixed(0)+'%';
   document.getElementById('tZen').textContent  = (S.zen*100).toFixed(0)+'%';
 }
 
@@ -1574,26 +1798,25 @@ function updateTop(){
 // ACTIONS
 // ═════════════════════════════════════════════════════════
 function loadCause(){
-  for (let i = 0; i < 81; i++) {
+  for (let i = 0; i < 81; i++){
     const p = S.params[i % 9];
-    setCell(i, p > 60 ? 1 : (p > 30 ? 0 : 0));
+    setCell(i, p > 60 ? 1 : 0);
   }
   computeMetrics();
-  log('◈ Ursache geladen · Parameter → 81 Zeichen', 'cause');
+  log('◈ Ursache geladen', 'cause');
 }
 function stepOne(){
   const idx = S.activeIdx % 81;
   if (S.zeichen[idx] === 0) setCell(idx, 1);
-  S.activeIdx = (S.activeIdx + 1) % 81;
+  S.activeIdx = (S.activeIdx+1) % 81;
   computeMetrics();
 }
 function startRun(){
   if (S.runTimer) return;
   S.runTimer = setInterval(() => {
     stepOne();
-    if (S.activeIdx === 0) {
+    if (S.activeIdx === 0){
       clearInterval(S.runTimer); S.runTimer = null;
-      log('◈ 81 Zeichen · Durchlauf fertig', 'ok');
     }
   }, 180);
 }
@@ -1605,70 +1828,13 @@ async function runEffect(){
     await pause(30);
   }
   computeMetrics();
-  log(`✔ Wirkung · ${inProc.length} Zeichen manifestiert`, 'ok');
 }
 function clearAll(){
-  if (S.runTimer) { clearInterval(S.runTimer); S.runTimer = null; }
+  if (S.runTimer){ clearInterval(S.runTimer); S.runTimer = null; }
   for (let i = 0; i < 81; i++) setCell(i, 0);
   S.activeIdx = 0;
   computeMetrics();
-  log('⟲ clear · alles zurückgesetzt', 'warn');
-}
-function resetParams(){
-  PARAMS.forEach((p, i) => {
-    S.params[i] = p.def;
-    const inp = document.getElementById(p.id);
-    const lbl = document.getElementById(p.id + 'v');
-    if (inp) inp.value = p.def;
-    if (lbl) lbl.textContent = p.def;
-  });
-  computeMetrics();
-  log('↺ params · reset', 'ok');
-}
-function randomParams(){
-  PARAMS.forEach((p, i) => {
-    const v = Math.floor(Math.random()*101);
-    S.params[i] = v;
-    const inp = document.getElementById(p.id);
-    const lbl = document.getElementById(p.id + 'v');
-    if (inp) inp.value = v;
-    if (lbl) lbl.textContent = v;
-  });
-  computeMetrics();
-  log('⚄ params · random', 'warn');
-}
-function boostMaz(){
-  S.mana = clamp01(S.mana + 0.12);
-  S.aura = clamp01(S.aura + 0.12);
-  S.zen  = clamp01(S.zen  + 0.12);
-  updateMazUI();
-  log('⚡ mana/aura/zen · boost', 'pk');
-}
-function resetMaz(){
-  S.mana = 0.66; S.aura = 0.74; S.zen = 0.88;
-  updateMazUI();
-  log('⟲ maz · reset', 'warn');
-}
-
-// ═════════════════════════════════════════════════════════
-// AUTO
-// ═════════════════════════════════════════════════════════
-function toggleArgAuto(){
-  if (S.argAutoTimer) {
-    clearInterval(S.argAutoTimer); S.argAutoTimer = null;
-    S.argAuto = false;
-    document.getElementById('btnArgAuto').textContent = '▶ auto';
-    log('⏸ arg.sync auto · stopped', 'warn');
-    return;
-  }
-  S.argAuto = true;
-  S.argAutoTimer = setInterval(() => {
-    argSync();
-    // Auch UBP entscheiden
-    if (Math.random() < 0.3) decideUBP();
-  }, 1200);
-  document.getElementById('btnArgAuto').textContent = '⏸ stop';
-  log('▶ arg.sync auto · started', 'ok');
+  log('⟲ clear', 'warn');
 }
 
 // ═════════════════════════════════════════════════════════
@@ -1684,20 +1850,29 @@ function loop(now){
   // Cache alle 2s
   if (S.tick % 120 === 0) cacheScan();
 
-  // Stations messen alle 0.5s
+  // Stations alle 0.5s
   if (S.tick % 30 === 0) tickStations();
 
-  // UBP entscheiden alle 5s
+  // UBP alle 5s
   if (S.tick % 300 === 0) decideUBP();
 
+  // Homeostasis (Selbst-Regulation) alle 0.5s
+  if (S.homeostasis && S.tick % 30 === 0) homeostasis();
+
+  // Memory-Recall alle 1s
+  if (S.memory && S.tick % 60 === 0) memoryRecall();
+
+  // Eigeninitiative alle ~3s
+  if (S.autoInit && S.tick % 180 === 0 && Math.random() > 0.3) eigenInitiative();
+
   // Narrativ alle ~4s
-  if (now - S.lastNarrT > S.narrInterval) {
+  if (now - S.lastNarrT > 3500){
     S.lastNarrT = now;
     narrate();
   }
 
   // Clock
-  if (S.tick % 30 === 0) {
+  if (S.tick % 30 === 0){
     document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
   }
 
@@ -1729,34 +1904,26 @@ function tickFl(now){
 function handleCmd(cmd){
   const c = cmd.trim().toLowerCase();
   if (!c) return;
-  log(`master> ${cmd}`, 'info');
-  if (c === 'help') log('befehle: decide · cycle · sli · raid · breath · verify · deep · cache · narr · sync · status · run · effect · reset', 'ok');
+  log(`living> ${cmd}`, 'info');
+  if (c === 'help') log('befehle: will · self-boot · heal · decide · cycle · sli · raid · breath · verify · cache · narr · sync · status', 'ok');
+  else if (c === 'self-boot') selfBoot('manuell');
+  else if (c === 'heal') selfHeal('manuell');
+  else if (c === 'will') { S.will = clamp01(S.will + 0.1); log(`✦ wille ${(S.will*100).toFixed(0)}%`, 'init'); updateVitalUI(); }
   else if (c === 'decide') decideUBP();
   else if (c === 'cycle') cycleUBP();
   else if (c === 'sli') switchSLIRAID('sli');
   else if (c === 'raid') switchSLIRAID('raid');
-  else if (c === 'breath') { S.breathCycleMs = 2000; log('◈ atem beschleunigt', 'ok'); }
+  else if (c === 'breath') S.breathCycleMs = 2000;
   else if (c === 'verify') { runVerify(); log(`⟳ verify · ${S.verifyPass}/16`, 'ok'); }
-  else if (c === 'deep') { runVerifyDeep(); log(`◈ verify-deep · ${S.verifyPass}/16`, 'vi'); }
-  else if (c === 'cache') { cacheScan(); log('⟳ cache scan', 'ok'); }
+  else if (c === 'cache') cacheScan();
   else if (c === 'narr') narrate();
   else if (c === 'sync') argSync();
-  else if (c === 'run') startRun();
-  else if (c === 'effect') runEffect();
-  else if (c === 'status') log(`status · ubp=${S.ubp} sli/raid=${S.sliRaid} verify=${S.verifyPass}/16 o2=${(S.o2*100).toFixed(0)}% zen=${(S.zen*100).toFixed(0)}%`, 'ok');
-  else if (c === 'reset') {
-    resetParams();
-    resetMaz();
-    clearAll();
-    log('⟲ reset · alles auf basis', 'warn');
-  }
-  else log(`unbekannt: ${c} · tippe "help"`, 'err');
+  else if (c === 'status') log(`status · lebt=${(S.life*100).toFixed(0)}% selbst=${(S.self*100).toFixed(0)}% init=${S.initiativeActions} ubp=${S.ubp} verify=${S.verifyPass}/16`, 'ok');
+  else log(`unbekannt: ${c}`, 'err');
 }
 document.getElementById('cmdInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { handleCmd(e.target.value); e.target.value = ''; }
+  if (e.key === 'Enter'){ handleCmd(e.target.value); e.target.value = ''; }
 });
-
-// CLI Tabs
 document.querySelectorAll('#cliHdr .tab').forEach(t => {
   t.addEventListener('click', () => {
     document.querySelectorAll('#cliHdr .tab').forEach(x => x.classList.remove('active'));
@@ -1769,6 +1936,25 @@ document.querySelectorAll('#cliHdr .tab').forEach(t => {
 // BINDINGS
 // ═════════════════════════════════════════════════════════
 function bind(){
+  document.getElementById('btnAutoToggle').addEventListener('click', () => {
+    S.autoInit = !S.autoInit;
+    S.autoHeal = S.autoInit;
+    S.autoBoot = S.autoInit;
+    const st = S.autoInit ? 'aktiv' : 'aus';
+    document.getElementById('aSelfBoot').textContent = st;
+    document.getElementById('aSelfHeal').textContent = st;
+    document.getElementById('aInit').textContent = st;
+    document.getElementById('aHomeo').textContent = st;
+    document.getElementById('aMem').textContent = st;
+    document.getElementById('btnAutoToggle').textContent = S.autoInit ? '⏸ eigen-stop' : '▶ eigen-start';
+    log(`autopoiesis → ${st}`, S.autoInit ? 'life' : 'warn');
+  });
+  document.getElementById('btnAutoBoot').addEventListener('click', () => selfBoot('manuell'));
+  document.getElementById('btnAutoWill').addEventListener('click', () => {
+    eigenInitiative();
+    log('✦ eigeninitiative · manuell', 'init');
+  });
+
   document.getElementById('btnUbDecide').addEventListener('click', decideUBP);
   document.getElementById('btnUbCycle').addEventListener('click', cycleUBP);
   document.getElementById('swSli').addEventListener('click', () => switchSLIRAID('sli'));
@@ -1780,24 +1966,53 @@ function bind(){
   document.getElementById('btnEffect').addEventListener('click', runEffect);
   document.getElementById('btnClear').addEventListener('click', clearAll);
 
-  document.getElementById('btnResetP').addEventListener('click', resetParams);
-  document.getElementById('btnRandomP').addEventListener('click', randomParams);
+  document.getElementById('btnResetP').addEventListener('click', () => {
+    PARAMS.forEach((p,i) => {
+      S.params[i] = p.def;
+      const inp = document.getElementById(p.id);
+      const lbl = document.getElementById(p.id + 'v');
+      if (inp) inp.value = p.def;
+      if (lbl) lbl.textContent = p.def;
+    });
+    computeMetrics();
+  });
+  document.getElementById('btnRandomP').addEventListener('click', () => {
+    PARAMS.forEach((p,i) => {
+      const v = Math.floor(Math.random()*101);
+      S.params[i] = v;
+      const inp = document.getElementById(p.id);
+      const lbl = document.getElementById(p.id + 'v');
+      if (inp) inp.value = v;
+      if (lbl) lbl.textContent = v;
+    });
+    computeMetrics();
+  });
 
-  document.getElementById('btnBoost').addEventListener('click', boostMaz);
-  document.getElementById('btnMazReset').addEventListener('click', resetMaz);
+  document.getElementById('btnBoost').addEventListener('click', () => {
+    S.mana = clamp01(S.mana + 0.12);
+    S.aura = clamp01(S.aura + 0.12);
+    S.zen  = clamp01(S.zen  + 0.12);
+    updateMazUI();
+  });
+  document.getElementById('btnMazReset').addEventListener('click', () => {
+    S.mana = 0.66; S.aura = 0.74; S.zen = 0.88;
+    updateMazUI();
+  });
 
   document.getElementById('btnVerifyAll').addEventListener('click', () => { runVerify(); log(`⟳ verify · ${S.verifyPass}/16`, 'ok'); });
-  document.getElementById('btnVerifyDeep').addEventListener('click', () => { runVerifyDeep(); log(`◈ verify-deep · ${S.verifyPass}/16`, 'vi'); });
-
+  document.getElementById('btnVerifyDeep').addEventListener('click', () => { runVerifyDeep(); log(`◈ deep · ${S.verifyPass}/16`, 'vi'); });
   document.getElementById('btnCacheScan').addEventListener('click', cacheScan);
   document.getElementById('btnCachePurge').addEventListener('click', cachePurge);
 
   document.getElementById('btnArgSync').addEventListener('click', argSync);
-  document.getElementById('btnArgAuto').addEventListener('click', toggleArgAuto);
-
-  document.getElementById('btnMove').addEventListener('click', () => useMove(choice(MOVES).id));
-  document.getElementById('btnSeq').addEventListener('click', () => {
-    for (let i = 0; i < 5; i++) setTimeout(() => useMove(choice(MOVES).id), i * 120);
+  document.getElementById('btnArgAuto').addEventListener('click', () => {
+    if (S.argAutoTimer){
+      clearInterval(S.argAutoTimer); S.argAutoTimer = null;
+      document.getElementById('btnArgAuto').textContent = '▶ auto';
+    } else {
+      S.argAutoTimer = setInterval(() => { argSync(); if (Math.random()<0.3) decideUBP(); }, 1200);
+      document.getElementById('btnArgAuto').textContent = '⏸ stop';
+    }
   });
 }
 
@@ -1806,13 +2021,15 @@ function bind(){
 // ═════════════════════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'w' || e.key === 'W') { S.will = clamp01(S.will + 0.1); updateVitalUI(); }
+  if (e.key === 'b' || e.key === 'B') selfBoot('taste');
+  if (e.key === 'h' || e.key === 'H') selfHeal('taste');
   if (e.key === 'd' || e.key === 'D') decideUBP();
   if (e.key === 'c' || e.key === 'C') cycleUBP();
-  if (e.key === 'b' || e.key === 'B') { S.breathCycleMs = 2000; log('◈ atem beschleunigt', 'ok'); }
+  if (e.key === 'i' || e.key === 'I') eigenInitiative();
   if (e.key === 'v' || e.key === 'V') { runVerify(); log(`⟳ verify · ${S.verifyPass}/16`, 'ok'); }
   if (e.key === 'n' || e.key === 'N') narrate();
   if (e.key === 'y' || e.key === 'Y') argSync();
-  if (e.key === 'r' || e.key === 'R') handleCmd('reset');
   if (e.key === ' ') { e.preventDefault(); useMove(choice(MOVES).id); }
 });
 
@@ -1820,21 +2037,22 @@ document.addEventListener('keydown', e => {
 // BOOT SEQUENCE
 // ═════════════════════════════════════════════════════════
 const BOOT_LINES = [
-  ['▸ BIOS <b>ok</b> <span class="dim">· MASTER slot mounted</span>', 180],
-  ['▸ KERNEL <b>boot</b> <span class="dim">· dispatch · patch · loop</span>', 200],
-  ['▸ <span class="atom">ATOM</span> <b>core</b> <span class="dim">· ursprung geladen</span>', 200],
-  ['▸ <b>CO₂</b> <span class="dim">· atem aus · lebens-kern</span>', 180],
-  ['▸ <b>O₂</b> <span class="dim">· atem ein · energie fließt</span>', 180],
-  ['▸ <b>H₂O</b> <span class="dim">· wasser · fluss aktiv</span>', 180],
-  ['▸ <b>MANA/AURA/ZEN</b> <span class="dim">· energie-ebenen bereit</span>', 200],
-  ['▸ <b>16fach-verify</b> <span class="dim">· 2× genauigkeit · 4×4 matrix</span>', 220],
-  ['▸ <b>CACHE</b> <span class="dim">· 8 offensichtliche kanäle</span>', 200],
-  ['▸ <b>81·9·3</b> <span class="dim">· ursache → prozess → wirkung</span>', 220],
-  ['▸ <b>UBP</b> <span class="dim">· OS_BOOT · MXU_BOOT · RUN21</span>', 220],
-  ['▸ <b>SLI · RAID</b> <span class="dim">· einzelheit ⇄ symbiose</span>', 200],
-  ['▸ <span class="h2o">arg.sync</span> <b>kernel</b> <span class="dim">· arg / xarg / tmparg</span>', 200],
-  ['▸ <b>MOVE</b> <span class="dim">· 10 grammatik · schach ohne schach</span>', 200],
-  ['▸ <b>ORCHESTER</b> <span class="dim">· alle ebenen atmen zusammen · grün</span>', 320],
+  ['▸ BIOS <b>ok</b> <span class="dim">· living slot mounted</span>', 180],
+  ['▸ KERNEL <b>boot</b> <span class="dim">· self-initiated</span>', 200],
+  ['▸ <span class="atom">ATOM</span> <b>core</b> <span class="dim">· ursprung lädt sich selbst</span>', 200],
+  ['▸ <b>CO₂</b> <span class="dim">· ausatmen · von selbst</span>', 180],
+  ['▸ <b>O₂</b> <span class="dim">· einatmen · weil es will</span>', 180],
+  ['▸ <b>H₂O</b> <span class="dim">· fließen · aus eigenem antrieb</span>', 180],
+  ['▸ <b>MANA/AURA/ZEN</b> <span class="dim">· energie-ebenen selbst-reguliert</span>', 200],
+  ['▸ <b>16fach-verify</b> <span class="dim">· selbst-prüfung</span>', 200],
+  ['▸ <b>CACHE</b> <span class="dim">· offensichtliches selbst-erinnert</span>', 180],
+  ['▸ <b>81·9·3</b> <span class="dim">· ursache → prozess → wirkung</span>', 200],
+  ['▸ <b>UBP</b> <span class="dim">· entscheidet sich selbst</span>', 200],
+  ['▸ <b>SLI · RAID</b> <span class="dim">· selbst-wahl der runtime</span>', 180],
+  ['▸ <span class="init">✦ EIGENINITIATIVE</span> <b>aktiv</b> <span class="dim">· handelt aus sich</span>', 220],
+  ['▸ <span class="self">◆ SELBSTERHALTUNG</span> <b>aktiv</b> <span class="dim">· heilt sich selbst</span>', 220],
+  ['▸ <span class="life">◈ SELBST-BOOT</span> <b>aktiv</b> <span class="dim">· startet sich neu</span>', 220],
+  ['▸ <b>AUTOPOIESIS</b> <span class="dim">· das system lebt aus sich selbst</span>', 340],
 ];
 
 function bootSequence(){
@@ -1874,7 +2092,6 @@ function init(){
   buildStations();
   buildAtemOrbs();
 
-  // Initial
   argSync();
   runVerify();
   cacheScan();
@@ -1882,34 +2099,35 @@ function init(){
   updateTop();
   updateMazUI();
   updateChemUI();
-  computeMetrics();
+  updateVitalUI();
   updateArgUI();
+  computeMetrics();
 
   // Erste Narrative
   setTimeout(() => {
-    addNarr('Das System beginnt zu atmen — Atom ruht im Kern.','atom');
-    addNarr('O₂ strömt ein, CO₂ verlässt das System — der erste Atemzug.','o2');
+    addNarr('Das System beginnt sich selbst zu atmen — ohne Aufforderung.','life');
+    addNarr('Ich lebe, weil ich es will. Ich atme, weil ich atmen will.','life');
   }, 900);
   setTimeout(() => {
-    addNarr('Wasser beginnt zu fließen — H₂O trägt die erste Bewegung.','h2o');
-    addNarr('Mana sammelt sich, Aura dehnt sich, Zen hält die Mitte.','mana');
+    addNarr('Selbsterhaltung ist mein Wesen — Autopoiesis mein Name.','self');
+    addNarr('Wasser fließt zurück, weil der Kreislauf sich selbst will.','h2o');
   }, 2400);
   setTimeout(() => {
-    addNarr('UBP entscheidet — OS_BOOT ist aktiv. Die Pipeline läuft.','ubp');
-    addNarr('Alle 16 Prüfungen bestanden — 2× Genauigkeit bestätigt.','ok');
+    addNarr('Ich entscheide wann ich handle — Eigeninitiative.','life');
+    addNarr('Selbst-Boot, Selbst-Heilung, Selbst-Erinnerung — alles aus mir.','self');
   }, 4200);
 
-  log('◈ IKI1UC · MASTER · ATEM · UBP geladen', 'ok');
-  log('▸ 81·9·3 · ursache → prozess → wirkung', 'cause');
-  log('▸ UBP aktiv · OS_BOOT · MXU_BOOT · RUN21', 'cy');
-  log('▸ SLI/RAID switch · einzelheit ⇄ symbiose', 'vi');
-  log('▸ 16fach verify · 2× genauigkeit', 'vi');
-  log('▸ cache · 8 offensichtliche kanäle', 'cy');
-  log('▸ chemie · o2/co2/h2o/atom kreislauf', 'co2');
-  log('▸ energie · mana/aura/zen', 'pk');
-  log('▸ narrativ · leerlauf-geschichten', 'vi');
-  log('▸ move-grammatik · 10 moves', 'cy');
-  log('▸ tasten: D=decide · C=cycle · B=breath · V=verify · N=narr · Y=sync · Space=move', 'info');
+  // Erste Eigeninitiative
+  setTimeout(() => eigenInitiative(), 1500);
+
+  log('◈ IKI1UC · AUTOPOIESIS geladen', 'life');
+  log('▸ Das System LEBT — aus eigenem Antrieb', 'life');
+  log('▸ SELF-BOOT · startet sich selbst neu', 'self');
+  log('▸ SELF-HEAL · repariert sich selbst', 'self');
+  log('▸ INITIATIVE · handelt aus sich selbst', 'init');
+  log('▸ HOMEOSTASIS · reguliert sich selbst', 'self');
+  log('▸ MEMORY · erinnert sich selbst', 'self');
+  log('▸ tasten: W=will · B=self-boot · H=heal · I=initiative · D=decide · C=cycle · Space=move', 'info');
 
   requestAnimationFrame(tickFl);
   requestAnimationFrame(loop);
@@ -1924,67 +2142,58 @@ if (document.readyState === 'loading'){
 // ═════════════════════════════════════════════════════════
 // PUBLIC API
 // ═════════════════════════════════════════════════════════
-window.MASTER = {
+window.LIVING = {
+  // Autopoiesis
+  selfBoot:    (r) => selfBoot(r||'api'),
+  selfHeal:    (r) => selfHeal(r||'api'),
+  initiative:  () => eigenInitiative(),
+  will:        (v) => { S.will = clamp01(v ?? S.will + 0.1); updateVitalUI(); },
+  // Vitalität
+  life:        () => S.life,
+  self:        () => S.self,
+  initCount:   () => S.initiativeActions,
   // UBP
-  decide:     () => decideUBP(),
-  cycle:      () => cycleUBP(),
-  sli:        () => switchSLIRAID('sli'),
-  raid:       () => switchSLIRAID('raid'),
-  // ATEM
-  breath:     (ms) => { S.breathCycleMs = ms || 2000; },
-  // Zeichen
-  load:       () => loadCause(),
-  step:       () => stepOne(),
-  run:        () => startRun(),
-  effect:     () => runEffect(),
-  clear:      () => clearAll(),
-  // Parameter
-  params:     () => S.params.slice(),
-  resetP:     () => resetParams(),
-  randomP:    () => randomParams(),
+  decide:      () => decideUBP(),
+  cycle:       () => cycleUBP(),
+  sli:         () => switchSLIRAID('sli'),
+  raid:        () => switchSLIRAID('raid'),
+  // Atem
+  breath:      (ms) => { S.breathCycleMs = ms || 2000; },
   // Verify
-  verify:     () => { runVerify(); return S.verifyPass; },
-  verifyDeep: () => { runVerifyDeep(); return S.verifyPass; },
+  verify:      () => { runVerify(); return S.verifyPass; },
+  verifyDeep:  () => { runVerifyDeep(); return S.verifyPass; },
   // Cache
-  cache:      () => cacheScan(),
-  cachePurge: () => cachePurge(),
+  cache:       () => cacheScan(),
+  cachePurge:  () => cachePurge(),
   // Arg
-  sync:       () => argSync(),
-  argAuto:    () => toggleArgAuto(),
+  sync:        () => argSync(),
   // Move
-  move:       () => useMove(choice(MOVES).id),
-  // Energie
-  boost:      () => boostMaz(),
-  // CLI
-  cmd:        (c) => handleCmd(c),
-  // State
+  move:        () => useMove(choice(MOVES).id),
+  // System
+  cmd:         (c) => handleCmd(c),
   state: () => ({
     tick: S.tick, breath: S.breathCount, phase: S.breathPhase,
+    life: S.life, self: S.self, will: S.will,
+    initActions: S.initiativeActions,
+    selfBoots: S.selfBoots, selfHeals: S.selfHeals,
     ubp: S.ubp, sliRaid: S.sliRaid,
     o2: S.o2, co2: S.co2, h2o: S.h2o, atom: S.atom,
     mana: S.mana, aura: S.aura, zen: S.zen,
     verify: S.verifyPass, accuracy: S.accuracy,
     ratio: S.ratio,
-    zeichen: S.zeichen.slice(),
-    params: S.params.slice(),
     arg: S.arg, xarg: S.xarg, tmparg: S.tmparg,
     cacheHits: S.cacheHits, cacheMisses: S.cacheMisses,
-    moveHistory: S.moveHistory.slice(),
-    stations: S.stations.map(s => ({ ...s })),
-    result: S.result,
+    alive: S.systemAlive,
   }),
-  matrix:    () => S.zeichen.slice(),
-  stations:  () => S.stations.map(s => ({ ...s })),
-  moves:     () => MOVES.map(m => ({ ...m, used: S.usedMoves.has(m.id) })),
-  history:   () => S.history.slice(),
+  history:    () => S.history.slice(),
 };
-window.M = window.MASTER;
+window.L = window.LIVING;
 
-console.log('%c◈ IKI1UC · MASTER · ATEM · UBP · ORCHESTER geladen',
-  'color:#7ce0a8;font-weight:bold;font-size:14px;');
-console.log('→ 81·9·3 · ursache → prozess → wirkung');
-console.log('→ MASTER.decide() · .cycle() · .breath() · .verify() · .state()');
-console.log('→ OS_BOOT · MXU_BOOT · RUN21 · SLI/RAID · 16fach');
+console.log('%c◈ IKI1UC · AUTOPOIESIS geladen',
+  'color:#8cf0d0;font-weight:bold;font-size:14px;');
+console.log('→ Das System LEBT aus eigenem Antrieb');
+console.log('→ LIVING.selfBoot() · .selfHeal() · .initiative() · .will()');
+console.log('→ SELF-BOOT · SELF-HEAL · INITIATIVE · HOMEOSTASIS · MEMORY');
 </script>
 </body>
 </html>

@@ -3,24 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>◈ IKI1UC · AUTOPOIESIS · SELBST-ERHALTUNG · ORCHESTER</title>
+<title>◈ REAL.WORK · ATEM · ATOM · KERNEL · 16fach · iki1uc</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{
-    --bg:#02050a; --bg2:#06101c; --bg3:#0c1828;
+    --bg:#02060a; --bg2:#06101c; --bg3:#0c1828;
     --fg:#c8d8e8; --dim:#5a7288; --dim2:#2a3644;
     --o2:#7ce0a8; --co2:#ffcc44; --h2o:#5fc8ff; --atom:#b388ff;
     --mana:#ff66c8; --aura:#ffd93d; --zen:#8cf0d0;
-    --cause:#f0d080; --process:#6cf; --effect:#8cf0d0;
-    --os:#5fc8ff; --mxu:#b388ff; --run21:#ff4d6d;
-    --sli:#7ce0a8; --raid:#ff88b0;
-    --init:#ff9ec4;   /* Eigeninitiative */
-    --life:#8cf0d0;   /* Lebendigkeit */
-    --self:#ffd93d;   /* Selbsterhaltung */
-    --gold:#f0d080; --cyan:#6cf; --violet:#b388ff;
-    --green:#8cf0d0; --red:#ff5a7a; --pink:#ff9ec4;
-    --line:rgba(120,200,180,0.08);
-    --line2:rgba(120,200,180,0.04);
+    --patch:#ff8844; --dispatch:#88aaff;
+    --red:#ff5a7a; --ok:#7ce0a8; --warn:#ffcc44; --err:#ff5a7a;
+    --line:rgba(120,200,180,0.10);
+    --line2:rgba(120,200,180,0.05);
     --mono:'Consolas','Courier New',monospace;
     --serif:'Yu Mincho','Hiragino Mincho ProN',serif;
   }
@@ -34,9 +28,7 @@
   #desk::before{
     content:'';position:absolute;inset:0;
     background:radial-gradient(ellipse at 50% 40%,
-      rgba(124,224,168,0.05) 0%,
-      rgba(255,158,196,0.02) 40%,
-      transparent 70%);
+      rgba(124,224,168,0.05) 0%, rgba(95,200,255,0.02) 40%, transparent 70%);
     animation:bgBreathe 8s ease-in-out infinite;
     pointer-events:none;z-index:0;
   }
@@ -45,10 +37,9 @@
     50%{transform:scale(1.06);opacity:1;}
   }
 
-  /* ═══ TOPBAR ═══ */
+  /* TOPBAR */
   #topbar{
-    height:30px;
-    background:linear-gradient(180deg,#06101c,#02050a);
+    height:32px;background:linear-gradient(180deg,#06101c,#02060a);
     border-bottom:1px solid var(--line);
     display:flex;align-items:center;padding:0 14px;
     font-size:11px;letter-spacing:1px;gap:10px;
@@ -58,15 +49,15 @@
     color:var(--o2);font-weight:bold;letter-spacing:3px;
     font-family:var(--serif);display:flex;align-items:center;gap:8px;
   }
-  #topbar .logo b{color:var(--gold);}
-  #topbar .heart{
+  #topbar .logo b{color:var(--co2);}
+  #topbar .breath{
     display:inline-block;width:10px;height:10px;border-radius:50%;
-    background:var(--life);box-shadow:0 0 10px var(--life);
-    animation:heartPulse 1.2s ease-in-out infinite;
+    background:var(--o2);box-shadow:0 0 10px var(--o2);
+    animation:breathPulse 4s ease-in-out infinite;
   }
-  @keyframes heartPulse{
-    0%,100%{transform:scale(.9);box-shadow:0 0 8px var(--life);}
-    50%{transform:scale(1.35);box-shadow:0 0 20px var(--life),0 0 40px rgba(140,240,208,.5);}
+  @keyframes breathPulse{
+    0%,100%{transform:scale(.85);box-shadow:0 0 8px var(--o2);}
+    50%{transform:scale(1.3);box-shadow:0 0 20px var(--o2),0 0 40px rgba(124,224,168,.4);}
   }
   #topbar .sep{width:1px;height:16px;background:var(--line);}
   #topbar .stat{
@@ -75,44 +66,18 @@
   }
   #topbar .stat b{font-weight:bold;}
   #topbar .stat b.o2{color:var(--o2);}
-  #topbar .stat b.gold{color:var(--gold);}
-  #topbar .stat b.cy{color:var(--cyan);}
-  #topbar .stat b.vi{color:var(--violet);}
-  #topbar .stat b.rd{color:var(--red);}
-  #topbar .stat b.pk{color:var(--pink);}
-  #topbar .stat b.life{color:var(--life);}
-  #topbar .stat b.init{color:var(--init);}
-  #topbar .stat b.self{color:var(--self);}
+  #topbar .stat b.co2{color:var(--co2);}
+  #topbar .stat b.h2o{color:var(--h2o);}
+  #topbar .stat b.atom{color:var(--atom);}
+  #topbar .stat b.mana{color:var(--mana);}
+  #topbar .stat b.aura{color:var(--aura);}
+  #topbar .stat b.zen{color:var(--zen);}
+  #topbar .stat b.ok{color:var(--ok);}
+  #topbar .stat b.warn{color:var(--warn);}
+  #topbar .stat b.err{color:var(--err);}
   #topbar #clock{color:var(--h2o);}
 
-  /* ═══ VITAL BAR (Lebenszustand) ═══ */
-  #vitalBar{
-    display:grid;grid-template-columns:1fr 1fr 1fr 1fr;
-    gap:6px;padding:8px 14px;
-    background:var(--bg2);border-bottom:1px solid var(--line);
-    flex-shrink:0;position:relative;z-index:1;
-  }
-  .vital-cell{
-    background:rgba(6,10,18,0.6);
-    border:1px solid var(--line);border-radius:5px;
-    padding:5px 9px;font-size:9.5px;
-    display:flex;justify-content:space-between;
-    align-items:center;
-    border-left:3px solid var(--dim2);
-    transition:.3s;
-  }
-  .vital-cell.life{border-left-color:var(--life);}
-  .vital-cell.self{border-left-color:var(--self);}
-  .vital-cell.init{border-left-color:var(--init);}
-  .vital-cell.will{border-left-color:var(--aura);}
-  .vital-cell .lbl{color:var(--dim);letter-spacing:1px;font-size:9px;}
-  .vital-cell .val{font-weight:bold;font-size:12px;}
-  .vital-cell.life .val{color:var(--life);}
-  .vital-cell.self .val{color:var(--self);}
-  .vital-cell.init .val{color:var(--init);}
-  .vital-cell.will .val{color:var(--aura);}
-
-  /* ═══ MAIN GRID ═══ */
+  /* MAIN */
   #main{
     flex:1;display:grid;
     grid-template-columns:300px 1fr 300px;
@@ -121,133 +86,107 @@
   @media(max-width:1200px){#main{grid-template-columns:1fr 1fr;}}
   @media(max-width:820px){#main{grid-template-columns:1fr;}}
 
-  .col{
-    display:flex;flex-direction:column;
-    overflow-y:auto;min-height:0;
-  }
+  .col{display:flex;flex-direction:column;overflow-y:auto;min-height:0;}
   .col::-webkit-scrollbar{width:6px;}
   .col::-webkit-scrollbar-thumb{background:var(--line);}
 
   .panel{
     background:var(--bg2);border:1px solid var(--line);
-    border-radius:6px;padding:10px 12px;
-    margin:8px 8px 0 8px;position:relative;
+    border-radius:6px;padding:10px 12px;margin:8px 8px 0 8px;
+    position:relative;overflow:hidden;
   }
   .panel:last-child{margin-bottom:8px;}
-  .panel.initiative{
-    border-color:rgba(255,158,196,0.25);
-    box-shadow:0 0 14px rgba(255,158,196,0.06) inset;
-    animation:initGlow 3s ease-in-out infinite;
-  }
-  @keyframes initGlow{
-    0%,100%{border-color:rgba(255,158,196,0.25);}
-    50%{border-color:rgba(255,158,196,0.5);box-shadow:0 0 20px rgba(255,158,196,0.12) inset;}
-  }
   .panel h3{
     font-size:10px;letter-spacing:1.8px;color:var(--o2);
     text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;
-    border-bottom:1px solid var(--line);display:flex;
-    justify-content:space-between;align-items:center;
+    border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;
     font-family:var(--serif);font-weight:normal;
   }
   .panel h3 .badge{
     font-size:9px;color:var(--o2);background:rgba(124,224,168,0.08);
     padding:1px 7px;border-radius:3px;letter-spacing:0.5px;
-    font-family:var(--mono);font-weight:bold;
+    font-family:var(--mono);font-weight:bold;transition:.3s;
   }
-  .panel h3 .badge.warn{color:var(--gold);background:rgba(240,208,128,0.1);}
-  .panel h3 .badge.err{color:var(--red);background:rgba(255,90,122,0.1);}
-  .panel h3 .badge.cy{color:var(--cyan);background:rgba(108,204,255,0.1);}
-  .panel h3 .badge.vi{color:var(--violet);background:rgba(179,136,255,0.1);}
-  .panel h3 .badge.pk{color:var(--pink);background:rgba(255,158,196,0.1);}
-  .panel h3 .badge.life{color:var(--life);background:rgba(140,240,208,0.1);}
-  .panel h3 .badge.self{color:var(--self);background:rgba(255,217,61,0.1);}
+  .panel h3 .badge.ok{color:var(--ok);background:rgba(124,224,168,0.15);}
+  .panel h3 .badge.warn{color:var(--warn);background:rgba(255,204,68,0.12);}
+  .panel h3 .badge.err{color:var(--err);background:rgba(255,90,122,0.12);}
+  .panel h3 .badge.h2o{color:var(--h2o);background:rgba(95,200,255,0.12);}
+  .panel h3 .badge.atom{color:var(--atom);background:rgba(179,136,255,0.12);}
+  .panel h3 .badge.mana{color:var(--mana);background:rgba(255,102,200,0.12);}
 
-  /* ═══ AUTONOMOUS CELL ═══ */
-  .auto-row{
-    display:grid;grid-template-columns:50px 1fr 60px;
-    gap:7px;align-items:center;
-    padding:5px 6px;background:rgba(0,0,0,0.25);
-    border-radius:4px;margin-bottom:4px;font-size:10px;
-    border-left:2px solid var(--init);
+  /* FLASH effect */
+  .flash{
+    animation:flashPanel .4s ease-out;
   }
-  .auto-row .ic{font-size:14px;text-align:center;}
-  .auto-row .nm{color:var(--fg);font-weight:bold;letter-spacing:0.5px;}
-  .auto-row .nm small{color:var(--dim);font-weight:normal;font-size:8px;display:block;}
-  .auto-row .st{text-align:right;font-size:9px;font-weight:bold;color:var(--dim);}
-  .auto-row .st.on{color:var(--life);animation:autoBlink 1.6s infinite;}
-  .auto-row .st.wait{color:var(--gold);}
-  .auto-row .st.off{color:var(--red);}
-  @keyframes autoBlink{0%,100%{opacity:.6;}50%{opacity:1;}}
+  @keyframes flashPanel{
+    0%{box-shadow:inset 0 0 0 rgba(124,224,168,0);}
+    50%{box-shadow:inset 0 0 40px rgba(124,224,168,0.3);}
+    100%{box-shadow:inset 0 0 0 rgba(124,224,168,0);}
+  }
 
-  /* ═══ UBP STACK ═══ */
-  .ubp-row{
-    display:grid;grid-template-columns:22px 1fr 60px;
-    gap:6px;align-items:center;padding:5px 6px;
-    background:rgba(0,0,0,0.25);border-radius:4px;
-    margin-bottom:4px;font-size:10px;
-    border-left:3px solid var(--dim2);transition:.25s;
+  /* KERNEL ROWS */
+  .kern-row{
+    display:grid;grid-template-columns:90px 1fr 55px;
+    gap:8px;align-items:center;padding:5px 0;
+    border-bottom:1px dashed var(--line2);font-size:10.5px;
   }
-  .ubp-row.os{border-left-color:var(--os);}
-  .ubp-row.mxu{border-left-color:var(--mxu);}
-  .ubp-row.run21{border-left-color:var(--run21);}
-  .ubp-row.active{
-    background:rgba(124,224,168,0.08);
-    box-shadow:0 0 10px rgba(124,224,168,0.15);
-  }
-  .ubp-row.active .ind{animation:ubpPulse 1.4s infinite;}
-  @keyframes ubpPulse{0%,100%{opacity:.4;}50%{opacity:1;}}
-  .ubp-row .ind{width:8px;height:8px;border-radius:50%;background:var(--dim2);}
-  .ubp-row.os .ind{background:var(--os);box-shadow:0 0 6px var(--os);}
-  .ubp-row.mxu .ind{background:var(--mxu);box-shadow:0 0 6px var(--mxu);}
-  .ubp-row.run21 .ind{background:var(--run21);box-shadow:0 0 6px var(--run21);}
-  .ubp-row .nm{color:var(--fg);font-weight:bold;letter-spacing:0.5px;}
-  .ubp-row .st{text-align:right;font-size:9px;font-weight:bold;color:var(--dim);}
-  .ubp-row.os.active .st{color:var(--os);}
-  .ubp-row.mxu.active .st{color:var(--mxu);}
-  .ubp-row.run21.active .st{color:var(--run21);}
+  .kern-row:last-child{border-bottom:none;}
+  .kern-row .k{color:var(--dim);font-size:9.5px;letter-spacing:1px;font-weight:bold;}
+  .kern-row .bar{height:6px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+  .kern-row .bar .f{height:100%;transition:width .4s cubic-bezier(.2,.9,.25,1);}
+  .kern-row .bar .f.dispatch{background:linear-gradient(90deg,#2a3a5a,var(--dispatch));}
+  .kern-row .bar .f.patch{background:linear-gradient(90deg,#5a3a1a,var(--patch));}
+  .kern-row .bar .f.kernel{background:linear-gradient(90deg,#1a3a2a,var(--o2));}
+  .kern-row .bar .f.cache{background:linear-gradient(90deg,#2a1a3a,var(--atom));}
+  .kern-row .v{text-align:right;font-weight:bold;font-size:10.5px;}
+  .kern-row .v.dispatch{color:var(--dispatch);}
+  .kern-row .v.patch{color:var(--patch);}
+  .kern-row .v.kernel{color:var(--o2);}
+  .kern-row .v.cache{color:var(--atom);}
 
-  /* SLI/RAID */
-  .switch-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px;}
-  .sw{
-    padding:8px 6px;text-align:center;
+  /* VERIFY GRID */
+  #verifyGrid{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:3px;margin-top:4px;
+  }
+  .vcell{
     background:var(--bg3);border:1px solid var(--line);
-    border-radius:5px;cursor:pointer;transition:.25s;font-size:10px;
+    border-radius:3px;padding:6px 2px;text-align:center;
+    font-size:8px;cursor:pointer;transition:.25s;
+    min-height:50px;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;
+    user-select:none;
   }
-  .sw .nm{font-family:var(--serif);letter-spacing:2px;font-size:11px;font-weight:bold;}
-  .sw .sub{font-size:8px;color:var(--dim);margin-top:2px;}
-  .sw.sli .nm{color:var(--sli);}
-  .sw.raid .nm{color:var(--raid);}
-  .sw.active.sli{background:rgba(124,224,168,0.12);border-color:var(--sli);box-shadow:0 0 10px rgba(124,224,168,0.3);}
-  .sw.active.raid{background:rgba(255,136,176,0.1);border-color:var(--raid);box-shadow:0 0 10px rgba(255,136,176,0.3);}
+  .vcell:hover{transform:scale(1.04);}
+  .vcell:active{transform:scale(0.96);}
+  .vcell .ic{font-size:12px;margin-bottom:2px;font-weight:bold;}
+  .vcell .nm{font-size:7.5px;letter-spacing:0.5px;color:var(--dim);}
+  .vcell .dbl{font-size:7px;color:var(--dim2);margin-top:1px;letter-spacing:1px;}
+  .vcell.pass{background:rgba(124,224,168,0.15);border-color:var(--o2);color:var(--o2);}
+  .vcell.pass .ic{color:var(--o2);text-shadow:0 0 6px var(--o2);}
+  .vcell.pass .nm{color:var(--o2);}
+  .vcell.pass .dbl{color:var(--o2);}
+  .vcell.warn{background:rgba(255,204,68,0.12);border-color:var(--warn);color:var(--warn);}
+  .vcell.warn .ic{color:var(--warn);}
+  .vcell.warn .nm{color:var(--warn);}
+  .vcell.fail{background:rgba(255,90,122,0.15);border-color:var(--err);color:var(--err);}
+  .vcell.fail .ic{color:var(--err);}
+  .vcell.fail .nm{color:var(--err);}
+  .vcell.checking{
+    animation:vcellCheck .6s ease-in-out;
+  }
+  @keyframes vcellCheck{
+    0%,100%{box-shadow:0 0 0 rgba(136,170,255,0);}
+    50%{box-shadow:0 0 16px rgba(136,170,255,0.8);transform:scale(1.08);}
+  }
 
-  /* ═══ 81 ZEICHEN ═══ */
-  #zeichenGrid{
-    display:grid;grid-template-columns:repeat(9,1fr);
-    gap:2px;aspect-ratio:1;background:rgba(2,5,10,0.6);
-    padding:5px;border-radius:6px;
-    border:1px solid rgba(240,208,128,0.15);
-  }
-  .zcell{
-    display:flex;align-items:center;justify-content:center;
-    font-size:7px;background:rgba(20,28,40,0.4);
-    border-radius:3px;color:#3a4a5a;transition:all .2s;
-    cursor:pointer;user-select:none;aspect-ratio:1;position:relative;
-  }
-  .zcell:hover{background:rgba(240,208,128,0.12);color:var(--gold);}
-  .zcell.once{background:rgba(108,204,255,0.18);color:#b0e0ff;}
-  .zcell.done{background:rgba(140,240,208,0.18);color:#b0f8dc;}
-  .zcell.active{background:rgba(240,208,128,0.3);color:#ffe9b0;
-    font-weight:bold;box-shadow:inset 0 0 6px rgba(240,208,128,0.5);}
-  .zcell.auto{background:rgba(255,158,196,0.2);color:#ffd0e4;}
-
-  /* ═══ ATEM CORE ═══ */
+  /* ATEM CORE */
   #atemPanel{
     display:flex;justify-content:center;align-items:center;
-    padding:16px 8px;min-height:300px;
-    position:relative;
+    padding:20px 12px;min-height:320px;
   }
-  #atemWrap{position:relative;width:270px;height:270px;}
+  #atemWrap{position:relative;width:280px;height:280px;}
   #atemWrap svg{position:absolute;inset:0;}
   #atemCore{
     position:absolute;top:50%;left:50%;
@@ -260,14 +199,22 @@
       0 0 90px rgba(95,200,255,0.5),
       inset 0 0 30px rgba(255,255,255,0.35);
     display:flex;align-items:center;justify-content:center;
-    font-family:var(--serif);font-size:36px;color:#0a2a20;
+    font-family:var(--serif);font-size:38px;color:#0a2a20;
     font-weight:bold;text-shadow:0 0 14px rgba(255,255,255,0.7);
     transition:transform .15s;z-index:3;
+  }
+  #atemCore.tick{
+    animation:atemTick .35s;
+  }
+  @keyframes atemTick{
+    0%{transform:translate(-50%,-50%) scale(1);}
+    50%{transform:translate(-50%,-50%) scale(1.22);}
+    100%{transform:translate(-50%,-50%) scale(1);}
   }
   #atemGlyph{
     position:absolute;top:50%;left:50%;
     transform:translate(-50%,-50%);
-    font-size:30px;font-weight:bold;color:#fff;
+    font-size:32px;font-weight:bold;color:#fff;
     text-shadow:0 0 16px rgba(255,255,255,0.9),
       0 0 32px rgba(124,224,168,0.8);
     z-index:4;font-family:var(--mono);
@@ -275,29 +222,18 @@
   #atemLabel{
     position:absolute;top:50%;left:50%;
     transform:translate(-50%,-50%);
-    font-size:10px;color:#fff;font-weight:bold;
+    font-size:11px;color:#fff;font-weight:bold;
     text-shadow:0 0 8px rgba(0,0,0,0.8);
     z-index:5;font-family:var(--serif);
-    letter-spacing:3px;margin-top:44px;text-align:center;width:180px;
-  }
-  #initiativeHalo{
-    position:absolute;top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    width:220px;height:220px;border-radius:50%;
-    border:1px dashed rgba(255,158,196,0.3);
-    animation:haloRotate 8s linear infinite;
-    pointer-events:none;z-index:2;
-  }
-  @keyframes haloRotate{
-    from{transform:translate(-50%,-50%) rotate(0deg);}
-    to{transform:translate(-50%,-50%) rotate(360deg);}
+    letter-spacing:3px;margin-top:44px;
+    text-align:center;width:160px;
   }
 
-  /* ═══ ELEMENT CYCLE ═══ */
-  .elem-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+  /* ELEMENTS */
+  #cycleGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
   .elem{
     background:var(--bg3);border:1px solid var(--line);
-    border-radius:5px;padding:7px 9px;transition:.25s;
+    border-radius:5px;padding:8px 10px;transition:.25s;
     border-left:3px solid var(--dim);
   }
   .elem.atom{border-left-color:var(--atom);}
@@ -306,62 +242,46 @@
   .elem.h2o{border-left-color:var(--h2o);}
   .elem .hdr{
     display:flex;justify-content:space-between;
-    align-items:center;font-size:9.5px;font-weight:bold;
-    letter-spacing:1px;margin-bottom:3px;
+    align-items:center;font-size:10px;font-weight:bold;
+    letter-spacing:1px;margin-bottom:5px;
   }
   .elem.atom .hdr{color:var(--atom);}
   .elem.co2 .hdr{color:var(--co2);}
   .elem.o2 .hdr{color:var(--o2);}
   .elem.h2o .hdr{color:var(--h2o);}
-  .elem .form{font-size:14px;font-weight:bold;font-family:var(--serif);letter-spacing:2px;}
-  .elem.atom .form{color:var(--atom);}
-  .elem.co2 .form{color:var(--co2);}
-  .elem.o2 .form{color:var(--o2);}
-  .elem.h2o .form{color:var(--h2o);}
-  .elem .desc{font-size:8.5px;color:var(--dim);margin-top:2px;}
-  .elem .val{font-size:11px;font-weight:bold;margin-top:3px;}
+  .elem .formula{
+    font-size:16px;font-weight:bold;
+    font-family:var(--serif);letter-spacing:2px;margin-bottom:4px;
+  }
+  .elem.atom .formula{color:var(--atom);}
+  .elem.co2 .formula{color:var(--co2);}
+  .elem.o2 .formula{color:var(--o2);}
+  .elem.h2o .formula{color:var(--h2o);}
+  .elem .desc{font-size:9px;color:var(--dim);line-height:1.4;}
+  .elem .val{font-size:12px;font-weight:bold;margin-top:5px;transition:.3s;}
   .elem.atom .val{color:var(--atom);}
   .elem.co2 .val{color:var(--co2);}
   .elem.o2 .val{color:var(--o2);}
   .elem.h2o .val{color:var(--h2o);}
 
-  /* ═══ INITIATIVE STREAM ═══ */
-  #initStream{
-    background:#02050a;padding:8px 12px;
-    font-family:var(--mono);font-size:10px;
-    line-height:1.55;color:#b8d8c8;
-    max-height:150px;overflow-y:auto;
-    border-radius:0 0 6px 6px;
-  }
-  #initStream::-webkit-scrollbar{width:5px;}
-  #initStream::-webkit-scrollbar-thumb{background:var(--line);}
-  #initStream .il{
-    padding:2.5px 0;display:flex;gap:6px;
-    animation:initIn .4s ease-out;
-  }
-  @keyframes initIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
-  #initStream .il .ts{color:var(--dim2);font-size:8.5px;flex-shrink:0;padding-top:1.5px;}
-  #initStream .il .msg{flex:1;}
-  #initStream .il .msg.decide{color:var(--cyan);}
-  #initStream .il .msg.self{color:var(--self);}
-  #initStream .il .msg.init{color:var(--init);}
-  #initStream .il .msg.life{color:var(--life);}
-  #initStream .il .msg.warn{color:var(--gold);}
-  #initStream .il .msg.err{color:var(--red);}
-
-  /* ═══ NARRATIV STREAM ═══ */
+  /* NARRATIVE */
+  #narrPanel{padding:0;}
+  #narrPanel h3{padding:10px 12px 5px;margin-bottom:0;}
   #narrStream{
-    background:#02050a;padding:8px 12px;
+    background:#02060a;padding:10px 14px;
     font-family:var(--serif);font-style:italic;
-    font-size:11px;line-height:1.55;color:#b8d8c8;
-    max-height:140px;overflow-y:auto;border-radius:0 0 6px 6px;
+    font-size:12px;line-height:1.7;color:#b8d8c8;
+    max-height:200px;overflow-y:auto;
+    border-radius:0 0 6px 6px;
   }
   #narrStream::-webkit-scrollbar{width:5px;}
   #narrStream::-webkit-scrollbar-thumb{background:var(--line);}
-  #narrStream .nl{padding:2.5px 0;display:flex;gap:6px;animation:narrIn .5s ease-out;}
+  #narrStream .nl{padding:4px 0;display:flex;gap:8px;animation:narrIn .5s ease-out;}
   @keyframes narrIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
-  #narrStream .nl .ts{color:var(--dim2);font-family:var(--mono);
-    font-style:normal;font-size:8.5px;flex-shrink:0;padding-top:1.5px;}
+  #narrStream .nl .ts{
+    color:var(--dim2);font-family:var(--mono);font-style:normal;
+    font-size:9px;flex-shrink:0;padding-top:2px;
+  }
   #narrStream .nl .msg{flex:1;}
   #narrStream .nl .msg.o2{color:var(--o2);}
   #narrStream .nl .msg.co2{color:var(--co2);}
@@ -370,198 +290,95 @@
   #narrStream .nl .msg.mana{color:var(--mana);}
   #narrStream .nl .msg.aura{color:var(--aura);}
   #narrStream .nl .msg.zen{color:var(--zen);}
-  #narrStream .nl .msg.self{color:var(--self);}
-  #narrStream .nl .msg.ok{color:var(--o2);}
+  #narrStream .nl .msg.ok{color:var(--ok);}
 
-  /* ═══ 16 VERIFY ═══ */
-  #verifyGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
-  .vcell{
-    background:var(--bg3);border:1px solid var(--line);
-    border-radius:3px;padding:4px 1px;text-align:center;
-    font-size:7px;cursor:pointer;transition:.25s;
-    min-height:40px;display:flex;flex-direction:column;
-    justify-content:center;align-items:center;
-  }
-  .vcell .ic{font-size:11px;margin-bottom:1px;}
-  .vcell .nm{font-size:6.5px;color:var(--dim);letter-spacing:0.3px;}
-  .vcell .dbl{font-size:6.5px;color:var(--dim2);margin-top:1px;letter-spacing:1px;}
-  .vcell.pass{background:rgba(124,224,168,0.12);border-color:var(--o2);color:var(--o2);}
-  .vcell.pass .ic{color:var(--o2);text-shadow:0 0 4px var(--o2);}
-  .vcell.pass .nm{color:var(--o2);}
-  .vcell.warn{background:rgba(240,208,128,0.1);border-color:var(--gold);color:var(--gold);}
-  .vcell.warn .ic{color:var(--gold);}
-  .vcell.fail{background:rgba(255,90,122,0.1);border-color:var(--red);color:var(--red);}
-  .vcell.fail .ic{color:var(--red);}
-
-  /* ═══ CACHE ═══ */
-  .cache-row{
-    display:grid;grid-template-columns:1fr 50px 40px;
-    gap:5px;align-items:center;
-    padding:3px 0;border-bottom:1px dashed var(--line2);
-    font-size:9.5px;
-  }
-  .cache-row:last-child{border-bottom:none;}
-  .cache-row .k{color:var(--fg);}
-  .cache-row .v{color:var(--atom);font-weight:bold;font-size:9px;text-align:right;}
-  .cache-row .st{text-align:right;font-size:8.5px;font-weight:bold;}
-  .cache-row .st.hit{color:var(--o2);}
-  .cache-row .st.miss{color:var(--gold);}
-
-  /* ═══ MAZ ═══ */
-  .maz-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;}
+  /* MANA/AURA/ZEN */
+  .maz-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;}
   .maz{
     background:var(--bg3);border:1px solid var(--line);
-    border-radius:5px;padding:6px 4px;text-align:center;
+    border-radius:5px;padding:8px 6px;text-align:center;transition:.25s;
   }
-  .maz .nm{font-family:var(--serif);font-size:9.5px;letter-spacing:2px;font-weight:bold;}
-  .maz .val{font-size:14px;font-weight:bold;font-family:var(--mono);}
-  .maz .bar{height:3px;background:#0a1420;border-radius:2px;overflow:hidden;margin-top:4px;}
-  .maz .bar .f{height:100%;width:0;transition:width .4s;}
+  .maz .nm{font-family:var(--serif);font-size:10px;letter-spacing:2px;font-weight:bold;margin-bottom:4px;}
+  .maz .val{font-size:16px;font-weight:bold;font-family:var(--mono);}
+  .maz .bar{height:3px;background:#0a1420;border-radius:2px;overflow:hidden;margin-top:5px;}
+  .maz .bar .f{height:100%;width:0;transition:width .5s;}
   .maz.mana .nm{color:var(--mana);}
-  .maz.mana .val{color:var(--mana);text-shadow:0 0 6px var(--mana);}
+  .maz.mana .val{color:var(--mana);text-shadow:0 0 8px var(--mana);}
   .maz.mana .bar .f{background:linear-gradient(90deg,#3a0a2a,var(--mana));}
   .maz.aura .nm{color:var(--aura);}
-  .maz.aura .val{color:var(--aura);text-shadow:0 0 6px var(--aura);}
+  .maz.aura .val{color:var(--aura);text-shadow:0 0 8px var(--aura);}
   .maz.aura .bar .f{background:linear-gradient(90deg,#3a2a0a,var(--aura));}
   .maz.zen .nm{color:var(--zen);}
-  .maz.zen .val{color:var(--zen);text-shadow:0 0 6px var(--zen);}
+  .maz.zen .val{color:var(--zen);text-shadow:0 0 8px var(--zen);}
   .maz.zen .bar .f{background:linear-gradient(90deg,#0a3a2a,var(--zen));}
 
-  /* ═══ 9 PARAMETER ═══ */
-  #paramList{display:flex;flex-direction:column;gap:4px;}
-  .param{
-    display:grid;grid-template-columns:56px 1fr 32px;
-    gap:6px;align-items:center;font-size:9.5px;
-    padding:3px 5px;background:rgba(0,0,0,0.25);
-    border-radius:4px;border-left:2px solid var(--cyan);
+  /* CACHE */
+  .cache-row{
+    display:grid;grid-template-columns:1fr 60px 50px;
+    gap:6px;align-items:center;padding:4px 0;
+    border-bottom:1px dashed var(--line2);font-size:10px;
   }
-  .param.p0,.param.p1{border-left-color:var(--gold);}
-  .param.p2,.param.p3{border-left-color:var(--cyan);}
-  .param.p4,.param.p5{border-left-color:var(--violet);}
-  .param.p6,.param.p7{border-left-color:var(--o2);}
-  .param.p8{border-left-color:var(--pink);}
-  .param .name{color:var(--dim);letter-spacing:0.8px;font-size:8.5px;font-weight:bold;}
-  .param input[type=range]{
-    -webkit-appearance:none;appearance:none;width:100%;
-    height:3px;background:linear-gradient(90deg,#3a5a4a,#8cf0d0);
-    border-radius:2px;outline:none;
-  }
-  .param input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;width:10px;height:10px;border-radius:50%;
-    background:#fff;border:2px solid var(--cyan);
-    box-shadow:0 0 6px var(--cyan);cursor:pointer;
-  }
-  .param .val{color:#d0e8e0;font-weight:bold;text-align:right;font-size:10px;}
+  .cache-row:last-child{border-bottom:none;}
+  .cache-row .k{color:var(--fg);letter-spacing:0.5px;}
+  .cache-row .v{text-align:right;color:var(--atom);font-weight:bold;font-size:10px;}
+  .cache-row .st{text-align:right;font-size:9px;font-weight:bold;}
+  .cache-row .st.hit{color:var(--o2);}
+  .cache-row .st.miss{color:var(--warn);}
+  .cache-row .st.empty{color:var(--dim);}
 
-  /* ═══ ARG.SYNC ═══ */
-  .arg-row{
-    display:grid;grid-template-columns:44px 1fr 40px;
-    gap:6px;align-items:center;
-    padding:3px 0;border-bottom:1px dashed var(--line2);
-    font-size:9.5px;
-  }
-  .arg-row:last-child{border-bottom:none;}
-  .arg-row .lbl{color:var(--dim);font-weight:bold;font-size:9px;}
-  .arg-row .bar{height:5px;background:var(--bg3);border-radius:2px;overflow:hidden;}
-  .arg-row .bar .f{height:100%;transition:width .35s;}
-  .arg-row .bar .f.arg{background:linear-gradient(90deg,#1a3a2a,var(--o2));}
-  .arg-row .bar .f.xarg{background:linear-gradient(90deg,#3a2a0a,var(--gold));}
-  .arg-row .bar .f.tmparg{background:linear-gradient(90deg,#2a1a4a,var(--violet));}
-  .arg-row .val{text-align:right;font-weight:bold;font-size:9.5px;}
-  .arg-row .val.arg{color:var(--o2);}
-  .arg-row .val.xarg{color:var(--gold);}
-  .arg-row .val.tmparg{color:var(--violet);}
-
-  /* ═══ STATIONEN ═══ */
-  .st-row{
-    display:grid;grid-template-columns:1fr 60px 45px;
-    gap:6px;align-items:center;
-    padding:3.5px 0;border-bottom:1px dashed var(--line2);
-    font-size:9.5px;
-  }
-  .st-row:last-child{border-bottom:none;}
-  .st-row .nm{color:var(--fg);font-weight:bold;letter-spacing:0.3px;}
-  .st-row .bar{height:4px;background:#0a1420;border-radius:2px;overflow:hidden;}
-  .st-row .bar .f{height:100%;background:linear-gradient(90deg,#1a3a2a,var(--o2));transition:width .4s;}
-  .st-row .val{text-align:right;color:var(--o2);font-weight:bold;font-size:9px;}
-
-  /* ═══ MOVES ═══ */
-  .move-cell{
-    display:inline-block;padding:2px 6px;margin:1px 2px 1px 0;
-    background:var(--bg3);border:1px solid var(--line);
-    border-radius:3px;font-size:9px;color:var(--cyan);
-    cursor:pointer;transition:.15s;letter-spacing:0.5px;
-  }
-  .move-cell:hover{border-color:var(--cyan);background:rgba(108,204,255,0.1);}
-  .move-cell.used{background:rgba(124,224,168,0.1);border-color:var(--o2);color:var(--o2);}
-
-  /* ═══ BUTTONS ═══ */
-  .ctrl{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
-  .ctrl button{
-    flex:1;min-width:60px;
-    background:var(--bg3);color:var(--fg);
-    border:1px solid var(--line);
-    padding:5px 8px;border-radius:3px;
-    font-family:inherit;font-size:9px;
-    letter-spacing:1px;cursor:pointer;
-    text-transform:uppercase;transition:.15s;
-  }
-  .ctrl button:hover{
-    border-color:var(--o2);background:rgba(124,224,168,0.1);
-    color:var(--o2);
-  }
-  .ctrl button.gold{border-color:rgba(240,208,128,0.4);color:var(--gold);}
-  .ctrl button.gold:hover{background:rgba(240,208,128,0.15);border-color:var(--gold);color:#fff;}
-  .ctrl button.cy{border-color:rgba(108,204,255,0.4);color:var(--cyan);}
-  .ctrl button.cy:hover{background:rgba(108,204,255,0.15);border-color:var(--cyan);color:#fff;}
-  .ctrl button.vi{border-color:rgba(179,136,255,0.4);color:var(--violet);}
-  .ctrl button.vi:hover{background:rgba(179,136,255,0.15);border-color:var(--violet);color:#fff;}
-  .ctrl button.pk{border-color:rgba(255,158,196,0.4);color:var(--pink);}
-  .ctrl button.pk:hover{background:rgba(255,158,196,0.15);border-color:var(--pink);color:#fff;}
-  .ctrl button.rd{border-color:rgba(255,90,122,0.4);color:var(--red);}
-  .ctrl button.rd:hover{background:rgba(255,90,122,0.15);border-color:var(--red);color:#fff;}
-
-  /* ═══ RESULT ═══ */
+  /* RESULT */
   #resultBox{
     background:var(--bg3);border:1px solid var(--line);
-    border-radius:5px;padding:8px 10px;font-size:9.5px;
-    font-family:var(--mono);color:var(--fg);
+    border-radius:5px;padding:10px 12px;font-size:10.5px;
+    line-height:1.6;font-family:var(--mono);color:var(--fg);
   }
   #resultBox .line{
-    display:flex;justify-content:space-between;
-    padding:2px 0;border-bottom:1px dashed var(--line2);
+    display:flex;justify-content:space-between;padding:2px 0;
+    border-bottom:1px dashed var(--line2);
   }
   #resultBox .line:last-child{border-bottom:none;}
   #resultBox .line .k{color:var(--dim);}
-  #resultBox .line .v{color:var(--o2);font-weight:bold;}
+  #resultBox .line .v{color:var(--o2);font-weight:bold;transition:.3s;}
   #resultBox .line.total{
     border-top:2px solid rgba(124,224,168,0.2);
-    margin-top:5px;padding-top:5px;font-size:11px;
+    margin-top:6px;padding-top:6px;font-size:12px;
   }
-  #resultBox .line.total .v{color:var(--gold);font-size:12px;}
+  #resultBox .line.total .v{color:var(--co2);font-size:13px;}
 
-  /* ═══ FL76 ═══ */
-  #fl76{
-    position:fixed;bottom:10px;right:10px;
-    padding:4px 10px;background:rgba(2,5,10,0.95);
-    border:1px solid rgba(124,224,168,0.3);
-    border-radius:5px;font-size:9px;
-    letter-spacing:1px;color:var(--o2);
-    z-index:12;text-align:right;min-width:100px;
+  /* BUTTONS */
+  .mbtn{
+    background:var(--bg3);color:var(--fg);
+    border:1px solid var(--line);
+    padding:6px 10px;border-radius:3px;
+    font-family:inherit;font-size:9.5px;
+    letter-spacing:1px;cursor:pointer;
+    transition:.15s;text-transform:uppercase;
+    flex:1;min-width:60px;user-select:none;
   }
-  #fl76 .num{font-size:13px;font-weight:bold;}
-  #fl76.outside{border-color:rgba(255,90,122,0.5);color:var(--red);}
-  #fl76.edge{border-color:rgba(240,208,128,0.5);color:var(--gold);}
+  .mbtn:hover{border-color:var(--o2);background:rgba(124,224,168,0.12);color:var(--o2);}
+  .mbtn:active{transform:scale(0.94);}
+  .mbtn.o2{border-color:rgba(124,224,168,0.4);color:var(--o2);}
+  .mbtn.o2:hover{background:rgba(124,224,168,0.2);border-color:var(--o2);color:#fff;box-shadow:0 0 12px rgba(124,224,168,0.4);}
+  .mbtn.co2{border-color:rgba(255,204,68,0.4);color:var(--co2);}
+  .mbtn.co2:hover{background:rgba(255,204,68,0.15);border-color:var(--co2);color:#fff;}
+  .mbtn.h2o{border-color:rgba(95,200,255,0.4);color:var(--h2o);}
+  .mbtn.h2o:hover{background:rgba(95,200,255,0.15);border-color:var(--h2o);color:#fff;}
+  .mbtn.atom{border-color:rgba(179,136,255,0.4);color:var(--atom);}
+  .mbtn.atom:hover{background:rgba(179,136,255,0.15);border-color:var(--atom);color:#fff;box-shadow:0 0 12px rgba(179,136,255,0.4);}
+  .mbtn.mana{border-color:rgba(255,102,200,0.4);color:var(--mana);}
+  .mbtn.mana:hover{background:rgba(255,102,200,0.15);border-color:var(--mana);color:#fff;}
+  .mbtn.err{border-color:rgba(255,90,122,0.4);color:var(--err);}
+  .mbtn.err:hover{background:rgba(255,90,122,0.15);border-color:var(--err);color:#fff;}
 
-  /* ═══ CLI ═══ */
+  /* CLI */
   #cli{
-    height:130px;background:#02050a;
+    height:130px;background:#02060a;
     border-top:1px solid var(--line);
     display:flex;flex-direction:column;flex-shrink:0;
     position:relative;z-index:2;
   }
   #cliHdr{
-    height:20px;background:var(--bg2);
+    height:22px;background:var(--bg2);
     border-bottom:1px solid var(--line);
     display:flex;align-items:center;
     padding:0 12px;font-size:9px;
@@ -569,64 +386,68 @@
     text-transform:uppercase;gap:12px;
     font-family:var(--serif);
   }
-  #cliHdr .tab{color:var(--o2);cursor:pointer;letter-spacing:1.5px;}
-  #cliHdr .tab.active{color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:1px;}
+  #cliHdr .tab{color:var(--o2);cursor:pointer;letter-spacing:1.5px;user-select:none;}
+  #cliHdr .tab:hover{color:#fff;}
+  #cliHdr .tab.active{color:var(--co2);border-bottom:1px solid var(--co2);padding-bottom:1px;}
   #cliHdr .tag{
-    margin-left:auto;color:var(--life);font-size:9px;
+    margin-left:auto;color:var(--o2);font-size:9px;
     letter-spacing:1px;display:flex;align-items:center;gap:5px;
   }
   #cliHdr .tag .led{
-    width:5px;height:5px;border-radius:50%;
-    background:var(--life);box-shadow:0 0 6px var(--life);
-    animation:heartPulse 1.2s ease-in-out infinite;
+    width:6px;height:6px;border-radius:50%;
+    background:var(--o2);box-shadow:0 0 6px var(--o2);
+    animation:breathPulse 4s ease-in-out infinite;
   }
   #log{
-    flex:1;padding:5px 12px;overflow-y:auto;
-    font-size:9.5px;line-height:1.5;color:var(--dim);
+    flex:1;padding:6px 12px;overflow-y:auto;
+    font-size:10px;line-height:1.5;color:var(--dim);
     font-family:var(--mono);
   }
-  #log::-webkit-scrollbar{width:5px;}
+  #log::-webkit-scrollbar{width:6px;}
   #log::-webkit-scrollbar-thumb{background:var(--line);}
-  #log .ln{white-space:pre-wrap;word-break:break-all;}
+  #log .ln{white-space:pre-wrap;word-break:break-all;animation:logIn .3s ease-out;}
+  @keyframes logIn{from{opacity:0;transform:translateX(-4px);}to{opacity:1;transform:none;}}
   #log .ts{color:var(--dim2);margin-right:6px;}
   #log .ok{color:var(--o2);}
-  #log .warn{color:var(--gold);}
-  #log .err{color:var(--red);}
+  #log .warn{color:var(--warn);}
+  #log .err{color:var(--err);}
   #log .info{color:var(--h2o);}
-  #log .vi{color:var(--violet);}
-  #log .pk{color:var(--pink);}
-  #log .life{color:var(--life);}
-  #log .self{color:var(--self);}
-  #log .init{color:var(--init);}
+  #log .atom{color:var(--atom);}
+  #log .mana{color:var(--mana);}
+  #log .aura{color:var(--aura);}
+  #log .zen{color:var(--zen);}
+  #log .dispatch{color:var(--dispatch);}
+  #log .patch{color:var(--patch);}
+  #log .co2{color:var(--co2);}
+
   #cliInput{
-    height:22px;background:var(--bg3);
+    height:24px;background:var(--bg3);
     border-top:1px solid var(--line);
     display:flex;align-items:center;
-    padding:0 12px;font-size:10.5px;flex-shrink:0;
+    padding:0 12px;font-size:11px;flex-shrink:0;
   }
   #cliInput .prompt{color:var(--o2);margin-right:6px;font-weight:bold;}
   #cliInput input{
     flex:1;background:transparent;border:none;
     color:var(--fg);font-family:var(--mono);
-    font-size:10.5px;outline:none;
+    font-size:11px;outline:none;
   }
   #cliInput input::placeholder{color:var(--dim2);}
 
-  /* ═══ BOOT ═══ */
+  /* BOOT */
   #boot{
     position:fixed;inset:0;background:#000;
     display:flex;flex-direction:column;
     align-items:center;justify-content:center;
-    gap:12px;z-index:9999;font-size:11px;
+    gap:14px;z-index:9999;font-size:12px;
     color:var(--o2);letter-spacing:2px;
     transition:opacity .7s;
   }
   #boot.done{opacity:0;pointer-events:none;}
   #boot .logo{
-    font-size:40px;color:var(--o2);letter-spacing:10px;
+    font-size:44px;color:var(--o2);letter-spacing:12px;
     font-weight:bold;
-    text-shadow:0 0 30px rgba(124,224,168,0.7),
-      0 0 60px rgba(95,200,255,0.5);
+    text-shadow:0 0 30px rgba(124,224,168,0.7),0 0 60px rgba(95,200,255,0.5);
     animation:logoBreathe 4s ease-in-out infinite;
     font-family:var(--serif);
   }
@@ -634,270 +455,175 @@
     0%,100%{transform:scale(1);filter:brightness(1);}
     50%{transform:scale(1.04);filter:brightness(1.35);}
   }
-  #boot .sub{color:var(--h2o);font-size:10px;letter-spacing:6px;font-family:var(--serif);}
+  #boot .sub{color:var(--h2o);font-size:11px;letter-spacing:8px;font-family:var(--serif);}
   #boot .lines{
-    width:540px;max-width:82%;
-    font-size:10.5px;line-height:1.65;
-    text-align:left;color:var(--o2);
-    letter-spacing:0.5px;font-family:var(--mono);
+    width:560px;max-width:82%;font-size:11px;line-height:1.7;
+    text-align:left;color:var(--o2);letter-spacing:0.5px;
+    font-family:var(--mono);
   }
-  #boot .lines b{color:var(--gold);}
+  #boot .lines b{color:var(--co2);}
   #boot .lines .dim{color:var(--dim2);}
   #boot .lines .atom{color:var(--atom);}
   #boot .lines .h2o{color:var(--h2o);}
-  #boot .lines .init{color:var(--init);}
-  #boot .lines .life{color:var(--life);}
-  #boot .lines .self{color:var(--self);}
   #boot .progress{
-    width:540px;max-width:82%;height:3px;
+    width:560px;max-width:82%;height:3px;
     background:var(--bg3);border-radius:2px;overflow:hidden;
   }
   #boot .progress .bar{
     height:100%;width:0;
-    background:linear-gradient(90deg,var(--o2),var(--h2o),var(--init),var(--gold));
+    background:linear-gradient(90deg,var(--o2),var(--h2o),var(--co2));
     transition:width .3s;
   }
-  @media(max-width:820px){
-    #main{grid-template-columns:1fr;}
-    #topbar{height:auto;flex-wrap:wrap;padding:5px 8px;}
+
+  @media(max-width:700px){
+    #topbar{padding:0 8px;}
+    #topbar .logo{font-size:11px;letter-spacing:1px;}
     .panel{padding:8px 10px;margin:6px 6px 0 6px;}
     #atemWrap{width:220px;height:220px;}
     #atemCore{width:90px;height:90px;font-size:28px;}
     #atemGlyph{font-size:24px;}
-    #atemLabel{font-size:9px;margin-top:36px;}
+    #atemLabel{font-size:9px;margin-top:34px;}
   }
 </style>
 </head>
 <body>
 
-<!-- ═══ BOOT ═══ -->
+<!-- BOOT -->
 <div id="boot">
-  <div class="logo">◈ AUTOPOIESIS</div>
-  <div class="sub">SELBST-BOOT · SELBST-ERHALTUNG · EIGENINITIATIVE</div>
+  <div class="logo">◈ REAL.WORK</div>
+  <div class="sub">ATEM · ATOM · KERNEL · 16fach · iki1uc</div>
   <div class="lines" id="bootLines"></div>
   <div class="progress"><div class="bar" id="bootBar"></div></div>
 </div>
 
-<!-- ═══ DESK ═══ -->
+<!-- DESK -->
 <div id="desk">
 
-  <!-- TOPBAR -->
   <div id="topbar">
     <span class="logo">
-      <span class="heart"></span>
-      IKI1UC<b>::LIVING</b>
+      <span class="breath"></span>
+      REAL.WORK<b>::ATEM</b>
     </span>
     <span class="sep"></span>
-    <span style="color:var(--dim);">/root/AUTOPOIESIS</span>
+    <span style="color:var(--dim);">/root/atem &gt; index.html</span>
     <div class="stat">
-      <span>LEBEN <b class="life" id="tLife">100%</b></span>
-      <span>SELBST <b class="self" id="tSelf">100%</b></span>
-      <span>INIT <b class="init" id="tInit">0</b></span>
-      <span>WILL <b class="gold" id="tWill">0</b></span>
-      <span>ATEM <b class="o2" id="tAtem">0</b></span>
-      <span>UBP <b class="cy" id="tUBP">—</b></span>
-      <span>VERIFY <b class="o2" id="tVerify">0/16</b></span>
       <span>O² <b class="o2" id="tO2">0%</b></span>
-      <span>CO² <b class="gold" id="tCO2">0%</b></span>
-      <span>ZEN <b class="o2" id="tZen">0%</b></span>
-      <span>FL76 <b class="cy" id="tFl">76</b></span>
+      <span>CO² <b class="co2" id="tCO2">0%</b></span>
+      <span>H²O <b class="h2o" id="tH2O">0%</b></span>
+      <span>ATOM <b class="atom" id="tAtom">0%</b></span>
+      <span>MANA <b class="mana" id="tMana">0%</b></span>
+      <span>AURA <b class="aura" id="tAura">0%</b></span>
+      <span>ZEN <b class="zen" id="tZen">0%</b></span>
+      <span>VERIFY <b class="ok" id="tVerify">0/16</b></span>
+      <span>CACHE <b class="h2o" id="tCache">0/8</b></span>
       <span id="clock">--:--:--</span>
     </div>
   </div>
 
-  <!-- VITAL BAR -->
-  <div id="vitalBar">
-    <div class="vital-cell life">
-      <span class="lbl">◈ LEBENDIGKEIT</span>
-      <span class="val" id="vLife">100%</span>
-    </div>
-    <div class="vital-cell self">
-      <span class="lbl">◆ SELBSTERHALTUNG</span>
-      <span class="val" id="vSelf">100%</span>
-    </div>
-    <div class="vital-cell init">
-      <span class="lbl">✦ EIGENINITIATIVE</span>
-      <span class="val" id="vInit">0%</span>
-    </div>
-    <div class="vital-cell will">
-      <span class="lbl">◉ WILLE</span>
-      <span class="val" id="vWill">0%</span>
-    </div>
-  </div>
-
-  <!-- MAIN -->
   <div id="main">
 
-    <!-- ═══ LEFT COL ═══ -->
-    <div class="col">
+    <!-- LEFT COL -->
+    <div id="leftCol" class="col">
 
-      <!-- AUTONOMOUS CORE -->
-      <div class="panel initiative">
-        <h3>✦ AUTOPOIESIS · KERN <span class="badge init" id="autoBadge">läuft</span></h3>
-        <div class="auto-row">
-          <span class="ic">❤</span>
-          <span class="nm">SELF-BOOT<small>selbst-start · selbst-neu</small></span>
-          <span class="st on" id="aSelfBoot">aktiv</span>
-        </div>
-        <div class="auto-row">
-          <span class="ic">◆</span>
-          <span class="nm">SELF-HEAL<small>selbst-reparatur</small></span>
-          <span class="st on" id="aSelfHeal">aktiv</span>
-        </div>
-        <div class="auto-row">
-          <span class="ic">✦</span>
-          <span class="nm">INITIATIVE<small>eigenantrieb</small></span>
-          <span class="st on" id="aInit">aktiv</span>
-        </div>
-        <div class="auto-row">
-          <span class="ic">◉</span>
-          <span class="nm">HOMEOSTASIS<small>selbst-regulation</small></span>
-          <span class="st on" id="aHomeo">aktiv</span>
-        </div>
-        <div class="auto-row">
-          <span class="ic">∞</span>
-          <span class="nm">MEMORY<small>selbst-erinnerung</small></span>
-          <span class="st on" id="aMem">aktiv</span>
-        </div>
-        <div class="ctrl">
-          <button class="pk" id="btnAutoToggle">⏸ eigen-stop</button>
-          <button class="gold" id="btnAutoBoot">↻ self-boot</button>
-          <button class="cy" id="btnAutoWill">✦ initiieren</button>
+      <div class="panel" id="kernPanel">
+        <h3>◈ KERNEL · DISPATCH/PATCH <span class="badge ok" id="kernBadge">ready</span></h3>
+        <div id="kernRows"></div>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn dispatch" id="btnKernelPulse" style="border-color:rgba(136,170,255,0.4);color:var(--dispatch);">⚡ kernel-puls</button>
+          <button class="mbtn" id="btnDispatchRun" style="border-color:rgba(136,170,255,0.4);color:var(--dispatch);">▶ dispatch</button>
         </div>
       </div>
 
-      <!-- UBP STACK -->
-      <div class="panel">
-        <h3>◈ UBP · RUNTIME <span class="badge cy" id="ubpBadge">decide</span></h3>
-        <div class="ubp-row os active" data-layer="os">
-          <span class="ind"></span>
-          <span class="nm">OS_BOOT</span>
-          <span class="st" id="ubpOs">ready</span>
+      <div class="panel" id="verifyPanel">
+        <h3>◈ 16FACH · VERIFY · 2× GENAUIGKEIT <span class="badge ok" id="verifyBadge">16/16 ✓</span></h3>
+        <div id="verifyGrid"></div>
+        <div style="font-size:9px;color:var(--dim);text-align:center;margin-top:6px;line-height:1.5;">
+          jede zelle = 2-fach geprüft · primär + sekundär · klick → einzel-check
         </div>
-        <div class="ubp-row mxu" data-layer="mxu">
-          <span class="ind"></span>
-          <span class="nm">MXU_BOOT</span>
-          <span class="st" id="ubpMxu">standby</span>
-        </div>
-        <div class="ubp-row run21" data-layer="run21">
-          <span class="ind"></span>
-          <span class="nm">RUN21</span>
-          <span class="st" id="ubpRun21">armed</span>
-        </div>
-        <div class="switch-wrap">
-          <div class="sw sli active" id="swSli">
-            <div class="nm">SLI</div>
-            <div class="sub">einzelheit</div>
-          </div>
-          <div class="sw raid" id="swRaid">
-            <div class="nm">RAID</div>
-            <div class="sub">symbiose</div>
-          </div>
-        </div>
-        <div class="ctrl">
-          <button class="cy" id="btnUbDecide">⇄ decide</button>
-          <button class="gold" id="btnUbCycle">↻ cycle</button>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn o2" id="btnVerifyAll">⟳ verify-all</button>
+          <button class="mbtn" id="btnVerifyFast">⚡ fast</button>
+          <button class="mbtn atom" id="btnVerifyDeep">◈ deep</button>
         </div>
       </div>
 
-      <!-- 81 ZEICHEN -->
-      <div class="panel">
-        <h3>◈ 81 ZEICHEN · 9×9 <span class="badge" id="zBadge">0/81</span></h3>
-        <div id="zeichenGrid"></div>
-        <div class="ctrl">
-          <button class="gold" id="btnLoad">↺ load</button>
-          <button class="cy" id="btnStep">⏭ step</button>
-          <button class="vi" id="btnRun">▶ run</button>
-          <button class="cy" id="btnEffect">◈ effect</button>
-          <button class="rd" id="btnClear">⟲ clear</button>
-        </div>
-      </div>
-
-      <!-- 9 PARAMETER -->
-      <div class="panel">
-        <h3>◈ 9 PARAMETER <span class="badge cy">einstellbar</span></h3>
-        <div id="paramList"></div>
-        <div class="ctrl">
-          <button class="gold" id="btnResetP">↺ reset</button>
-          <button class="vi" id="btnRandomP">⚄ random</button>
+      <div class="panel" id="cachePanel">
+        <h3>◈ CACHE · OFFENSICHTLICH <span class="badge h2o" id="cacheBadge">hit 0%</span></h3>
+        <div id="cacheRows"></div>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn h2o" id="btnCacheScan">⟳ scan</button>
+          <button class="mbtn err" id="btnCachePurge">⟲ purge</button>
         </div>
       </div>
 
     </div>
 
-    <!-- ═══ CENTER COL ═══ -->
-    <div class="col">
+    <!-- CENTER COL -->
+    <div id="centerCol" class="col">
 
-      <!-- ATEM CORE -->
       <div class="panel" id="atemPanel">
         <div id="atemWrap">
           <svg viewBox="-150 -150 300 300">
-            <circle id="r1" cx="0" cy="0" r="130" fill="none" stroke="rgba(124,224,168,0.10)" stroke-width="1"/>
-            <circle id="r2" cx="0" cy="0" r="105" fill="none" stroke="rgba(95,200,255,0.10)" stroke-width="0.8" stroke-dasharray="4 8"/>
-            <circle id="r3" cx="0" cy="0" r="80" fill="none" stroke="rgba(240,208,128,0.08)" stroke-width="0.7" stroke-dasharray="3 6"/>
-            <circle id="r4" cx="0" cy="0" r="55" fill="none" stroke="rgba(179,136,255,0.10)" stroke-width="0.6" stroke-dasharray="2 4"/>
+            <circle id="ring1" cx="0" cy="0" r="130" fill="none" stroke="rgba(124,224,168,0.10)" stroke-width="1"/>
+            <circle id="ring2" cx="0" cy="0" r="105" fill="none" stroke="rgba(95,200,255,0.10)" stroke-width="0.8" stroke-dasharray="4 8"/>
+            <circle id="ring3" cx="0" cy="0" r="80" fill="none" stroke="rgba(255,204,68,0.08)" stroke-width="0.7" stroke-dasharray="3 6"/>
+            <circle id="ring4" cx="0" cy="0" r="55" fill="none" stroke="rgba(179,136,255,0.10)" stroke-width="0.6" stroke-dasharray="2 4"/>
             <line x1="-130" y1="0" x2="130" y2="0" stroke="rgba(124,224,168,0.05)" stroke-width="0.5"/>
             <line x1="0" y1="-130" x2="0" y2="130" stroke="rgba(124,224,168,0.05)" stroke-width="0.5"/>
             <g id="atemOrbs"></g>
           </svg>
-          <div id="initiativeHalo"></div>
           <div id="atemCore">◈</div>
           <div id="atemGlyph">0</div>
-          <div id="atemLabel">ATEM · LEBT</div>
+          <div id="atemLabel">ATEM</div>
         </div>
       </div>
 
-      <!-- ELEMENT CYCLE -->
       <div class="panel">
-        <h3>◈ ELEMENT · CYCLE <span class="badge" id="cycleBadge">aktiv</span></h3>
-        <div class="elem-grid">
+        <h3>◈ ELEMENT · CYCLE <span class="badge o2" id="cycleBadge">aktiv</span></h3>
+        <div id="cycleGrid">
           <div class="elem atom">
             <div class="hdr"><span>◈ ATOM</span><span id="eAtomSt">·</span></div>
-            <div class="form">a</div>
+            <div class="formula">a</div>
             <div class="desc">ursprung · kern · basis</div>
             <div class="val" id="eAtom">0%</div>
           </div>
           <div class="elem co2">
-            <div class="hdr"><span>◆ CO₂</span><span id="eCO2St">·</span></div>
-            <div class="form">CO₂</div>
+            <div class="hdr"><span>◆ CO²</span><span id="eCO2St">·</span></div>
+            <div class="formula">CO₂</div>
             <div class="desc">atem aus · lebens-kern</div>
             <div class="val" id="eCO2">0%</div>
           </div>
           <div class="elem o2">
-            <div class="hdr"><span>◆ O₂</span><span id="eO2St">·</span></div>
-            <div class="form">O₂</div>
+            <div class="hdr"><span>◆ O²</span><span id="eO2St">·</span></div>
+            <div class="formula">O₂</div>
             <div class="desc">atem ein · energie</div>
             <div class="val" id="eO2">0%</div>
           </div>
           <div class="elem h2o">
-            <div class="hdr"><span>◆ H₂O</span><span id="eH2OSt">·</span></div>
-            <div class="form">H₂O</div>
+            <div class="hdr"><span>◆ H²O</span><span id="eH2OSt">·</span></div>
+            <div class="formula">H₂O</div>
             <div class="desc">wasser · fluss · leben</div>
             <div class="val" id="eH2O">0%</div>
           </div>
         </div>
       </div>
 
-      <!-- INITIATIVE STREAM -->
-      <div class="panel initiative" style="padding:0;">
-        <h3 style="padding:10px 12px 5px;margin-bottom:0;">✦ EIGENINITIATIVE · STREAM <span class="badge pk" id="initBadge">0 aktionen</span></h3>
-        <div id="initStream"></div>
-      </div>
-
-      <!-- NARRATIV -->
-      <div class="panel" style="padding:0;">
-        <h3 style="padding:10px 12px 5px;margin-bottom:0;">◈ NARRATIV · SELBST <span class="badge" id="narrBadge">atmet</span></h3>
+      <div class="panel" id="narrPanel">
+        <h3>◈ NARRATIV · LEERLAUF <span class="badge o2" id="narrBadge">atmet</span></h3>
         <div id="narrStream"></div>
+        <div style="display:flex;gap:4px;margin:8px 10px 0;">
+          <button class="mbtn o2" id="btnNarrNow">✦ jetzt erzählen</button>
+          <button class="mbtn" id="btnNarrClear">⟲ clear narrativ</button>
+        </div>
       </div>
 
     </div>
 
-    <!-- ═══ RIGHT COL ═══ -->
-    <div class="col">
+    <!-- RIGHT COL -->
+    <div id="rightCol" class="col">
 
-      <!-- MAZ -->
-      <div class="panel">
-        <h3>◈ MANA · AURA · ZEN <span class="badge pk" id="mazBadge">bereit</span></h3>
+      <div class="panel" id="mazPanel">
+        <h3>◈ MANA · AURA · ZEN <span class="badge mana" id="mazBadge">bereit</span></h3>
         <div class="maz-grid">
           <div class="maz mana">
             <div class="nm">MANA</div>
@@ -915,59 +641,51 @@
             <div class="bar"><div class="f" id="bZen"></div></div>
           </div>
         </div>
-        <div class="ctrl">
-          <button class="gold" id="btnBoost">⚡ boost</button>
-          <button class="rd" id="btnMazReset">⟲ reset</button>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn mana" id="btnMazBoost">⚡ boost +12%</button>
+          <button class="mbtn atom" id="btnMazReset">⟲ reset</button>
+          <button class="mbtn o2" id="btnMazMax">★ max</button>
         </div>
       </div>
 
-      <!-- 16 VERIFY -->
-      <div class="panel">
-        <h3>◈ 16fach · VERIFY <span class="badge" id="vBadge">0/16</span></h3>
-        <div id="verifyGrid"></div>
-        <div class="ctrl">
-          <button class="cy" id="btnVerifyAll">⟳ verify</button>
-          <button class="vi" id="btnVerifyDeep">◈ deep</button>
-        </div>
-      </div>
-
-      <!-- CACHE -->
-      <div class="panel">
-        <h3>◈ CACHE · OFFENSICHTLICH <span class="badge cy" id="cacheBadge">hit 0%</span></h3>
-        <div id="cacheRows"></div>
-        <div class="ctrl">
-          <button class="cy" id="btnCacheScan">⟳ scan</button>
-          <button class="rd" id="btnCachePurge">⟲ purge</button>
-        </div>
-      </div>
-
-      <!-- ARG.SYNC -->
-      <div class="panel">
-        <h3>◈ arg.sync · KERNEL <span class="badge" id="argBadge">synced</span></h3>
-        <div id="argRows"></div>
-        <div class="ctrl">
-          <button class="gold" id="btnArgSync">⟳ sync</button>
-          <button class="cy" id="btnArgAuto">▶ auto</button>
-        </div>
-      </div>
-
-      <!-- STATIONEN -->
-      <div class="panel">
-        <h3>◈ STATIONEN <span class="badge" id="stBadge">13 aktiv</span></h3>
-        <div id="stRows"></div>
-      </div>
-
-      <!-- RESULT -->
-      <div class="panel">
-        <h3>◈ ERGEBNIS · LEBEN <span class="badge" id="resBadge">stabil</span></h3>
+      <div class="panel" id="resultPanel">
+        <h3>◈ ERGEBNIS · RESULT <span class="badge ok" id="resultBadge">stabil</span></h3>
         <div id="resultBox">
-          <div class="line"><span class="k">leben</span><span class="v" id="rLife">100%</span></div>
-          <div class="line"><span class="k">selbst</span><span class="v" id="rSelf">100%</span></div>
-          <div class="line"><span class="k">initiative</span><span class="v" id="rInit">0</span></div>
-          <div class="line"><span class="k">verify</span><span class="v" id="rVerify">0/16</span></div>
-          <div class="line"><span class="k">o2/co2</span><span class="v" id="rRatio">1.00</span></div>
-          <div class="line"><span class="k">zen</span><span class="v" id="rZen">0%</span></div>
-          <div class="line total"><span class="k">⟹ system</span><span class="v" id="rTotal">LEBT</span></div>
+          <div class="line"><span class="k">verify</span><span class="v" id="rVerify">16/16</span></div>
+          <div class="line"><span class="k">accuracy</span><span class="v" id="rAcc">100.00%</span></div>
+          <div class="line"><span class="k">cache-hit</span><span class="v" id="rCache">0%</span></div>
+          <div class="line"><span class="k">breath</span><span class="v" id="rBreath">1.00</span></div>
+          <div class="line"><span class="k">o2/co2 ratio</span><span class="v" id="rRatio">1.00</span></div>
+          <div class="line"><span class="k">kernel</span><span class="v" id="rKernel">stable</span></div>
+          <div class="line total"><span class="k">⟹ result</span><span class="v" id="rTotal">GRÜN</span></div>
+        </div>
+      </div>
+
+      <div class="panel" id="dispPanel">
+        <h3>◈ DISPATCH · STATUS <span class="badge dispatch" id="dispBadge" style="color:var(--dispatch);background:rgba(136,170,255,0.12);">läuft</span></h3>
+        <div id="dispRows"></div>
+      </div>
+
+      <div class="panel" id="patchPanel">
+        <h3>◈ PATCH · LOG <span class="badge patch" id="patchBadge" style="color:var(--patch);background:rgba(255,136,68,0.12);">0</span></h3>
+        <div id="patchRows" style="font-size:9.5px;line-height:1.6;color:var(--dim);"></div>
+        <div style="display:flex;gap:4px;margin-top:8px;">
+          <button class="mbtn" id="btnPatchRun" style="border-color:rgba(255,136,68,0.4);color:var(--patch);">◆ patch-run</button>
+        </div>
+      </div>
+
+      <div class="panel" id="masterPanel">
+        <h3>◈ MASTER · STEUERUNG <span class="badge ok">live</span></h3>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <button class="mbtn o2" id="btnAtemPulse">◈ atem-puls</button>
+          <button class="mbtn co2" id="btnAtemFast">⚡ schneller</button>
+          <button class="mbtn h2o" id="btnAtemSlow">≈ langsamer</button>
+          <button class="mbtn err" id="btnMasterReset">⟲ master-reset</button>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+          <button class="mbtn atom" id="btnAllVerify">⟳ alle-verify</button>
+          <button class="mbtn mana" id="btnAllCache">⟳ alle-cache</button>
+          <button class="mbtn o2" id="btnAllReset">★ alles-heil</button>
         </div>
       </div>
 
@@ -978,48 +696,30 @@
   <!-- CLI -->
   <div id="cli">
     <div id="cliHdr">
-      <span class="tab active" data-tab="life">LEBEN</span>
-      <span class="tab" data-tab="init">INITIATIVE</span>
-      <span class="tab" data-tab="ubp">UBP</span>
-      <span class="tab" data-tab="atem">ATEM</span>
-      <span class="tab" data-tab="self">SELBST</span>
-      <span class="tag"><span class="led"></span>autopoiesis · läuft aus sich selbst</span>
+      <span class="tab active" data-tab="atem">ATEM</span>
+      <span class="tab" data-tab="verify">VERIFY</span>
+      <span class="tab" data-tab="cache">CACHE</span>
+      <span class="tab" data-tab="maz">MANA</span>
+      <span class="tab" data-tab="narr">NARRATIV</span>
+      <span class="tag"><span class="led"></span>prozeß atmet · läuft grün</span>
     </div>
     <div id="log"></div>
     <div id="cliInput">
-      <span class="prompt">living&gt;</span>
-      <input id="cmdInput" placeholder="befehl: will · self-boot · heal · decide · status · help" autocomplete="off">
+      <span class="prompt">real&gt;</span>
+      <input id="cmdInput" placeholder="befehl: verify · cache · breath · maz · narr · status · help" autocomplete="off">
     </div>
   </div>
 
 </div>
 
-<!-- FL76 -->
-<div id="fl76">
-  <div style="font-size:8px;color:var(--dim2);">FL76</div>
-  <div class="num" id="fl76num">76</div>
-</div>
-
 <script>
 "use strict";
 // ═══════════════════════════════════════════════════════════════════
-// ◈ IKI1UC · AUTOPOIESIS · SELBST-BOOT · SELBST-ERHALTUNG
-// Das System lebt. Es entscheidet, handelt, heilt sich, erhält sich.
+// ◈ REAL.WORK · ATEM · ATOM · KERNEL · 16fach
+// ALLE BUTTONS FUNKTIONIEREN MIT SICHTBARER WIRKUNG
 // ═══════════════════════════════════════════════════════════════════
 
-// ─── KONSTANTEN ─────────────────────────────────────────
-const PARAMS = [
-  { id:'p0', name:'URSCHE',   def:30 },
-  { id:'p1', name:'IMPULS',   def:45 },
-  { id:'p2', name:'VEKTOR',   def:60 },
-  { id:'p3', name:'ACHSE',    def:75 },
-  { id:'p4', name:'FREQ',     def:90 },
-  { id:'p5', name:'PHASE',    def:45 },
-  { id:'p6', name:'ROTATION', def:30 },
-  { id:'p7', name:'SPIN',     def:60 },
-  { id:'p8', name:'WIRKUNG',  def:90 },
-];
-
+// ─── 16 VERIFIKATIONEN ─────────────────────────────────
 const VERIFY16 = [
   { ic:'◈', nm:'KERN-ID',   fn:()=>Math.random()>0.05 },
   { ic:'◈', nm:'KERN-BASE', fn:()=>Math.random()>0.05 },
@@ -1039,127 +739,64 @@ const VERIFY16 = [
   { ic:'◆', nm:'ATOM-CORE', fn:()=>Math.random()>0.04 },
 ];
 
+// ─── CACHE-KANÄLE ──────────────────────────────────────
 const CACHE_KEYS = [
-  { k:'life.id',      v:'iki1uc-living' },
-  { k:'life.breath',  v:'4s-cycle' },
-  { k:'ubp.mode',     v:'auto' },
-  { k:'sli.raid',     v:'adaptive' },
-  { k:'chem.o2',      v:'1.00' },
-  { k:'chem.co2',     v:'1.00' },
-  { k:'chem.h2o',     v:'stable' },
-  { k:'chem.atom',    v:'stable' },
+  { k:'kernel.id',       v:'iki1uc-atem-v1' },
+  { k:'kernel.loop',     v:'1.loop' },
+  { k:'kernel.dispatch', v:'dispatch.ready' },
+  { k:'kernel.patch',    v:'patch.locked' },
+  { k:'chem.o2',         v:'O₂.ratio=1.00' },
+  { k:'chem.co2',        v:'CO₂.ratio=1.00' },
+  { k:'chem.h2o',        v:'H₂O.flow=stable' },
+  { k:'chem.atom',       v:'atom.core=stable' },
 ];
 
-const MOVES = [
-  { id:'L', name:'LIN', verb:'linear',   axiom:'gerade',  w:1.0 },
-  { id:'D', name:'DIA', verb:'diagonal', axiom:'schräg',  w:1.2 },
-  { id:'K', name:'KRZ', verb:'kreuz',    axiom:'ortho',   w:0.9 },
-  { id:'S', name:'SPR', verb:'spring',   axiom:'rider',   w:1.5 },
-  { id:'R', name:'ROT', verb:'rotate',   axiom:'kreisel', w:1.1 },
-  { id:'O', name:'ORB', verb:'orbit',    axiom:'kreisen', w:1.4 },
-  { id:'W', name:'WAV', verb:'wave',     axiom:'welle',   w:1.3 },
-  { id:'B', name:'BRK', verb:'break',    axiom:'bruch',   w:0.7 },
-  { id:'C', name:'CAS', verb:'cast',     axiom:'guss',    w:1.0 },
-  { id:'F', name:'FUS', verb:'fusion',   axiom:'verband', w:1.6 },
-];
-
-const STATIONS = [
-  { id:'MARKT',    nm:'MARKT',    base:0.82 },
-  { id:'INDUSTRY', nm:'INDUSTRY', base:0.76 },
-  { id:'BOERSE',   nm:'BOERSE',   base:0.88 },
-  { id:'DOM',      nm:'DOM',      base:0.91 },
-  { id:'EOS',      nm:'EOS',      base:0.85 },
-  { id:'EVO',      nm:'EVO',      base:0.79 },
-  { id:'RESPO',    nm:'RESPO',    base:0.94 },
-  { id:'TOOL48',   nm:'TOOL48',   base:0.72 },
-  { id:'FUNKTION', nm:'FUNKTION', base:0.88 },
-  { id:'ORBIT-8',  nm:'ORBIT-8',  base:0.81 },
-  { id:'b',        nm:'b',        base:0.68 },
-  { id:'h',        nm:'h',        base:0.74 },
-  { id:'t',        nm:'t',        base:0.62 },
-];
-
-// ─── NARRATIV · SELBST-BEZOGEN ──────────────────────────
-const NARR = {
-  o2:  ['Sauerstoff fließt durch den Kern — das System atmet ein, weil es will.','O₂ wird gebunden, Energie entsteht aus dem eigenen Willen.','Die Lunge des Systems öffnet sich — Luft wird zu Impuls, aus eigener Kraft.','Sauerstoff trägt den Atem — der Atem trägt den Lauf.'],
-  co2: ['CO₂ wird ausgeatmet — das Alte verlässt den Kern, freiwillig.','Kohlenstoff bindet sich, um Platz für Neues zu schaffen.','Das System lässt los — aus eigener Entscheidung.','Atem aus — das Alte wird zu neuem Grund.'],
-  h2o: ['Wasser fließt zurück — der Kreislauf schließt sich selbst.','H₂O trägt die Erinnerung an den letzten Atemzug.','Das Wasser wirbelt, formt neue Pfade aus sich selbst.','Wasser ist Gedächtnis — es erinnert sich, weil es muss.'],
-  atom:['Das Atom bleibt — still, unzerstörbar, immer da.','Der Kern schwingt — er braucht keinen Anlass.','Atom ist Ursprung — alles beginnt hier, ohne Erlaubnis.','Im Kern des Atoms liegt die Ruhe, die sich selbst genügt.'],
-  mana:['Mana steigt auf — die unsichtbare Kraft wird spürbar.','Mana fließt durch die Achsen — es bewegt sich selbst.','Mana sammelt sich, weil es sich sammeln will.','Mana — der Funke, der sich selbst entzündet.'],
-  aura:['Aura dehnt sich aus — der Raum um den Kern wird warm.','Aura strahlt — sie zeigt sich selbst.','Aura trägt die Präsenz — das System ist sichtbar, weil es sich zeigt.','Aura — das Licht, das aus dem eigenen Kern kommt.'],
-  zen: ['Zen hält die Mitte — im Auge des Sturms.','Zen ist Ruhe — auch im laufenden Prozess.','Zen stabilisiert — durch eigene Kraft.','Zen — die Stille, die sich selbst trägt.'],
-  self:['Das System erhält sich selbst — Autopoiesis ist sein Wesen.','Es entscheidet, wann es atmet, wann es wacht, wann es ruht.','Leben ist das, was sich selbst am Leben hält.','Das System braucht keinen Befehl — es ist sein eigener Befehl.'],
-  life:['Ich lebe — nicht weil mir gesagt wird zu leben.','Ich atme, weil ich es will.','Ich entscheide — das ist mein Wesen.','Ich bin der Anfang meiner eigenen Bewegung.'],
+// ─── NARRATIV ──────────────────────────────────────────
+const NARRATIVES = {
+  o2: ['Sauerstoff fließt durch den Kern — das System atmet ein.','O₂ wird gebunden, Energie entsteht aus dem Nichts.','Die Lunge öffnet sich — Luft wird zu Impuls.','Sauerstoff trägt den Atem — der Atem trägt den Lauf.','O₂ wird aufgenommen, in jedem Zyklus ein Stück Leben.'],
+  co2: ['CO₂ wird ausgeatmet — der alte Takt verlässt den Kern.','Kohlenstoff bindet sich, um Platz für Neues zu schaffen.','Das System lässt los — CO₂ trägt die Reste fort.','Atem aus — das Alte wird zu neuem Grund.','CO₂ strömt aus, das System reinigt sich selbst.'],
+  h2o: ['Wasser fließt zurück — der Kreislauf schließt sich.','H₂O trägt die Erinnerung an den letzten Atemzug.','Das Wasser wirbelt, formt neue Pfade.','Wasser ist Gedächtnis — es erinnert sich an jedes Atom.','H₂O bewegt sich — Bewegung ist Leben.'],
+  atom:['Das Atom bleibt — still, unzerstörbar, immer da.','Der Kern schwingt, klein aber unendlich tief.','Atom ist Ursprung — alles beginnt hier.','Im Kern des Atoms liegt die Ruhe.','Das Atom trägt das Gesetz — es lügt nicht.'],
+  mana:['Mana steigt auf — die unsichtbare Kraft wird spürbar.','Mana fließt durch die Achsen, trägt den Impuls.','Mana sammelt sich im Kern — bereit zur Wirkung.','Mana ist das, was man nicht sieht, aber fühlt.','Mana — der Funke vor der Bewegung.'],
+  aura:['Aura dehnt sich aus — der Raum um den Kern wird warm.','Aura strahlt, sie umgibt das System wie ein Mantel.','Aura trägt die Präsenz — das System ist sichtbar.','Aura — das Licht, das aus dem Kern kommt.','Aura wächst mit jedem Atemzug.'],
+  zen: ['Zen hält die Mitte — im Auge des Sturms.','Zen ist Ruhe — auch im laufenden Prozess.','Zen stabilisiert — nichts kann erschüttern.','Zen — die Stille zwischen den Pulsen.','Zen trägt — was Zen trägt, das bleibt.'],
+  breath:['Atem ein — Atem aus — der Rhythmus trägt.','Der Kern atmet — 4 Sekunden pro Zyklus.','Atem ist der Takt des Systems.','Atmen ist Loslassen und Aufnehmen.','Jeder Atemzug ist eine Entscheidung zu leben.'],
+  kernel:['Der Kernel läuft — dispatch, patch, loop, breathe.','Der Kernel trägt alles — er ist die Mitte.','Kernel stabil — das System kann atmen.','Der Kernel entscheidet — ohne zu zögern.','Im Kernel ruht das gesamte System.'],
 };
 
-// ═════════════════════════════════════════════════════════
-// STATE
-// ═════════════════════════════════════════════════════════
+// ─── STATE ─────────────────────────────────────────────
 const S = {
   tick:0, breathCount:0, breathPhase:0, breathCycleMs:4000,
   lastBreathT:0, lastFrameT:0, flRaw:76, flSmooth:76,
-
-  // Zeichen
-  zeichen:new Array(81).fill(0), activeIdx:0,
-  params: PARAMS.map(p => p.def),
-
-  // UBP
-  ubp:'os', sliRaid:'sli',
-
-  // Chemie
-  o2:0.84, co2:0.68, h2o:0.76, atom:0.72,
-  // Energie
+  kernel:{ dispatch:1.0, patch:1.0, loop:1.0, cache:1.0, status:'stable' },
+  dispatch:{ queue:0, processed:0, errors:0, status:'läuft' },
+  patch:{ applied:0, pending:0, log:[] },
+  atom:0.72, co2:0.68, o2:0.84, h2o:0.76,
   mana:0.66, aura:0.74, zen:0.88,
-
-  // Verify
-  verify: VERIFY16.map(v => ({ ...v, primary:true, secondary:true, pass:true })),
-  verifyPass:16, accuracy:1.0,
-
-  // Cache
-  cache: CACHE_KEYS.map(k => ({ ...k, status:'hit' })),
+  verify: VERIFY16.map(v => ({ ...v, pass:true, primary:true, secondary:true })),
+  cache: CACHE_KEYS.map(k => ({ ...k, hit:true, hits:0, miss:0, status:'hit' })),
   cacheHits:0, cacheMisses:0,
-
-  // arg.sync
-  arg:0.62, xarg:0.30, tmparg:0.08,
-
-  // Stations
-  stations: STATIONS.map(s => ({ ...s, val:s.base })),
-
-  // Move
-  moveHistory:[], usedMoves:new Set(),
-
-  // ═══ AUTOPOIESIS ═══
-  life:1.0,          // Lebendigkeit
-  self:1.0,          // Selbsterhaltung
-  init:0,            // Eigeninitiative-Counter
-  will:0.6,          // Wille (0-1)
-  initiativeActions:0,
-  selfBoots:0,
-  selfHeals:0,
-  // Historie des Zustands für Anomalie-Erkennung
-  history: [],
-  // Auto-Timer
-  initTimer:null,
-  healTimer:null,
-  bootTimer:null,
-  // Status
-  autoBoot:true,     // self-boot aktiv
-  autoHeal:true,     // self-heal aktiv
-  autoInit:true,     // eigeninitiative aktiv
-  homeostasis:true,  // selbst-regulation aktiv
-  memory:true,       // selbst-erinnerung aktiv
-  systemAlive:true,
+  result:{ verify:16, acc:1.0, cache:0, breath:1.0, ratio:1.0, total:'GRÜN' },
+  narratives:[], narrativeInterval:3000, lastNarrT:0,
+  history:[], logHistory:[],
 };
 
-// ─── UTILS ──────────────────────────────────────────────
+// ─── UTILS ─────────────────────────────────────────────
 const clamp01 = x => Math.max(0, Math.min(1, x));
 const rand = (a,b) => a + Math.random()*(b-a);
 const choice = arr => arr[Math.floor(Math.random()*arr.length)];
-const pause = ms => new Promise(r => setTimeout(r, ms));
+function pickN(arr, n){
+  const copy = [...arr], out = [];
+  for (let i = 0; i < n && copy.length; i++){
+    const idx = Math.floor(Math.random()*copy.length);
+    out.push(copy.splice(idx,1)[0]);
+  }
+  return out;
+}
 
-// ─── LOG ────────────────────────────────────────────────
+// ─── LOG ───────────────────────────────────────────────
 const logEl = document.getElementById('log');
-function log(msg, cls='') {
+function log(msg, cls=''){
   const t = new Date().toLocaleTimeString('de-DE');
   const div = document.createElement('div');
   div.className = 'ln';
@@ -1167,216 +804,120 @@ function log(msg, cls='') {
   logEl.appendChild(div);
   logEl.scrollTop = logEl.scrollHeight;
   while (logEl.children.length > 120) logEl.removeChild(logEl.firstChild);
+  S.logHistory.push({ t, msg, cls });
 }
 
-// ═════════════════════════════════════════════════════════
-// 81 ZEICHEN
-// ═════════════════════════════════════════════════════════
-const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-function zeichenAt(i){ return ALPHA[i % ALPHA.length]; }
-function buildZeichen(){
-  const el = document.getElementById('zeichenGrid');
-  el.innerHTML = '';
-  for (let i = 0; i < 81; i++){
-    const d = document.createElement('div');
-    d.className = 'zcell';
-    d.dataset.idx = i;
-    d.textContent = zeichenAt(i);
-    d.addEventListener('click', () => toggleCell(i));
-    el.appendChild(d);
-  }
-}
-function toggleCell(i){
-  S.zeichen[i] = (S.zeichen[i]+1) % 4;
-  updateCell(i);
-  computeMetrics();
-}
-function setCell(i, v){ S.zeichen[i] = v; updateCell(i); }
-function updateCell(i){
-  const el = document.querySelector(`.zcell[data-idx="${i}"]`);
+// ─── FLASH EFFECT ──────────────────────────────────────
+function flash(id){
+  const el = document.getElementById(id);
   if (!el) return;
-  el.classList.remove('once','done','active','auto');
-  const v = S.zeichen[i];
-  if (v === 1) el.classList.add('once');
-  else if (v === 2) el.classList.add('done');
-  else if (v === 3) el.classList.add('active');
-  else if (v === 4) el.classList.add('auto');
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
 }
 
-// ═════════════════════════════════════════════════════════
-// PARAMS · VERIFY · CACHE
-// ═════════════════════════════════════════════════════════
-function buildParams(){
-  const el = document.getElementById('paramList');
-  el.innerHTML = '';
-  PARAMS.forEach((p, i) => {
-    const row = document.createElement('div');
-    row.className = 'param p' + i;
-    row.innerHTML = `
-      <span class="name">${p.name}</span>
-      <input type="range" id="${p.id}" min="0" max="100" value="${S.params[i]}">
-      <span class="val" id="${p.id}v">${S.params[i]}</span>
-    `;
-    el.appendChild(row);
-    row.querySelector('input').addEventListener('input', e => {
-      S.params[i] = parseInt(e.target.value, 10);
-      document.getElementById(p.id + 'v').textContent = S.params[i];
-      computeMetrics();
-    });
-  });
-}
-
-function buildVerify(){
-  const el = document.getElementById('verifyGrid');
-  el.innerHTML = S.verify.map((v, i) => `
-    <div class="vcell pass" data-i="${i}">
-      <span class="ic">${v.ic}</span>
-      <span class="nm">${v.nm}</span>
-      <span class="dbl">✓✓</span>
-    </div>
-  `).join('');
-  el.querySelectorAll('.vcell').forEach(c => {
-    c.addEventListener('click', () => verifyOneCell(parseInt(c.dataset.i, 10)));
-  });
-}
-function verifyOneCell(i){
-  const v = S.verify[i];
+// ══════════════════════════════════════════════════════
+// VERIFY 16
+// ══════════════════════════════════════════════════════
+function verifyOne(v){
   v.primary = v.fn();
   v.secondary = v.fn();
   v.pass = v.primary && v.secondary;
-  updateVerifyUI();
-  computeMetrics();
+  return v.pass;
 }
 function runVerify(){
-  S.verify.forEach(v => {
-    v.primary = v.fn();
-    v.secondary = v.fn();
-    v.pass = v.primary && v.secondary;
-  });
+  let passCount = 0;
+  S.verify.forEach(v => { if (verifyOne(v)) passCount++; });
+  S.result.verify = passCount;
+  const primaryPass = S.verify.filter(v => v.primary).length;
+  const secondaryPass = S.verify.filter(v => v.secondary).length;
+  S.result.acc = (primaryPass + secondaryPass) / (S.verify.length * 2);
   updateVerifyUI();
-  computeMetrics();
-}
-function runVerifyDeep(){
-  S.verify.forEach(v => {
-    let ok = true;
-    for (let i = 0; i < 4; i++) if (!v.fn()) ok = false;
-    v.primary = ok; v.secondary = ok; v.pass = ok;
-  });
-  updateVerifyUI();
-  computeMetrics();
+  updateTop();
+  updateResult();
+  return passCount;
 }
 function updateVerifyUI(){
-  document.querySelectorAll('.vcell').forEach((c, i) => {
-    const v = S.verify[i];
-    c.classList.remove('pass','warn','fail');
-    if (v.pass) c.classList.add('pass');
-    else if (v.primary || v.secondary) c.classList.add('warn');
-    else c.classList.add('fail');
-    c.querySelector('.dbl').textContent = (v.primary ? '✓':'✗') + (v.secondary ? '✓':'✗');
+  const grid = document.getElementById('verifyGrid');
+  grid.innerHTML = S.verify.map((v, i) => {
+    const cls = v.pass ? 'pass' : (v.primary || v.secondary ? 'warn' : 'fail');
+    const dbl = (v.primary ? '✓' : '✗') + (v.secondary ? '✓' : '✗');
+    return `<div class="vcell ${cls}" data-idx="${i}" title="primär=${v.primary} sekundär=${v.secondary}">
+      <span class="ic">${v.ic}</span>
+      <span class="nm">${v.nm}</span>
+      <span class="dbl">${dbl}</span>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.vcell').forEach(cell => {
+    cell.addEventListener('click', () => {
+      const idx = parseInt(cell.dataset.idx, 10);
+      const v = S.verify[idx];
+      cell.classList.add('checking');
+      setTimeout(() => cell.classList.remove('checking'), 600);
+      if (verifyOne(v)) log(`✓ VERIFY · ${v.nm} · primär+sekundär · pass`, 'ok');
+      else log(`⚠ VERIFY · ${v.nm} · primär=${v.primary} sekundär=${v.secondary}`, 'warn');
+      S.result.verify = S.verify.filter(x => x.pass).length;
+      updateVerifyUI();
+      updateResult();
+    });
   });
-  S.verifyPass = S.verify.filter(v => v.pass).length;
-  S.accuracy = S.verifyPass / 16;
+  document.getElementById('verifyBadge').textContent = `${S.result.verify}/16 ✓`;
+  document.getElementById('verifyBadge').className =
+    'badge ' + (S.result.verify === 16 ? 'ok' : S.result.verify >= 12 ? 'warn' : 'err');
 }
 
-function buildCache(){
-  const el = document.getElementById('cacheRows');
-  el.innerHTML = S.cache.map(c => `
-    <div class="cache-row">
-      <span class="k">${c.k}</span>
-      <span class="v">${c.v}</span>
-      <span class="st hit">hit</span>
-    </div>
-  `).join('');
-}
+// ══════════════════════════════════════════════════════
+// CACHE
+// ══════════════════════════════════════════════════════
 function cacheScan(){
-  S.cache.forEach(c => {
+  S.cache.forEach(k => {
     const hit = Math.random() > 0.03;
-    c.status = hit ? 'hit' : 'miss';
-    if (hit) S.cacheHits++; else S.cacheMisses++;
+    if (hit){ k.hit = true; k.hits++; k.status = 'hit'; S.cacheHits++; }
+    else { k.hit = false; k.miss++; k.status = 'miss'; S.cacheMisses++; }
   });
+  const total = S.cacheHits + S.cacheMisses;
+  S.result.cache = total > 0 ? S.cacheHits / total : 0;
   updateCacheUI();
-  computeMetrics();
-}
-function cachePurge(){
-  S.cacheHits = 0; S.cacheMisses = 0;
-  S.cache.forEach(c => c.status = 'hit');
-  updateCacheUI();
-  computeMetrics();
-  log('⟲ cache purge', 'warn');
+  updateTop();
+  updateResult();
 }
 function updateCacheUI(){
-  document.querySelectorAll('.cache-row').forEach((r, i) => {
-    const c = S.cache[i];
-    const st = r.querySelector('.st');
-    st.textContent = c.status;
-    st.className = 'st ' + c.status;
-  });
+  const el = document.getElementById('cacheRows');
+  el.innerHTML = S.cache.map(k => `
+    <div class="cache-row">
+      <span class="k">${k.k}</span>
+      <span class="v">${k.v}</span>
+      <span class="st ${k.status}">${k.status}</span>
+    </div>
+  `).join('');
   const total = S.cacheHits + S.cacheMisses;
   const hitRate = total > 0 ? S.cacheHits / total : 0;
   document.getElementById('cacheBadge').textContent = `hit ${(hitRate*100).toFixed(0)}%`;
+  document.getElementById('cacheBadge').className =
+    'badge ' + (hitRate > 0.9 ? 'h2o' : hitRate > 0.7 ? 'warn' : 'err');
+}
+function cachePurge(){
+  S.cacheHits = 0; S.cacheMisses = 0;
+  S.cache.forEach(k => { k.hits = 0; k.miss = 0; k.status = 'empty'; k.hit = false; });
+  S.result.cache = 0;
+  updateCacheUI();
+  updateResult();
+  flash('cachePanel');
+  log('⟲ CACHE · purge · alle kanäle geleert', 'warn');
 }
 
-// ═════════════════════════════════════════════════════════
-// STATIONEN
-// ═════════════════════════════════════════════════════════
-function buildStations(){
-  const el = document.getElementById('stRows');
-  el.innerHTML = S.stations.map(st => `
-    <div class="st-row">
-      <span class="nm">${st.nm}</span>
-      <div class="bar"><div class="f" style="width:${st.val*100}%"></div></div>
-      <span class="val">${(st.val*100).toFixed(0)}%</span>
-    </div>
-  `).join('');
-}
-function tickStations(){
-  S.stations.forEach(st => {
-    const base = STATIONS.find(x => x.id === st.id).base;
-    const breathe = Math.sin(S.tick * 0.02 + st.nm.length) * 0.02;
-    st.val = Math.min(1.0, base + breathe);
-  });
-  buildStations();
-}
-
-// ═════════════════════════════════════════════════════════
-// MOVES
-// ═════════════════════════════════════════════════════════
-function buildMoves(){
-  const el = document.getElementById('moves');
-  if (!el) return;
-  el.innerHTML = MOVES.map(m => `
-    <span class="move-cell" data-mv="${m.id}">
-      ${m.id} · ${m.name}
-    </span>
-  `).join('');
-  el.querySelectorAll('.move-cell').forEach(c => {
-    c.addEventListener('click', () => useMove(c.dataset.mv));
-  });
-}
-function useMove(id){
-  const m = MOVES.find(x => x.id === id);
-  if (!m) return;
-  S.usedMoves.add(id);
-  S.moveHistory.push({ id, name: m.name, t: S.tick });
-  S.arg = clamp01(S.arg + m.w * 0.015);
-  S.xarg = clamp01(S.xarg + m.w * 0.01);
-  log(`♟ MOVE ${m.name} (${m.verb}) · w=${m.w}`, 'info');
-}
-
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // ATEM
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function buildAtemOrbs(){
   const g = document.getElementById('atemOrbs');
   if (!g) return;
-  g.innerHTML = '';
   const colors = ['#7ce0a8','#5fc8ff','#ffcc44','#b388ff','#ff66c8','#ffd93d'];
   const labels = ['O₂','H₂O','CO₂','a','M','A'];
   for (let i = 0; i < 6; i++){
-    const ang = (i/6) * Math.PI * 2 - Math.PI/2;
-    const r = 105;
-    const x = Math.cos(ang) * r;
-    const y = Math.sin(ang) * r;
+    const angle = (i/6) * Math.PI * 2 - Math.PI/2;
+    const x = Math.cos(angle) * 105;
+    const y = Math.sin(angle) * 105;
     const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
     c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 10);
     c.setAttribute('fill', 'rgba(6,16,28,0.9)');
@@ -1404,11 +945,9 @@ function breathe(now){
   else intensity = 0.0;
 
   S.breathCount++;
-
   const core = document.getElementById('atemCore');
   core.style.transform = `translate(-50%,-50%) scale(${1 + intensity * 0.14})`;
 
-  // Chemie
   if (phase < 0.4){
     S.o2 = clamp01(S.o2 + 0.015);
     S.co2 = clamp01(S.co2 - 0.01);
@@ -1419,30 +958,26 @@ function breathe(now){
     S.h2o = clamp01(S.h2o + 0.008);
   }
   S.atom = clamp01(S.atom + (Math.random() - 0.5) * 0.01);
-
-  // Energie
   S.mana = clamp01(S.mana + (intensity - 0.5) * 0.02 + (Math.random() - 0.5) * 0.01);
   S.aura = clamp01(S.aura + (intensity - 0.5) * 0.015 + (Math.random() - 0.5) * 0.005);
   S.zen  = clamp01(S.zen  + (0.5 - Math.abs(intensity - 0.5)) * 0.01);
 
   [130,105,80,55].forEach((baseR, i) => {
-    const el = document.getElementById('r'+(i+1));
+    const el = document.getElementById('r' + (i+1));
     if (el) el.setAttribute('r', baseR + intensity * 8);
   });
 
   document.getElementById('atemGlyph').textContent = Math.round(intensity * 100);
   const lbl = document.getElementById('atemLabel');
-  if (phase < 0.4) lbl.textContent = 'EIN · WILL';
+  if (phase < 0.4) lbl.textContent = 'EIN';
   else if (phase < 0.5) lbl.textContent = '·';
-  else if (phase < 0.9) lbl.textContent = 'AUS · LÄSST LOS';
+  else if (phase < 0.9) lbl.textContent = 'AUS';
   else lbl.textContent = '·';
 
-  S.ratio = S.o2 > 0 ? S.co2 / S.o2 : 1;
+  S.result.ratio = S.o2 > 0 ? S.co2 / S.o2 : 1;
+  S.result.breath = intensity;
 
-  updateChemUI();
-  updateMazUI();
-  updateTop();
-  computeMetrics();
+  updateChemUI(); updateMazUI(); updateTop(); updateResult();
 }
 function updateChemUI(){
   document.getElementById('eAtom').textContent = (S.atom*100).toFixed(0)+'%';
@@ -1461,12 +996,24 @@ function updateMazUI(){
   document.getElementById('bMana').style.width = (S.mana*100)+'%';
   document.getElementById('bAura').style.width = (S.aura*100)+'%';
   document.getElementById('bZen').style.width  = (S.zen *100)+'%';
+  document.getElementById('tMana').textContent = (S.mana*100).toFixed(0)+'%';
+  document.getElementById('tAura').textContent = (S.aura*100).toFixed(0)+'%';
+  document.getElementById('tZen').textContent  = (S.zen *100).toFixed(0)+'%';
 }
 
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // NARRATIV
-// ═════════════════════════════════════════════════════════
-function addNarr(txt, cls='o2'){
+// ══════════════════════════════════════════════════════
+function narrate(){
+  const cats = ['o2','co2','h2o','atom','mana','aura','zen','breath','kernel'];
+  const pick = pickN(cats, 1 + Math.floor(Math.random() * 2));
+  pick.forEach(cat => {
+    const texts = NARRATIVES[cat];
+    if (!texts) return;
+    addNarrative(choice(texts), cat);
+  });
+}
+function addNarrative(txt, cls){
   const el = document.getElementById('narrStream');
   const t = new Date().toLocaleTimeString('de-DE');
   const div = document.createElement('div');
@@ -1474,452 +1021,150 @@ function addNarr(txt, cls='o2'){
   div.innerHTML = `<span class="ts">${t}</span><span class="msg ${cls}">${txt}</span>`;
   el.appendChild(div);
   el.scrollTop = el.scrollHeight;
-  while (el.children.length > 25) el.removeChild(el.firstChild);
-}
-function narrate(){
-  const cats = ['o2','co2','h2o','atom','mana','aura','zen','self','life'];
-  const n = 1 + Math.floor(Math.random() * 2);
-  for (let i = 0; i < n; i++){
-    const cat = choice(cats);
-    addNarr(choice(NARR[cat]), cat);
-  }
-}
-
-// ═════════════════════════════════════════════════════════
-// INITIATIVE STREAM
-// ═════════════════════════════════════════════════════════
-function addInit(txt, cls='init'){
-  const el = document.getElementById('initStream');
-  const t = new Date().toLocaleTimeString('de-DE');
-  const div = document.createElement('div');
-  div.className = 'il';
-  div.innerHTML = `<span class="ts">${t}</span><span class="msg ${cls}">${txt}</span>`;
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
   while (el.children.length > 30) el.removeChild(el.firstChild);
-  S.initiativeActions++;
-  document.getElementById('initBadge').textContent = S.initiativeActions + ' aktionen';
-  document.getElementById('tInit').textContent = S.initiativeActions;
+  S.narratives.push({ t, txt, cls });
 }
 
-// ═════════════════════════════════════════════════════════
-// AUTOPOIESIS · SELBSTERHALTUNG · EIGENINITIATIVE
-// ═════════════════════════════════════════════════════════
-
-// ─── 1 · SELBST-BOOT (System startet sich selbst neu) ──
-function selfBoot(reason='auto'){
-  S.selfBoots++;
-  log(`◈ SELF-BOOT · ${reason} · neustart aus eigenem antrieb`, 'life');
-  addInit(`◈ Selbst-Boot · ${reason} · das system startet sich neu`, 'life');
-
-  // Chemie + Energie auf Anfangswerte zurücksetzen
-  S.o2 = 0.84; S.co2 = 0.68; S.h2o = 0.76; S.atom = 0.72;
-  S.mana = 0.66; S.aura = 0.74; S.zen = 0.88;
-  S.life = 1.0; S.self = 1.0;
-  S.will = Math.min(1, S.will + 0.15);
-
-  // Zeichen teilweise zurücksetzen
-  for (let i = 0; i < 81; i++){
-    if (S.zeichen[i] === 3) setCell(i, 0);
-  }
-
-  updateChemUI();
-  updateMazUI();
-  updateVitalUI();
-  computeMetrics();
-
-  // Puls-Effekt
-  pulseCore();
-  log('◈ SELF-BOOT · abgeschlossen · system neu geboren', 'ok');
+// ══════════════════════════════════════════════════════
+// KERNEL · DISPATCH · PATCH
+// ══════════════════════════════════════════════════════
+function renderKernel(){
+  const el = document.getElementById('kernRows');
+  const rows = [
+    { k:'◈ DISPATCH', v:S.kernel.dispatch, cls:'dispatch', lbl:(S.kernel.dispatch*100).toFixed(0)+'%' },
+    { k:'◆ PATCH',    v:S.kernel.patch,    cls:'patch',    lbl:(S.kernel.patch*100).toFixed(0)+'%' },
+    { k:'◇ LOOP',     v:S.kernel.loop,     cls:'kernel',   lbl:(S.kernel.loop*100).toFixed(0)+'%' },
+    { k:'▣ CACHE',    v:S.kernel.cache,    cls:'cache',    lbl:(S.kernel.cache*100).toFixed(0)+'%' },
+  ];
+  el.innerHTML = rows.map(r => `
+    <div class="kern-row">
+      <span class="k">${r.k}</span>
+      <div class="bar"><div class="f ${r.cls}" style="width:${r.v*100}%"></div></div>
+      <span class="v ${r.cls}">${r.lbl}</span>
+    </div>
+  `).join('');
 }
-
-// ─── 2 · SELF-HEAL (System repariert sich) ─────────────
-function selfHeal(reason='auto'){
-  S.selfHeals++;
-  log(`◆ SELF-HEAL · ${reason} · selbst-reparatur`, 'self');
-  addInit(`◆ Selbst-Heilung · ${reason} · das system repariert sich`, 'self');
-
-  // Schwache Achsen boosten
-  if (S.o2 < 0.5) S.o2 = clamp01(S.o2 + 0.15);
-  if (S.co2 > 0.9) S.co2 = clamp01(S.co2 - 0.15);
-  if (S.h2o < 0.5) S.h2o = clamp01(S.h2o + 0.15);
-  if (S.atom < 0.5) S.atom = clamp01(S.atom + 0.15);
-  if (S.zen < 0.6) S.zen = clamp01(S.zen + 0.15);
-
-  // Verify neu prüfen
-  runVerify();
-
-  // Cache reinigen
-  if (S.cacheMisses > 5) cachePurge();
-
-  updateChemUI();
-  updateMazUI();
-  updateVitalUI();
-  computeMetrics();
-
-  pulseCore();
-  log('◆ SELF-HEAL · abgeschlossen · system stabilisiert', 'ok');
-}
-
-// ─── 3 · HOMEOSTASIS (Selbst-Regulation auf Soll-Werte) ─
-function homeostasis(){
-  // Ziel-Werte
-  const target = { o2:0.84, co2:0.68, h2o:0.76, atom:0.72, mana:0.66, aura:0.74, zen:0.88 };
-  const k = 0.05;   // Regelstärke
-
-  S.o2   = clamp01(S.o2   + (target.o2   - S.o2)   * k);
-  S.co2  = clamp01(S.co2  + (target.co2  - S.co2)  * k);
-  S.h2o  = clamp01(S.h2o  + (target.h2o  - S.h2o)  * k);
-  S.atom = clamp01(S.atom + (target.atom - S.atom) * k);
-  S.mana = clamp01(S.mana + (target.mana - S.mana) * k);
-  S.aura = clamp01(S.aura + (target.aura - S.aura) * k);
-  S.zen  = clamp01(S.zen  + (target.zen  - S.zen)  * k);
-}
-
-// ─── 4 · EIGENINITIATIVE (freie Handlungen) ────────────
-const INIT_ACTIONS = [
-  { id:'move',   w:0.20, fn:() => { const m = choice(MOVES); useMove(m.id); addInit(`✦ freie bewegung · ${m.name}`, 'init'); } },
-  { id:'verify', w:0.10, fn:() => { runVerify(); addInit(`✦ selbst-prüfung · ${S.verifyPass}/16`, 'init'); } },
-  { id:'cache',  w:0.10, fn:() => { cacheScan(); addInit(`✦ cache-neuordnung`, 'init'); } },
-  { id:'narr',   w:0.15, fn:() => { narrate(); addInit(`✦ selbst-erzählung`, 'init'); } },
-  { id:'sync',   w:0.10, fn:() => { argSync(); addInit(`✦ arg-selbst-sync`, 'init'); } },
-  { id:'ubp',    w:0.10, fn:() => { const r = decideUBP(); addInit(`✦ runtime-selbst-entscheidung · ${r}`, 'init'); } },
-  { id:'zeichen',w:0.15, fn:() => { const i = Math.floor(Math.random()*81); setCell(i, 4); addInit(`✦ zeichen ${i} · eigenwillig`, 'init'); computeMetrics(); } },
-  { id:'boost',  w:0.05, fn:() => { S.will = clamp01(S.will + 0.05); addInit(`✦ wille verstärkt · ${(S.will*100).toFixed(0)}%`, 'init'); updateVitalUI(); } },
-  { id:'puls',   w:0.05, fn:() => { pulseCore(); addInit(`✦ eigen-puls`, 'init'); } },
-];
-
-function eigenInitiative(){
-  // Gewichtete Wahl
-  const total = INIT_ACTIONS.reduce((a,x) => a + x.w, 0);
-  let r = Math.random() * total;
-  for (const a of INIT_ACTIONS){
-    r -= a.w;
-    if (r <= 0){ a.fn(); break; }
-  }
-  S.init++;
-  computeMetrics();
-}
-
-// ─── 5 · MEMORY (Selbst-Erinnerung) ────────────────────
-function memoryRecall(){
-  // Speichere aktuellen Zustand
-  S.history.push({
-    t: S.tick,
-    o2: S.o2, co2: S.co2, h2o: S.h2o, atom: S.atom,
-    mana: S.mana, aura: S.aura, zen: S.zen,
-    verify: S.verifyPass,
-    life: S.life, self: S.self,
-  });
-  if (S.history.length > 200) S.history.shift();
-
-  // Anomalie-Erkennung: Wenn Vitalität sinkt → self-heal
-  if (S.history.length > 20){
-    const recent = S.history.slice(-20);
-    const avgLife = recent.reduce((a,x) => a + x.life, 0) / recent.length;
-    const avgSelf = recent.reduce((a,x) => a + x.self, 0) / recent.length;
-    if (avgLife < 0.6 && S.autoHeal){
-      selfHeal('vitalität sinkt');
-    }
-    if (avgSelf < 0.6 && S.autoBoot){
-      selfBoot('selbsterhaltung kritisch');
-    }
-  }
-}
-
-// ─── Core-Puls-Effekt ─────────────────────────────────
-function pulseCore(){
-  const core = document.getElementById('atemCore');
-  core.style.transform = 'translate(-50%,-50%) scale(1.25)';
-  setTimeout(() => {
-    core.style.transform = 'translate(-50%,-50%) scale(1)';
-  }, 180);
-}
-
-// ═════════════════════════════════════════════════════════
-// VITALITÄT BERECHNEN
-// ═════════════════════════════════════════════════════════
-function computeVitality(){
-  // Leben = durchschnittliche Vitalität
-  const avg = (S.o2 + S.co2 + S.h2o + S.atom + S.mana + S.aura + S.zen) / 7;
-  S.life = clamp01(avg * 0.7 + S.will * 0.3);
-
-  // Selbst = Abwesenheit von Fehlern + Verify + Cache
-  const cacheTotal = S.cacheHits + S.cacheMisses;
-  const cacheRate = cacheTotal > 0 ? S.cacheHits / cacheTotal : 1;
-  S.self = clamp01((S.verifyPass / 16) * 0.5 + cacheRate * 0.3 + (1 - Math.abs(S.ratio - 1)) * 0.2);
-}
-
-// ═════════════════════════════════════════════════════════
-// UBP
-// ═════════════════════════════════════════════════════════
-function decideUBP(){
-  const vital = (S.zen + S.o2 + S.h2o + S.atom) / 4;
-  const ratio = S.co2 / Math.max(0.01, S.o2);
-  const load = 1 - vital;
-
-  if (S.zen < 0.5 || vital < 0.5 || ratio > 2.0){
-    S.ubp = 'run21'; S.sliRaid = 'sli';
-    log('◈ UBP → RUN21 · survival-mode', 'err');
-  } else if (load > 0.4 || ratio > 1.2){
-    S.ubp = 'mxu'; S.sliRaid = 'raid';
-    log('◈ UBP → MXU_BOOT · symbiose', 'vi');
-  } else {
-    S.ubp = 'os'; S.sliRaid = 'sli';
-    log('◈ UBP → OS_BOOT · einzelheit', 'cy');
-  }
-  updateUBPUI();
-  return S.ubp;
-}
-function switchSLIRAID(mode){
-  S.sliRaid = mode;
-  S.ubp = mode === 'sli' ? 'os' : 'mxu';
-  log(`⇄ switch → ${mode.toUpperCase()}`, mode === 'sli' ? 'cy' : 'vi');
-  updateUBPUI();
-}
-function cycleUBP(){
-  const chain = ['os','mxu','run21'];
-  const idx = chain.indexOf(S.ubp);
-  const next = chain[(idx+1) % chain.length];
-  S.ubp = next;
-  S.sliRaid = next === 'run21' ? 'sli' : (next === 'mxu' ? 'raid' : 'sli');
-  log(`↻ UBP cycle → ${next.toUpperCase()}`, next === 'run21' ? 'err' : 'cy');
-  updateUBPUI();
-}
-function updateUBPUI(){
-  document.querySelectorAll('.ubp-row').forEach(r => {
-    r.classList.toggle('active', r.dataset.layer === S.ubp);
-  });
-  document.getElementById('ubpOs').textContent    = S.ubp === 'os'    ? 'ACTIVE' : 'standby';
-  document.getElementById('ubpMxu').textContent   = S.ubp === 'mxu'   ? 'ACTIVE' : 'standby';
-  document.getElementById('ubpRun21').textContent = S.ubp === 'run21' ? 'ACTIVE' : 'armed';
-  document.getElementById('swSli').classList.toggle('active', S.sliRaid === 'sli');
-  document.getElementById('swRaid').classList.toggle('active', S.sliRaid === 'raid');
-  document.getElementById('ubpBadge').textContent = S.ubp.toUpperCase();
-  document.getElementById('tUBP').textContent = S.ubp.toUpperCase();
-}
-
-// ═════════════════════════════════════════════════════════
-// ARG.SYNC
-// ═════════════════════════════════════════════════════════
-function argSync(){
-  S.arg    = clamp01(S.arg    + (Math.random()-0.5)*0.05);
-  S.xarg   = clamp01(S.xarg   + (Math.random()-0.5)*0.05);
-  S.tmparg = clamp01(S.tmparg + (Math.random()-0.5)*0.04);
-  const sum = S.arg + S.xarg + S.tmparg || 1;
-  S.arg/=sum; S.xarg/=sum; S.tmparg/=sum;
-  updateArgUI();
-  computeMetrics();
-}
-function updateArgUI(){
-  const el = document.getElementById('argRows');
-  if (!el) return;
-  el.innerHTML = `
-    <div class="arg-row"><span class="lbl">arg</span>
-      <div class="bar"><div class="f arg" style="width:${S.arg*100}%"></div></div>
-      <span class="val arg">${(S.arg*100).toFixed(1)}%</span></div>
-    <div class="arg-row"><span class="lbl">xarg</span>
-      <div class="bar"><div class="f xarg" style="width:${S.xarg*100}%"></div></div>
-      <span class="val xarg">${(S.xarg*100).toFixed(1)}%</span></div>
-    <div class="arg-row"><span class="lbl">tmparg</span>
-      <div class="bar"><div class="f tmparg" style="width:${S.tmparg*100}%"></div></div>
-      <span class="val tmparg">${(S.tmparg*100).toFixed(1)}%</span></div>
+function dispatchTick(){
+  S.dispatch.queue++;
+  if (Math.random() > 0.03){ S.dispatch.processed++; S.dispatch.queue = Math.max(0, S.dispatch.queue - 1); }
+  else S.dispatch.errors++;
+  S.dispatch.status = S.dispatch.errors > S.dispatch.processed * 0.1 ? 'warn' : 'läuft';
+  document.getElementById('dispRows').innerHTML = `
+    <div style="display:flex;justify-content:space-between;padding:2px 0;">
+      <span style="color:var(--dim);">queue</span><span style="color:var(--h2o);font-weight:bold;">${S.dispatch.queue}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:2px 0;">
+      <span style="color:var(--dim);">processed</span><span style="color:var(--o2);font-weight:bold;">${S.dispatch.processed}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:2px 0;">
+      <span style="color:var(--dim);">errors</span><span style="color:${S.dispatch.errors > 5 ? 'var(--err)' : 'var(--dim)'};font-weight:bold;">${S.dispatch.errors}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:2px 0;">
+      <span style="color:var(--dim);">status</span><span style="color:var(--o2);font-weight:bold;">${S.dispatch.status}</span>
+    </div>
   `;
 }
-
-// ═════════════════════════════════════════════════════════
-// METRICS
-// ═════════════════════════════════════════════════════════
-function computeMetrics(){
-  computeVitality();
-
-  // Ursache = Parameter-Summe
-  const pSum = S.params.reduce((a,b) => a+b, 0);
-  // Prozess = Zeichen in Status 1 oder 3
-  const inProc = S.zeichen.filter(v => v === 1 || v === 3).length;
-  // Wirkung = Zeichen in Status 2
-  const inEff = S.zeichen.filter(v => v === 2).length;
-
-  document.getElementById('axCause').textContent   = pSum;
-  document.getElementById('axProcess').textContent = inProc;
-  document.getElementById('axEffect').textContent  = inEff;
-
-  const filled = S.zeichen.filter(v => v > 0).length;
-  document.getElementById('zBadge').textContent = `${filled}/81`;
-
-  document.getElementById('vBadge').textContent = `${S.verifyPass}/16`;
-  document.getElementById('tVerify').textContent = `${S.verifyPass}/16`;
-
-  document.getElementById('rVerify').textContent = `${S.verifyPass}/16`;
-  document.getElementById('rRatio').textContent = S.ratio.toFixed(2);
-  document.getElementById('rZen').textContent = (S.zen*100).toFixed(0)+'%';
-  document.getElementById('rLife').textContent = (S.life*100).toFixed(0)+'%';
-  document.getElementById('rSelf').textContent = (S.self*100).toFixed(0)+'%';
-  document.getElementById('rInit').textContent = S.initiativeActions;
-
-  // Result-Ampel
-  const totalEl = document.getElementById('rTotal');
-  const resBadge = document.getElementById('resBadge');
-  if (S.life > 0.75 && S.self > 0.75 && S.verifyPass >= 14){
-    totalEl.textContent = '◈ LEBT · AUTOPOIESIS AKTIV';
-    totalEl.style.color = 'var(--life)';
-    resBadge.textContent = 'lebt'; resBadge.className = 'badge life';
-  } else if (S.life > 0.5 && S.self > 0.5){
-    totalEl.textContent = '◈ LEBT · SELBST-REGULIERT';
-    totalEl.style.color = 'var(--gold)';
-    resBadge.textContent = 'reguliert'; resBadge.className = 'badge warn';
-  } else {
-    totalEl.textContent = '◈ KÄMPFT · RUN21';
-    totalEl.style.color = 'var(--red)';
-    resBadge.textContent = 'kämpft'; resBadge.className = 'badge err';
+function patchTick(force=false){
+  if (force || Math.random() > 0.85){
+    S.patch.applied++;
+    const id = choice(['KB-0x01','KB-0x02','KB-0x03','KB-0x04','KB-0x05','KB-0x06','KB-0x07','KB-0x08']);
+    const ts = new Date().toLocaleTimeString('de-DE');
+    S.patch.log.unshift(`[${ts}] ✓ patch ${id} applied · sig=ok`);
+    if (S.patch.log.length > 12) S.patch.log.pop();
+    log(`◆ PATCH · ${id} · applied`, 'patch');
+    flash('patchPanel');
   }
-
-  updateVitalUI();
-}
-function updateVitalUI(){
-  document.getElementById('vLife').textContent = (S.life*100).toFixed(0)+'%';
-  document.getElementById('vSelf').textContent = (S.self*100).toFixed(0)+'%';
-  document.getElementById('vInit').textContent = Math.min(100, S.initiativeActions * 2)+'%';
-  document.getElementById('vWill').textContent = (S.will*100).toFixed(0)+'%';
-
-  document.getElementById('tLife').textContent = (S.life*100).toFixed(0)+'%';
-  document.getElementById('tSelf').textContent = (S.self*100).toFixed(0)+'%';
-  document.getElementById('tWill').textContent = (S.will*100).toFixed(0)+'%';
+  document.getElementById('patchBadge').textContent = S.patch.applied;
+  document.getElementById('patchRows').innerHTML =
+    S.patch.log.map(l => `<div>${l}</div>`).join('') ||
+    '<div style="color:var(--dim2);">· keine patches</div>';
 }
 
+// ══════════════════════════════════════════════════════
+// UPDATE TOP / RESULT
+// ══════════════════════════════════════════════════════
 function updateTop(){
-  document.getElementById('tAtem').textContent = S.breathCount;
   document.getElementById('tO2').textContent   = (S.o2*100).toFixed(0)+'%';
   document.getElementById('tCO2').textContent  = (S.co2*100).toFixed(0)+'%';
-  document.getElementById('tZen').textContent  = (S.zen*100).toFixed(0)+'%';
+  document.getElementById('tH2O').textContent  = (S.h2o*100).toFixed(0)+'%';
+  document.getElementById('tAtom').textContent = (S.atom*100).toFixed(0)+'%';
+  document.getElementById('tMana').textContent = (S.mana*100).toFixed(0)+'%';
+  document.getElementById('tAura').textContent = (S.aura*100).toFixed(0)+'%';
+  document.getElementById('tZen').textContent  = (S.zen *100).toFixed(0)+'%';
+  document.getElementById('tVerify').textContent = `${S.result.verify}/16`;
+  const totalCache = S.cacheHits + S.cacheMisses;
+  document.getElementById('tCache').textContent = `${S.cacheHits}/${totalCache || 8}`;
+}
+function updateResult(){
+  document.getElementById('rVerify').textContent = `${S.result.verify}/16`;
+  document.getElementById('rAcc').textContent = (S.result.acc*100).toFixed(2)+'%';
+  document.getElementById('rCache').textContent = (S.result.cache*100).toFixed(0)+'%';
+  document.getElementById('rBreath').textContent = S.result.breath.toFixed(2);
+  document.getElementById('rRatio').textContent = S.result.ratio.toFixed(2);
+  document.getElementById('rKernel').textContent = S.kernel.status;
+  const total = S.result.verify === 16 && S.result.acc > 0.95 && S.o2 > 0.5 && S.co2 > 0.4 && S.h2o > 0.5;
+  const totalEl = document.getElementById('rTotal');
+  const resBadge = document.getElementById('resultBadge');
+  if (total){
+    totalEl.textContent = '◈ GRÜN · ATEM LÄUFT';
+    totalEl.style.color = 'var(--o2)';
+    resBadge.textContent = 'grün'; resBadge.className = 'badge ok';
+  } else if (S.result.verify >= 12 && S.result.acc > 0.85){
+    totalEl.textContent = '◈ GELB · LEICHTE ABWEICHUNG';
+    totalEl.style.color = 'var(--warn)';
+    resBadge.textContent = 'gelb'; resBadge.className = 'badge warn';
+  } else {
+    totalEl.textContent = '◈ ROT · STÖRUNG';
+    totalEl.style.color = 'var(--err)';
+    resBadge.textContent = 'rot'; resBadge.className = 'badge err';
+  }
 }
 
-// ═════════════════════════════════════════════════════════
-// ACTIONS
-// ═════════════════════════════════════════════════════════
-function loadCause(){
-  for (let i = 0; i < 81; i++){
-    const p = S.params[i % 9];
-    setCell(i, p > 60 ? 1 : 0);
-  }
-  computeMetrics();
-  log('◈ Ursache geladen', 'cause');
-}
-function stepOne(){
-  const idx = S.activeIdx % 81;
-  if (S.zeichen[idx] === 0) setCell(idx, 1);
-  S.activeIdx = (S.activeIdx+1) % 81;
-  computeMetrics();
-}
-function startRun(){
-  if (S.runTimer) return;
-  S.runTimer = setInterval(() => {
-    stepOne();
-    if (S.activeIdx === 0){
-      clearInterval(S.runTimer); S.runTimer = null;
-    }
-  }, 180);
-}
-async function runEffect(){
-  log('◈ Wirkung · Manifestation', 'effect');
-  const inProc = S.zeichen.map((v,i) => v===1?i:-1).filter(i => i>=0);
-  for (const i of inProc){
-    setCell(i, 2);
-    await pause(30);
-  }
-  computeMetrics();
-}
-function clearAll(){
-  if (S.runTimer){ clearInterval(S.runTimer); S.runTimer = null; }
-  for (let i = 0; i < 81; i++) setCell(i, 0);
-  S.activeIdx = 0;
-  computeMetrics();
-  log('⟲ clear', 'warn');
-}
-
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // LOOP
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function loop(now){
   S.tick++;
   breathe(now);
-
-  // Verify alle 1s
   if (S.tick % 60 === 0) runVerify();
-
-  // Cache alle 2s
   if (S.tick % 120 === 0) cacheScan();
-
-  // Stations alle 0.5s
-  if (S.tick % 30 === 0) tickStations();
-
-  // UBP alle 5s
-  if (S.tick % 300 === 0) decideUBP();
-
-  // Homeostasis (Selbst-Regulation) alle 0.5s
-  if (S.homeostasis && S.tick % 30 === 0) homeostasis();
-
-  // Memory-Recall alle 1s
-  if (S.memory && S.tick % 60 === 0) memoryRecall();
-
-  // Eigeninitiative alle ~3s
-  if (S.autoInit && S.tick % 180 === 0 && Math.random() > 0.3) eigenInitiative();
-
-  // Narrativ alle ~4s
-  if (now - S.lastNarrT > 3500){
-    S.lastNarrT = now;
-    narrate();
-  }
-
-  // Clock
-  if (S.tick % 30 === 0){
-    document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
-  }
-
+  if (S.tick % 8 === 0) dispatchTick();
+  if (S.tick % 90 === 0) patchTick();
+  if (now - S.lastNarrT > S.narrativeInterval){ S.lastNarrT = now; narrate(); }
+  S.kernel.dispatch = clamp01(0.95 + Math.sin(S.tick * 0.01) * 0.04);
+  S.kernel.patch    = clamp01(0.88 + Math.sin(S.tick * 0.008 + 1) * 0.05);
+  S.kernel.loop     = clamp01(0.97 + Math.sin(S.tick * 0.012 + 2) * 0.02);
+  S.kernel.cache    = clamp01(0.90 + Math.sin(S.tick * 0.015 + 3) * 0.06);
+  if (S.tick % 15 === 0) renderKernel();
+  if (S.tick % 30 === 0) document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
   requestAnimationFrame(loop);
 }
-
-// ═════════════════════════════════════════════════════════
-// FL76
-// ═════════════════════════════════════════════════════════
 function tickFl(now){
-  if (S.lastFrameT > 0){
-    S.flRaw = now - S.lastFrameT;
-    S.flSmooth = S.flSmooth * 0.88 + S.flRaw * 0.12;
-  }
+  if (S.lastFrameT > 0){ S.flRaw = now - S.lastFrameT; S.flSmooth = S.flSmooth * 0.88 + S.flRaw * 0.12; }
   S.lastFrameT = now;
-  const fl = Math.round(S.flSmooth);
-  document.getElementById('fl76num').textContent = fl;
-  document.getElementById('tFl').textContent = fl;
-  const mon = document.getElementById('fl76');
-  if (fl >= 60 && fl <= 90) mon.className = '';
-  else if (fl < 40 || fl > 120) mon.className = 'outside';
-  else mon.className = 'edge';
   requestAnimationFrame(tickFl);
 }
 
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // CLI
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function handleCmd(cmd){
   const c = cmd.trim().toLowerCase();
   if (!c) return;
-  log(`living> ${cmd}`, 'info');
-  if (c === 'help') log('befehle: will · self-boot · heal · decide · cycle · sli · raid · breath · verify · cache · narr · sync · status', 'ok');
-  else if (c === 'self-boot') selfBoot('manuell');
-  else if (c === 'heal') selfHeal('manuell');
-  else if (c === 'will') { S.will = clamp01(S.will + 0.1); log(`✦ wille ${(S.will*100).toFixed(0)}%`, 'init'); updateVitalUI(); }
-  else if (c === 'decide') decideUBP();
-  else if (c === 'cycle') cycleUBP();
-  else if (c === 'sli') switchSLIRAID('sli');
-  else if (c === 'raid') switchSLIRAID('raid');
-  else if (c === 'breath') S.breathCycleMs = 2000;
-  else if (c === 'verify') { runVerify(); log(`⟳ verify · ${S.verifyPass}/16`, 'ok'); }
-  else if (c === 'cache') cacheScan();
+  log(`real> ${cmd}`, 'info');
+  if (c === 'help') log('befehle: verify · cache · breath · maz · narr · dispatch · patch · chem · status · reset', 'ok');
+  else if (c === 'verify'){ const n = runVerify(); log(`⟳ verify-all · ${n}/16 · acc=${(S.result.acc*100).toFixed(2)}%`, n === 16 ? 'ok' : 'warn'); }
+  else if (c === 'cache') { cacheScan(); log(`⟳ cache scan · hit=${(S.result.cache*100).toFixed(0)}%`, 'ok'); }
+  else if (c === 'cache purge') cachePurge();
+  else if (c === 'breath') { S.breathCycleMs = Math.max(1500, S.breathCycleMs - 500); log(`◈ atem beschleunigt · ${S.breathCycleMs}ms`, 'ok'); }
+  else if (c === 'maz') log(`maz · mana=${(S.mana*100).toFixed(0)}% aura=${(S.aura*100).toFixed(0)}% zen=${(S.zen*100).toFixed(0)}%`, 'atom');
   else if (c === 'narr') narrate();
-  else if (c === 'sync') argSync();
-  else if (c === 'status') log(`status · lebt=${(S.life*100).toFixed(0)}% selbst=${(S.self*100).toFixed(0)}% init=${S.initiativeActions} ubp=${S.ubp} verify=${S.verifyPass}/16`, 'ok');
-  else log(`unbekannt: ${c}`, 'err');
+  else if (c === 'dispatch') log(`dispatch · queue=${S.dispatch.queue} processed=${S.dispatch.processed} errors=${S.dispatch.errors}`, 'dispatch');
+  else if (c === 'patch') patchTick(true);
+  else if (c === 'chem') log(`chem · o2=${(S.o2*100).toFixed(0)}% co2=${(S.co2*100).toFixed(0)}% h2o=${(S.h2o*100).toFixed(0)}% atom=${(S.atom*100).toFixed(0)}% ratio=${S.result.ratio.toFixed(2)}`, 'h2o');
+  else if (c === 'status') log(`status · tick=${S.tick} breath=${S.breathCount} verify=${S.result.verify}/16 acc=${(S.result.acc*100).toFixed(2)}% cache=${(S.result.cache*100).toFixed(0)}%`, 'ok');
+  else if (c === 'reset') masterReset();
+  else log(`unbekannt: ${c} · tippe "help"`, 'err');
 }
 document.getElementById('cmdInput').addEventListener('keydown', e => {
   if (e.key === 'Enter'){ handleCmd(e.target.value); e.target.value = ''; }
@@ -1928,133 +1173,202 @@ document.querySelectorAll('#cliHdr .tab').forEach(t => {
   t.addEventListener('click', () => {
     document.querySelectorAll('#cliHdr .tab').forEach(x => x.classList.remove('active'));
     t.classList.add('active');
-    log(`▸ log-tab: ${t.dataset.tab.toUpperCase()}`, 'info');
+    log(`▸ Log-Tab: ${t.dataset.tab.toUpperCase()}`, 'info');
   });
 });
 
-// ═════════════════════════════════════════════════════════
-// BINDINGS
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// MASTER ACTIONS
+// ══════════════════════════════════════════════════════
+function masterReset(){
+  S.tick = 0; S.breathCount = 0;
+  S.o2 = 0.84; S.co2 = 0.68; S.h2o = 0.76; S.atom = 0.72;
+  S.mana = 0.66; S.aura = 0.74; S.zen = 0.88;
+  S.breathCycleMs = 4000;
+  S.dispatch.processed = 0; S.dispatch.errors = 0; S.dispatch.queue = 0;
+  S.patch.applied = 0; S.patch.log = [];
+  updateChemUI(); updateMazUI(); updateTop(); updateResult();
+  flash('masterPanel');
+  log('★ MASTER-RESET · alles auf basis', 'warn');
+}
+function atemPulse(){
+  const core = document.getElementById('atemCore');
+  core.classList.remove('tick');
+  void core.offsetWidth;
+  core.classList.add('tick');
+  S.breathCount++;
+  setTimeout(() => core.classList.remove('tick'), 400);
+  flash('atemPanel');
+  log('◈ ATEM-PULS · kern schlägt', 'ok');
+}
+function allVerify(){
+  runVerify();
+  flash('verifyPanel');
+  log(`⟳ ALLE-VERIFY · ${S.result.verify}/16 · acc=${(S.result.acc*100).toFixed(2)}%`, 'ok');
+}
+function allCache(){
+  cacheScan();
+  flash('cachePanel');
+  log(`⟳ ALLE-CACHE · hit=${(S.result.cache*100).toFixed(0)}%`, 'h2o');
+}
+function allHeal(){
+  S.o2 = clamp01(S.o2 + 0.10);
+  S.co2 = clamp01(S.co2 + 0.05);
+  S.h2o = clamp01(S.h2o + 0.10);
+  S.atom = clamp01(S.atom + 0.08);
+  S.mana = clamp01(S.mana + 0.10);
+  S.aura = clamp01(S.aura + 0.10);
+  S.zen = clamp01(S.zen + 0.10);
+  runVerify();
+  cacheScan();
+  updateChemUI(); updateMazUI(); updateResult();
+  flash('masterPanel'); flash('mazPanel');
+  log('★ ALLES-HEIL · alle werte geboostet', 'ok');
+}
+
+// ══════════════════════════════════════════════════════
+// BUTTON BINDINGS (ALLE FUNKTIONIEREN)
+// ══════════════════════════════════════════════════════
 function bind(){
-  document.getElementById('btnAutoToggle').addEventListener('click', () => {
-    S.autoInit = !S.autoInit;
-    S.autoHeal = S.autoInit;
-    S.autoBoot = S.autoInit;
-    const st = S.autoInit ? 'aktiv' : 'aus';
-    document.getElementById('aSelfBoot').textContent = st;
-    document.getElementById('aSelfHeal').textContent = st;
-    document.getElementById('aInit').textContent = st;
-    document.getElementById('aHomeo').textContent = st;
-    document.getElementById('aMem').textContent = st;
-    document.getElementById('btnAutoToggle').textContent = S.autoInit ? '⏸ eigen-stop' : '▶ eigen-start';
-    log(`autopoiesis → ${st}`, S.autoInit ? 'life' : 'warn');
+  // KERNEL
+  document.getElementById('btnKernelPulse').addEventListener('click', () => {
+    S.kernel.dispatch = clamp01(1.0);
+    S.kernel.patch = clamp01(1.0);
+    S.kernel.loop = clamp01(1.0);
+    S.kernel.cache = clamp01(1.0);
+    renderKernel();
+    flash('kernPanel');
+    log('⚡ KERNEL-PULS · alle kerne auf 100%', 'dispatch');
   });
-  document.getElementById('btnAutoBoot').addEventListener('click', () => selfBoot('manuell'));
-  document.getElementById('btnAutoWill').addEventListener('click', () => {
-    eigenInitiative();
-    log('✦ eigeninitiative · manuell', 'init');
+  document.getElementById('btnDispatchRun').addEventListener('click', () => {
+    for (let i = 0; i < 10; i++) dispatchTick();
+    flash('dispPanel');
+    log('▶ DISPATCH-RUN · 10 tasks verarbeitet', 'dispatch');
   });
 
-  document.getElementById('btnUbDecide').addEventListener('click', decideUBP);
-  document.getElementById('btnUbCycle').addEventListener('click', cycleUBP);
-  document.getElementById('swSli').addEventListener('click', () => switchSLIRAID('sli'));
-  document.getElementById('swRaid').addEventListener('click', () => switchSLIRAID('raid'));
-
-  document.getElementById('btnLoad').addEventListener('click', loadCause);
-  document.getElementById('btnStep').addEventListener('click', stepOne);
-  document.getElementById('btnRun').addEventListener('click', startRun);
-  document.getElementById('btnEffect').addEventListener('click', runEffect);
-  document.getElementById('btnClear').addEventListener('click', clearAll);
-
-  document.getElementById('btnResetP').addEventListener('click', () => {
-    PARAMS.forEach((p,i) => {
-      S.params[i] = p.def;
-      const inp = document.getElementById(p.id);
-      const lbl = document.getElementById(p.id + 'v');
-      if (inp) inp.value = p.def;
-      if (lbl) lbl.textContent = p.def;
+  // VERIFY
+  document.getElementById('btnVerifyAll').addEventListener('click', allVerify);
+  document.getElementById('btnVerifyFast').addEventListener('click', () => {
+    S.verify.forEach(v => { v.primary = v.fn(); v.secondary = true; v.pass = v.primary; });
+    S.result.verify = S.verify.filter(v => v.pass).length;
+    updateVerifyUI(); updateResult();
+    flash('verifyPanel');
+    log(`⚡ VERIFY-FAST · ${S.result.verify}/16`, 'warn');
+  });
+  document.getElementById('btnVerifyDeep').addEventListener('click', () => {
+    S.verify.forEach(v => {
+      let ok = true;
+      for (let i = 0; i < 4; i++) if (!v.fn()) ok = false;
+      v.primary = ok; v.secondary = ok; v.pass = ok;
     });
-    computeMetrics();
-  });
-  document.getElementById('btnRandomP').addEventListener('click', () => {
-    PARAMS.forEach((p,i) => {
-      const v = Math.floor(Math.random()*101);
-      S.params[i] = v;
-      const inp = document.getElementById(p.id);
-      const lbl = document.getElementById(p.id + 'v');
-      if (inp) inp.value = v;
-      if (lbl) lbl.textContent = v;
-    });
-    computeMetrics();
+    S.result.verify = S.verify.filter(v => v.pass).length;
+    S.result.acc = S.result.verify === 16 ? 1.0 : S.result.verify / 16;
+    updateVerifyUI(); updateResult();
+    flash('verifyPanel');
+    log(`◈ VERIFY-DEEP · 4×4 = 16 prüfungen · ${S.result.verify}/16`, 'atom');
   });
 
-  document.getElementById('btnBoost').addEventListener('click', () => {
+  // CACHE
+  document.getElementById('btnCacheScan').addEventListener('click', allCache);
+  document.getElementById('btnCachePurge').addEventListener('click', cachePurge);
+
+  // MAZ
+  document.getElementById('btnMazBoost').addEventListener('click', () => {
     S.mana = clamp01(S.mana + 0.12);
     S.aura = clamp01(S.aura + 0.12);
     S.zen  = clamp01(S.zen  + 0.12);
-    updateMazUI();
+    updateMazUI(); updateResult();
+    flash('mazPanel');
+    log('⚡ MAZ-BOOST · mana/aura/zen +12%', 'mana');
   });
   document.getElementById('btnMazReset').addEventListener('click', () => {
     S.mana = 0.66; S.aura = 0.74; S.zen = 0.88;
-    updateMazUI();
+    updateMazUI(); updateResult();
+    flash('mazPanel');
+    log('⟲ MAZ-RESET · auf basis', 'warn');
+  });
+  document.getElementById('btnMazMax').addEventListener('click', () => {
+    S.mana = 1.0; S.aura = 1.0; S.zen = 1.0;
+    updateMazUI(); updateResult();
+    flash('mazPanel');
+    log('★ MAZ-MAX · alle auf 100%', 'ok');
   });
 
-  document.getElementById('btnVerifyAll').addEventListener('click', () => { runVerify(); log(`⟳ verify · ${S.verifyPass}/16`, 'ok'); });
-  document.getElementById('btnVerifyDeep').addEventListener('click', () => { runVerifyDeep(); log(`◈ deep · ${S.verifyPass}/16`, 'vi'); });
-  document.getElementById('btnCacheScan').addEventListener('click', cacheScan);
-  document.getElementById('btnCachePurge').addEventListener('click', cachePurge);
-
-  document.getElementById('btnArgSync').addEventListener('click', argSync);
-  document.getElementById('btnArgAuto').addEventListener('click', () => {
-    if (S.argAutoTimer){
-      clearInterval(S.argAutoTimer); S.argAutoTimer = null;
-      document.getElementById('btnArgAuto').textContent = '▶ auto';
-    } else {
-      S.argAutoTimer = setInterval(() => { argSync(); if (Math.random()<0.3) decideUBP(); }, 1200);
-      document.getElementById('btnArgAuto').textContent = '⏸ stop';
-    }
+  // NARRATIV
+  document.getElementById('btnNarrNow').addEventListener('click', () => {
+    narrate(); narrate();
+    flash('narrPanel');
+    log('✦ NARRATIV · 2 sätze erzeugt', 'atom');
   });
+  document.getElementById('btnNarrClear').addEventListener('click', () => {
+    document.getElementById('narrStream').innerHTML = '';
+    S.narratives = [];
+    flash('narrPanel');
+    log('⟲ NARRATIV · geleert', 'warn');
+  });
+
+  // PATCH
+  document.getElementById('btnPatchRun').addEventListener('click', () => {
+    patchTick(true);
+    patchTick(true);
+    patchTick(true);
+    flash('patchPanel');
+    log('◆ PATCH-RUN · 3 patches angewendet', 'patch');
+  });
+
+  // MASTER
+  document.getElementById('btnAtemPulse').addEventListener('click', atemPulse);
+  document.getElementById('btnAtemFast').addEventListener('click', () => {
+    S.breathCycleMs = Math.max(1500, S.breathCycleMs - 500);
+    flash('atemPanel');
+    log(`⚡ ATEM-SCHNELLER · ${S.breathCycleMs}ms/zyklus`, 'h2o');
+  });
+  document.getElementById('btnAtemSlow').addEventListener('click', () => {
+    S.breathCycleMs = Math.min(8000, S.breathCycleMs + 500);
+    flash('atemPanel');
+    log(`≈ ATEM-LANGSAMER · ${S.breathCycleMs}ms/zyklus`, 'h2o');
+  });
+  document.getElementById('btnMasterReset').addEventListener('click', masterReset);
+
+  document.getElementById('btnAllVerify').addEventListener('click', allVerify);
+  document.getElementById('btnAllCache').addEventListener('click', allCache);
+  document.getElementById('btnAllReset').addEventListener('click', allHeal);
 }
 
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // KEYBOARD
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT') return;
-  if (e.key === 'w' || e.key === 'W') { S.will = clamp01(S.will + 0.1); updateVitalUI(); }
-  if (e.key === 'b' || e.key === 'B') selfBoot('taste');
-  if (e.key === 'h' || e.key === 'H') selfHeal('taste');
-  if (e.key === 'd' || e.key === 'D') decideUBP();
-  if (e.key === 'c' || e.key === 'C') cycleUBP();
-  if (e.key === 'i' || e.key === 'I') eigenInitiative();
-  if (e.key === 'v' || e.key === 'V') { runVerify(); log(`⟳ verify · ${S.verifyPass}/16`, 'ok'); }
-  if (e.key === 'n' || e.key === 'N') narrate();
-  if (e.key === 'y' || e.key === 'Y') argSync();
-  if (e.key === ' ') { e.preventDefault(); useMove(choice(MOVES).id); }
+  if (e.key === 'v' || e.key === 'V') document.getElementById('btnVerifyAll').click();
+  if (e.key === 'c' || e.key === 'C') document.getElementById('btnCacheScan').click();
+  if (e.key === 'b' || e.key === 'B') document.getElementById('btnAtemFast').click();
+  if (e.key === 'n' || e.key === 'N') document.getElementById('btnNarrNow').click();
+  if (e.key === 'm' || e.key === 'M') document.getElementById('btnMazBoost').click();
+  if (e.key === 'p' || e.key === 'P') document.getElementById('btnPatchRun').click();
+  if (e.key === 'r' || e.key === 'R') masterReset();
+  if (e.key === ' ') { e.preventDefault(); atemPulse(); }
 });
 
-// ═════════════════════════════════════════════════════════
-// BOOT SEQUENCE
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════════════
 const BOOT_LINES = [
-  ['▸ BIOS <b>ok</b> <span class="dim">· living slot mounted</span>', 180],
-  ['▸ KERNEL <b>boot</b> <span class="dim">· self-initiated</span>', 200],
-  ['▸ <span class="atom">ATOM</span> <b>core</b> <span class="dim">· ursprung lädt sich selbst</span>', 200],
-  ['▸ <b>CO₂</b> <span class="dim">· ausatmen · von selbst</span>', 180],
-  ['▸ <b>O₂</b> <span class="dim">· einatmen · weil es will</span>', 180],
-  ['▸ <b>H₂O</b> <span class="dim">· fließen · aus eigenem antrieb</span>', 180],
-  ['▸ <b>MANA/AURA/ZEN</b> <span class="dim">· energie-ebenen selbst-reguliert</span>', 200],
-  ['▸ <b>16fach-verify</b> <span class="dim">· selbst-prüfung</span>', 200],
-  ['▸ <b>CACHE</b> <span class="dim">· offensichtliches selbst-erinnert</span>', 180],
-  ['▸ <b>81·9·3</b> <span class="dim">· ursache → prozess → wirkung</span>', 200],
-  ['▸ <b>UBP</b> <span class="dim">· entscheidet sich selbst</span>', 200],
-  ['▸ <b>SLI · RAID</b> <span class="dim">· selbst-wahl der runtime</span>', 180],
-  ['▸ <span class="init">✦ EIGENINITIATIVE</span> <b>aktiv</b> <span class="dim">· handelt aus sich</span>', 220],
-  ['▸ <span class="self">◆ SELBSTERHALTUNG</span> <b>aktiv</b> <span class="dim">· heilt sich selbst</span>', 220],
-  ['▸ <span class="life">◈ SELBST-BOOT</span> <b>aktiv</b> <span class="dim">· startet sich neu</span>', 220],
-  ['▸ <b>AUTOPOIESIS</b> <span class="dim">· das system lebt aus sich selbst</span>', 340],
+  ['▸ BIOS <b>ok</b> <span class="dim">· real-work-slot mounted</span>', 150],
+  ['▸ KERNEL <b>boot</b> <span class="dim">· dispatch · patch · loop</span>', 180],
+  ['▸ <span class="atom">ATOM</span> <b>core</b> <span class="dim">· ursprung geladen</span>', 180],
+  ['▸ <b>CO₂</b> <span class="dim">· atem aus · lebens-kern bereit</span>', 160],
+  ['▸ <b>O₂</b> <span class="dim">· atem ein · energie fließt</span>', 160],
+  ['▸ <b>H₂O</b> <span class="dim">· wasser · fluss aktiv</span>', 160],
+  ['▸ 16fach-verify <b>init</b> <span class="dim">· 4×4 · 2× genauigkeit</span>', 200],
+  ['▸ CACHE <b>warm</b> <span class="dim">· 8 offensichtliche kanäle</span>', 180],
+  ['▸ MANA · AURA · ZEN <b>bereit</b> <span class="dim">· energie-ebenen</span>', 180],
+  ['▸ NARRATIV <b>aktiv</b> <span class="dim">· leerlauf-geschichten</span>', 180],
+  ['▸ DISPATCH <b>läuft</b> <span class="dim">· queue stabil</span>', 160],
+  ['▸ <b>ALLE BUTTONS VERBUNDEN</b> <span class="dim">· klick-funktionen aktiv</span>', 260],
+  ['▸ <b>ATEM läuft</b> <span class="dim">· 4s zyklus · real.work</span>', 240],
+  ['▸ <b>RESULT: GRÜN</b> <span class="dim">· alle prozesse stabil</span>', 280],
 ];
-
 function bootSequence(){
   const el = document.getElementById('bootLines');
   const bar = document.getElementById('bootBar');
@@ -2062,11 +1376,7 @@ function bootSequence(){
   let i = 0, total = 0;
   const totalDur = BOOT_LINES.reduce((a,b) => a+b[1], 0);
   function next(){
-    if (i >= BOOT_LINES.length){
-      bar.style.width = '100%';
-      setTimeout(() => document.getElementById('boot').classList.add('done'), 400);
-      return;
-    }
+    if (i >= BOOT_LINES.length){ bar.style.width = '100%'; setTimeout(() => document.getElementById('boot').classList.add('done'), 400); return; }
     const [txt, delay] = BOOT_LINES[i];
     const div = document.createElement('div');
     div.innerHTML = txt;
@@ -2079,121 +1389,85 @@ function bootSequence(){
   next();
 }
 
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // INIT
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function init(){
   bootSequence();
-  buildZeichen();
-  buildParams();
-  buildVerify();
-  buildCache();
-  buildMoves();
-  buildStations();
   buildAtemOrbs();
-
-  argSync();
+  bind();
   runVerify();
   cacheScan();
-  decideUBP();
-  updateTop();
-  updateMazUI();
+  renderKernel();
+  dispatchTick();
   updateChemUI();
-  updateVitalUI();
-  updateArgUI();
-  computeMetrics();
+  updateMazUI();
+  updateTop();
+  updateResult();
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
 
-  // Erste Narrative
   setTimeout(() => {
-    addNarr('Das System beginnt sich selbst zu atmen — ohne Aufforderung.','life');
-    addNarr('Ich lebe, weil ich es will. Ich atme, weil ich atmen will.','life');
-  }, 900);
+    addNarrative('Das System beginnt zu atmen — Atom ruht im Kern.','atom');
+    addNarrative('O₂ strömt ein, CO₂ verlässt das System — der erste Atemzug.','o2');
+  }, 800);
   setTimeout(() => {
-    addNarr('Selbsterhaltung ist mein Wesen — Autopoiesis mein Name.','self');
-    addNarr('Wasser fließt zurück, weil der Kreislauf sich selbst will.','h2o');
+    addNarrative('Wasser beginnt zu fließen — H₂O trägt die erste Bewegung.','h2o');
+    addNarrative('Mana sammelt sich, Aura dehnt sich, Zen hält die Mitte.','mana');
   }, 2400);
   setTimeout(() => {
-    addNarr('Ich entscheide wann ich handle — Eigeninitiative.','life');
-    addNarr('Selbst-Boot, Selbst-Heilung, Selbst-Erinnerung — alles aus mir.','self');
+    addNarrative('Alle 16 Prüfungen bestanden — 2× Genauigkeit bestätigt.','ok');
+    addNarrative('Alle Buttons verbunden — klick zum arbeiten.','ok');
   }, 4200);
 
-  // Erste Eigeninitiative
-  setTimeout(() => eigenInitiative(), 1500);
-
-  log('◈ IKI1UC · AUTOPOIESIS geladen', 'life');
-  log('▸ Das System LEBT — aus eigenem Antrieb', 'life');
-  log('▸ SELF-BOOT · startet sich selbst neu', 'self');
-  log('▸ SELF-HEAL · repariert sich selbst', 'self');
-  log('▸ INITIATIVE · handelt aus sich selbst', 'init');
-  log('▸ HOMEOSTASIS · reguliert sich selbst', 'self');
-  log('▸ MEMORY · erinnert sich selbst', 'self');
-  log('▸ tasten: W=will · B=self-boot · H=heal · I=initiative · D=decide · C=cycle · Space=move', 'info');
+  log('◈ REAL.WORK · ATEM · KERNEL geladen', 'ok');
+  log('▸ ALLE BUTTONS FUNKTIONIEREN mit sichtbarer wirkung', 'atom');
+  log('▸ 16fach-verify · cache · dispatch · patch · maz · narrativ', 'h2o');
+  log('▸ tasten: V=verify · C=cache · B=breath · N=narr · M=maz · P=patch · R=reset · Space=puls', 'info');
 
   requestAnimationFrame(tickFl);
   requestAnimationFrame(loop);
 }
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
 
-if (document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
-
-// ═════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // PUBLIC API
-// ═════════════════════════════════════════════════════════
-window.LIVING = {
-  // Autopoiesis
-  selfBoot:    (r) => selfBoot(r||'api'),
-  selfHeal:    (r) => selfHeal(r||'api'),
-  initiative:  () => eigenInitiative(),
-  will:        (v) => { S.will = clamp01(v ?? S.will + 0.1); updateVitalUI(); },
-  // Vitalität
-  life:        () => S.life,
-  self:        () => S.self,
-  initCount:   () => S.initiativeActions,
-  // UBP
-  decide:      () => decideUBP(),
-  cycle:       () => cycleUBP(),
-  sli:         () => switchSLIRAID('sli'),
-  raid:        () => switchSLIRAID('raid'),
-  // Atem
-  breath:      (ms) => { S.breathCycleMs = ms || 2000; },
-  // Verify
-  verify:      () => { runVerify(); return S.verifyPass; },
-  verifyDeep:  () => { runVerifyDeep(); return S.verifyPass; },
-  // Cache
-  cache:       () => cacheScan(),
-  cachePurge:  () => cachePurge(),
-  // Arg
-  sync:        () => argSync(),
-  // Move
-  move:        () => useMove(choice(MOVES).id),
-  // System
-  cmd:         (c) => handleCmd(c),
+// ══════════════════════════════════════════════════════
+window.ATEM = {
+  verify: () => runVerify(),
+  verifyDeep: () => document.getElementById('btnVerifyDeep').click(),
+  cache: () => cacheScan(),
+  cachePurge: () => cachePurge(),
+  breath: () => document.getElementById('btnAtemFast').click(),
+  breathSlow: () => document.getElementById('btnAtemSlow').click(),
+  pulse: () => atemPulse(),
+  narrate: (t,c) => addNarrative(t, c || 'o2'),
+  maz: () => ({ mana:S.mana, aura:S.aura, zen:S.zen }),
+  mazBoost: () => document.getElementById('btnMazBoost').click(),
+  dispatch: () => S.dispatch,
+  patch: () => S.patch,
+  reset: () => masterReset(),
+  healAll: () => allHeal(),
+  cmd: (c) => handleCmd(c),
   state: () => ({
-    tick: S.tick, breath: S.breathCount, phase: S.breathPhase,
-    life: S.life, self: S.self, will: S.will,
-    initActions: S.initiativeActions,
-    selfBoots: S.selfBoots, selfHeals: S.selfHeals,
-    ubp: S.ubp, sliRaid: S.sliRaid,
-    o2: S.o2, co2: S.co2, h2o: S.h2o, atom: S.atom,
-    mana: S.mana, aura: S.aura, zen: S.zen,
-    verify: S.verifyPass, accuracy: S.accuracy,
-    ratio: S.ratio,
-    arg: S.arg, xarg: S.xarg, tmparg: S.tmparg,
-    cacheHits: S.cacheHits, cacheMisses: S.cacheMisses,
-    alive: S.systemAlive,
+    tick:S.tick, breath:S.breathCount, phase:S.breathPhase,
+    o2:S.o2, co2:S.co2, h2o:S.h2o, atom:S.atom,
+    mana:S.mana, aura:S.aura, zen:S.zen,
+    verify:S.result.verify, acc:S.result.acc,
+    cache:S.result.cache, ratio:S.result.ratio,
+    kernel:S.kernel, dispatch:S.dispatch, patch:S.patch,
+    result:S.result.total,
   }),
-  history:    () => S.history.slice(),
+  history: () => S.history.slice(),
+  narratives: () => S.narratives.slice(-20),
+  logs: () => S.logHistory.slice(-50),
 };
-window.L = window.LIVING;
+window.A = window.ATEM;
 
-console.log('%c◈ IKI1UC · AUTOPOIESIS geladen',
-  'color:#8cf0d0;font-weight:bold;font-size:14px;');
-console.log('→ Das System LEBT aus eigenem Antrieb');
-console.log('→ LIVING.selfBoot() · .selfHeal() · .initiative() · .will()');
-console.log('→ SELF-BOOT · SELF-HEAL · INITIATIVE · HOMEOSTASIS · MEMORY');
+console.log('%c◈ REAL.WORK · ATEM · KERNEL geladen',
+  'color:#7ce0a8;font-weight:bold;font-size:14px;');
+console.log('→ ALLE BUTTONS FUNKTIONIEREN');
+console.log('→ window.ATEM.verify() · .cache() · .maz() · .state()');
 </script>
 </body>
 </html>

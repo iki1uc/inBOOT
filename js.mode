@@ -1,1 +1,12 @@
-
+G = (
+  (verify / 16) * 0.20 +
+  acc * 0.15 +
+  o2 * 0.10 +
+  (1 - co2) * 0.10 +
+  h2o * 0.10 +
+  atom * 0.05 +
+  mana * 0.05 +
+  aura * 0.05 +
+  zen * 0.10 +
+  breathStability * 0.10
+)

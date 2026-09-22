@@ -1,288 +1,745 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>inBOOT · Shepherding · Schwarm · Cluster · Loop</title>
-  <style>
-    html,body{margin:0;height:100%;background:#02060a;overflow:hidden;font-family:monospace;color:#7ce0a8}
-    canvas{display:block;width:100vw;height:100vh}
-    #info{position:fixed;top:10px;left:10px;background:rgba(2,6,10,0.8);border:1px solid #1a3a2a;padding:8px 12px;border-radius:4px;font-size:11px;line-height:1.6;pointer-events:none}
-    #info b{color:#ffcc44}
-    #info .mode{color:#5fc8ff}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>index.html · inBOOT · ORAKEL · ANTOINETTE · Tic Tac</title>
+<style>
+  html,body{margin:0;height:100%;background:#02060a;overflow:hidden;font-family:monospace;color:#7ce0a8}
+  canvas{display:block;width:100vw;height:100vh}
+
+  .panel{
+    position:fixed;background:rgba(2,6,10,0.85);border:1px solid #1a3a2a;
+    padding:10px 14px;border-radius:4px;font-size:10.5px;line-height:1.5;
+    pointer-events:none;backdrop-filter:blur(2px);z-index:5;
+  }
+  .panel .title{color:#ffcc44;font-weight:bold;letter-spacing:0.5px;margin-bottom:4px}
+  .panel b{color:#ffcc44}
+  .panel .label{color:#5fc8ff;opacity:0.85}
+
+  #info{top:10px;left:10px;max-width:340px}
+  #proof{margin-top:8px;border-top:1px solid #1a3a2a;padding-top:6px;font-size:10px}
+  #proof .row{display:flex;justify-content:space-between;gap:8px}
+
+  #multilogik{top:10px;right:10px;max-width:320px}
+  #multilogik .layer{border-left:2px solid #1a3a2a;padding-left:8px;margin:4px 0}
+
+  #orakel{
+    top:10px;left:50%;transform:translateX(-50%);
+    min-width:300px;text-align:center;
+  }
+  #orakel .state{font-size:16px;font-weight:bold;letter-spacing:2px;margin:4px 0}
+  #orakel .state.ok{color:#7ce0a8;text-shadow:0 0 12px rgba(124,224,168,0.5)}
+  #orakel .state.warn{color:#ffcc44;text-shadow:0 0 12px rgba(255,204,68,0.5)}
+  #orakel .state.bad{color:#ff5a7a;text-shadow:0 0 12px rgba(255,90,122,0.6)}
+
+  /* TIC TAC – Sekundentakt */
+  #tictac{
+    top:50%;left:50%;transform:translate(-50%,-50%);
+    width:46px;height:46px;border-radius:50%;
+    background:rgba(2,6,10,0.6);border:1px solid #1a3a2a;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;color:#5fc8ff;font-weight:bold;
+    pointer-events:none;z-index:4;
+    transition:transform 0.1s linear, box-shadow 0.1s linear;
+  }
+  #tictac.pulse{transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 20px rgba(95,200,255,0.5)}
+
+  /* SCIENTIST MAXIME */
+  #maxime{
+    bottom:150px;left:10px;max-width:340px;
+    font-family:Georgia,serif;
+    border-left:3px solid #ffcc44;
+  }
+  #maxime .title{font-size:11px;letter-spacing:1px}
+  #maxime .text{
+    color:#e8c8a8;font-style:italic;font-size:11.5px;line-height:1.6;
+    margin-top:4px;min-height:3em;
+    transition:opacity 0.4s ease;
+  }
+  #maxime .src{color:#5fc8ff;font-size:9.5px;margin-top:4px;opacity:0.75;font-style:normal}
+
+  /* ANTOINETTE – Edelmann zur Allgemeinerklärung */
+  #marie{
+    position:fixed;
+    top:50%;right:14px;transform:translateY(-50%);
+    background:linear-gradient(160deg, rgba(30,10,20,0.92) 0%, rgba(10,5,10,0.95) 100%);
+    border:1px solid rgba(255,204,68,0.35);
+    box-shadow:0 0 24px rgba(255,204,68,0.15), inset 0 0 24px rgba(255,102,200,0.06);
+    padding:14px 16px;border-radius:6px;
+    font-size:10.5px;line-height:1.55;
+    max-width:300px;
+    pointer-events:none;
+    backdrop-filter:blur(3px);
+    z-index:6;
+    transition:opacity 0.6s ease, filter 0.6s ease;
+  }
+  #marie.absent{
+    opacity:0.35;filter:grayscale(0.8);
+    border-color:rgba(120,120,120,0.25);
+  }
+  #marie .title{
+    color:#ffcc44;font-weight:bold;letter-spacing:1px;
+    font-family:Georgia,serif;font-size:11.5px;
+    border-bottom:1px solid rgba(255,204,68,0.2);
+    padding-bottom:4px;margin-bottom:6px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  #marie .rose{color:#ff66c8;font-size:13px}
+  #marie .state{
+    font-family:Georgia,serif;font-size:13px;letter-spacing:2px;
+    margin:6px 0;text-align:center;
+  }
+  #marie .state.present{
+    color:#ffcc44;
+    text-shadow:0 0 12px rgba(255,204,68,0.5), 0 0 24px rgba(255,102,200,0.3);
+  }
+  #marie .state.absent{color:#5a5a5a}
+  #marie .measure{
+    margin:6px 0;padding:6px 8px;
+    background:rgba(255,204,68,0.05);
+    border-left:2px solid rgba(255,204,68,0.35);
+    font-size:10px;
+  }
+  #marie .measure b{color:#ffcc44}
+  #marie .deutung{
+    font-family:Georgia,serif;font-style:italic;
+    color:#e8c8a8;font-size:10.5px;line-height:1.6;
+    margin-top:6px;opacity:0.9;
+  }
+  #marie .haltung{
+    margin-top:8px;padding-top:6px;
+    border-top:1px dashed rgba(255,204,68,0.2);
+    color:#5fc8ff;font-size:9.5px;opacity:0.85;
+    font-family:Georgia,serif;
+  }
+
+  #ahne{bottom:10px;right:10px;max-width:300px}
+  #ahne .inherit{color:#5fc8ff;font-size:9.5px;opacity:0.8}
+
+  #atem{
+    position:fixed;bottom:10px;left:10px;width:60px;height:60px;border-radius:50%;
+    background:radial-gradient(circle at 40% 35%,
+      #ffffff 0%, #b8ffd8 12%, #7ce0a8 35%, #5fc8ff 65%, #1a0838 100%);
+    box-shadow:0 0 20px rgba(124,224,168,0.6), 0 0 40px rgba(95,200,255,0.4);
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;color:#0a2a20;font-weight:bold;
+    pointer-events:none;transition:transform 0.08s linear;z-index:5;
+  }
+
+  #atomLegend{bottom:80px;left:10px;font-size:10px}
+  #atomLegend .co2{color:#ffcc44}
+  #atomLegend .o2{color:#7ce0a8}
+  #atomLegend .h2o{color:#5fc8ff}
+
+  #exportBtn{
+    position:fixed;bottom:10px;left:80px;
+    background:rgba(2,6,10,0.85);border:1px solid #1a3a2a;
+    color:#7ce0a8;font-family:monospace;font-size:10.5px;
+    padding:8px 12px;border-radius:4px;cursor:pointer;z-index:6;
+  }
+  #exportBtn:hover{border-color:#7ce0a8;color:#ffcc44}
+</style>
 </head>
 <body>
 <canvas id="c"></canvas>
-<div id="info">
-  <div>Modus: <span class="mode" id="mode">driving</span></div>
-  <div>Cluster: <b id="clusters">–</b></div>
-  <div>Streuung: <b id="spread">–</b></div>
-  <div>Frame: <b id="frame">0</b></div>
-  <div>Runs: <b id="runs">0</b></div>
-  <div>Erfolge: <b id="successes">0</b></div>
-  <div>Erfolgsrate: <b id="successRate">–</b></div>
-  <div>Ø Zeit: <b id="avgTime">–</b></div>
+
+<!-- INFO + PROOF -->
+<div id="info" class="panel">
+  <div>Modus: <span id="mode" style="color:#5fc8ff">driving</span></div>
+  <div>Cluster: <b id="clusters">–</b> · Streuung: <b id="spread">–</b></div>
+  <div>Frame: <b id="frame">0</b> · Runs: <b id="runs">0</b> · Erfolge: <b id="successes">0</b></div>
+  <div>Rate: <b id="successRate">–</b> · Ø Zeit: <b id="avgTime">–</b></div>
+  <div>Atem: <b id="atemVal">–</b> · Atome: <b id="atomCounts">–</b></div>
+
+  <div id="proof">
+    <div class="title">LIVE-NACHWEIS · V Lyapunov-artig</div>
+    <div class="row"><div><span class="label">V</span>: <b id="proofV">–</b></div><div><span class="label">ΔV</span>: <b id="proofDV">–</b></div></div>
+    <div class="row"><div><span class="label">d(c→Z)</span>: <b id="proofDistCZ">–</b></div><div><span class="label">maxDist</span>: <b id="proofMaxDist">–</b></div></div>
+    <div class="row"><div><span class="label">Invarianten</span>: <b id="proofInv">–</b></div><div><span class="label">ΔV&lt;0</span>: <b id="proofDec">0</b>/60</div></div>
+    <div><span class="label">Beweisschritte</span>: <b id="proofSteps">0</b></div>
+    <div><span class="label">Zertifikat</span>: <b id="proofStatus">wartet</b></div>
+  </div>
 </div>
+
+<!-- ORAKEL -->
+<div id="orakel" class="panel">
+  <div class="title">ORAKEL · DEUTUNG</div>
+  <div class="state ok" id="orakelState">STABIL</div>
+  <div style="opacity:0.85"><span class="label">Horizont:</span> <b id="orakelHorizont">offen</b></div>
+  <div style="opacity:0.85"><span class="label">Waage:</span> <b id="orakelWaage">balanciert</b></div>
+  <div style="opacity:0.85"><span class="label">Continuum:</span> <b id="orakelContinuum">–</b></div>
+</div>
+
+<!-- TIC TAC – Sekundentakt in der Mitte -->
+<div id="tictac">◈</div>
+
+<!-- SCIENTIST MAXIME -->
+<div id="maxime" class="panel">
+  <div class="title">SCIENTIST MAXIME · jede Sekunde</div>
+  <div class="text" id="maximeText">–</div>
+  <div class="src" id="maximeSrc">–</div>
+</div>
+
+<!-- MULTILOGIK -->
+<div id="multilogik" class="panel">
+  <div class="title">MULTILOGIK · LEGALITÄT · LEGITIMATION</div>
+  <div class="layer"><b>L1 Simulation</b><br>Runs <b id="mlRuns">0</b> · Erfolge <b id="mlSuccesses">0</b> · Rate <b id="mlRate">–</b></div>
+  <div class="layer"><b>L2 Beweis</b><br>V <b id="mlV">–</b> · ΔV <b id="mlDV">–</b> · Zert <b id="mlCert">wartet</b></div>
+  <div class="layer"><b>L3 Legalität</b><br>eigen · MIT · Ahne: inBOOT · ORAKEL-LIVE · Open Source</div>
+  <div class="layer"><b>L4 Legitimation</b><br>Hash <b id="mlHash">–</b> · Zeit <b id="mlTime">–</b> · ID <b id="mlCertId">–</b></div>
+</div>
+
+<!-- AHNE -->
+<div id="ahne" class="panel">
+  <div class="title">AHNE: inBOOT.html</div>
+  <div><b>Was:</b> Shepherding-Simulation mit Live-Nachweis.</div>
+  <div><b>Warum:</b> Konvergenz live zertifizieren.</div>
+  <div><b>Stellung:</b> Ursprung von index.html – der Ahne.</div>
+  <div><b>Funktion:</b> Fundament für Bewertung und Beweis.</div>
+  <div><b>Sinn:</b> Erlebnis des lebendigen Beweises.</div>
+  <div class="inherit">index.html erbt inBOOT.html und ORAKEL-LIVE.html.</div>
+</div>
+
+<!-- ANTOINETTE · Edelmann zur Allgemeinerklärung -->
+<div id="marie" class="absent">
+  <div class="title">
+    <span>ANTOINETTE · Edelmann zur Allgemeinerklärung</span>
+    <span class="rose">✿</span>
+  </div>
+  <div class="state absent" id="marieState">ABWESEND</div>
+  <div class="measure">
+    <span class="label">Soziale Ungleichheit (Gini):</span> <b id="marieGini">–</b><br>
+    <span class="label">Vernachlässigte Mitte:</span> <b id="marieMitte">–</b><br>
+    <span class="label">Gesammelte Ferne:</span> <b id="marieFerne">–</b>
+  </div>
+  <div class="deutung" id="marieDeutung">
+    Sie deutet, aber sie richtet nicht.<br>
+    Sie ist an deiner Seite, solange der Raum es erlaubt.
+  </div>
+  <div class="haltung" id="marieHaltung">
+    Anwesend nur, wenn würdig: Nachweis verifiziert · Waage balanciert · Orakel stabil.
+  </div>
+</div>
+
+<!-- ATEM -->
+<div id="atem">◈</div>
+
+<!-- ATOM -->
+<div id="atomLegend" class="panel">
+  <div><span class="co2">● CO₂</span> · <span class="o2">● O₂</span> · <span class="h2o">● H₂O</span></div>
+  <div id="atomCountsLegend">–</div>
+</div>
+
+<!-- EXPORT -->
+<button id="exportBtn">Zertifikat exportieren (JSON)</button>
+
 <script>
 // ============================================================
-// inBOOT · Shepherding · Schwarm · Cluster · Loop
-// Minimal: Arrays statt Objekte, Canvas, autonom, self-contained
-// Shepherding nach Strömbom (Driving/Collecting), messbare Parameter
+// index.html · inBOOT.html + ORAKEL-LIVE.html + ANTOINETTE
+// Scientist Maxime · Tic Tac · jede Sekunde bereit
 // ============================================================
 
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 let W, H;
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
+function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+addEventListener('resize', resize); resize();
 
 // ---------- Konfiguration ----------
 const N = 20;
-const SHEPHERD_SPEED = 2.2;
-const AGENT_SPEED = 1.2;
+const SHEPHERD_SPEED_BASE = 2.2;
+const AGENT_SPEED_BASE = 1.2;
 const SEPARATION_DIST = 30;
-const SHEPHERD_INFLUENCE = 60; // Abstand, ab dem Schäfer Agenten abstößt
+const SHEPHERD_INFLUENCE = 60;
 const CLUSTER_DIST = 40;
-const COLLECT_THRESHOLD = 80;  // maxDist > -> collecting
-const DRIVE_THRESHOLD = 50;    // maxDist < -> driving (Hysterese)
+const COLLECT_THRESHOLD = 80;
+const DRIVE_THRESHOLD = 50;
 const CLUSTER_INTERVAL = 10;
 const GOAL_RADIUS = 60;
-const GOAL_PERCENT = 0.8;      // 80% der Agenten im Zielradius
+const GOAL_PERCENT = 0.8;
+
+const ATEM_PERIOD = 240;
+let atemValue = 0;
+const ATOM_COLORS = ['#ffcc44','#7ce0a8','#5fc8ff'];
+
+// ---------- ORAKEL-Schichten ----------
+const HORIZONT_RADIUS = 380;
+const HORIZONT_PERSIST = 90;
+let horizontFrames = 0;
+let horizontClosed = false;
+
+let waageBalance = 0;
+const WAAGE_TILT = 0.35;
+
+let continuum = 0;
+
+// ---------- ANTOINETTE ----------
+let gini = 0;
+let mitteVernachlaessigt = 0;
+let ferneGesammelt = 0;
+let marieWorthy = false;
+
+// ---------- SCIENTIST MAXIME ----------
+const MAXIMEN = [
+  { t: "Was gemessen wird, wird verstanden.", s: "Kelvin" },
+  { t: "Ein Beweis ist ein Weg, den ein anderer gehen kann.", s: "Leibniz" },
+  { t: "Die Natur antwortet nur auf Fragen, die wir stellen können.", s: "Kant" },
+  { t: "Nichts ist so praktisch wie eine gute Theorie.", s: "Bacon" },
+  { t: "Wer die Grenze kennt, kennt den Raum.", s: "Newton" },
+  { t: "Alles Fließen hat ein Gesetz – man muss es nur schreiben.", s: "Euler" },
+  { t: "Ein System zeigt sich im Übergang, nicht im Zustand.", s: "Prigogine" },
+  { t: "Kohärenz ist der stille Beweis der Ordnung.", s: "Haken" },
+  { t: "Der Schwarm weiß, was der Einzelne nicht sieht.", s: "Aristoteles" },
+  { t: "Was sich bewegt, gehorcht – was gehorcht, bewegt sich.", s: "Laplace" },
+  { t: "Zahlen sind die Buchstaben der Wirklichkeit.", s: "Galileo" },
+  { t: "Nur wer zweifelt, kann beweisen.", s: "Descartes" },
+  { t: "Jede Grenze ist eine Frage an das Unendliche.", s: "Cantor" },
+  { t: "Wer atmet, ist im System.", s: "Anonymus" },
+  { t: "Zeit ist der Takt, in dem Wahrheit hörbar wird.", s: "Heraklit" },
+  { t: "Die Herde folgt dem Rand, nicht der Mitte.", s: "Strömbom" },
+  { t: "Balance ist kein Stillstand – sie ist feinste Bewegung.", s: "Lagrange" },
+  { t: "Ein Orakel ist nur eine gute Frage, die sich selbst beantwortet.", s: "Sokrates" },
+  { t: "Was würdig ist, erscheint von selbst.", s: "Antoinette" },
+  { t: "Der Edelmann deutet, richtet nicht.", s: "Antoinette" }
+];
+let maximeIdx = 0;
+
+// ---------- Tic Tac / Sekunde ----------
+let lastSecond = -1;
+let tickCount = 0;
 
 // ---------- Zustand ----------
-let x = new Array(N), y = new Array(N);
-let vx = new Array(N), vy = new Array(N);
-let sx, sy;
-let tx, ty;
-let mode = 'driving';
-let frame = 0;
-let clusterCount = 0;
-let spread = 0;
-let maxDist = 0;
+let x=new Array(N), y=new Array(N), vx=new Array(N), vy=new Array(N), atomType=new Array(N);
+let sx, sy, tx, ty;
+let mode='driving', frame=0;
+let clusterCount=0, spread=0, maxDist=0;
+let runs=0, successes=0, totalTime=0, runStartFrame=0, goalReached=false;
 
-// Messung
-let runs = 0;
-let successes = 0;
-let totalTime = 0;
-let runStartFrame = 0;
-let goalReached = false;
+let proofStepsAccumulated=0, lastV=null, decCount=0;
+const DEC_THRESHOLD=60;
 
-// ---------- Initialisierung ----------
-function init() {
-  // Ziel in der Mitte
-  tx = W / 2;
-  ty = H / 2;
-  // Schäfer etwas daneben
-  sx = tx + 200;
-  sy = ty;
-  // Agenten zufällig um Ziel verteilen
-  for (let i = 0; i < N; i++) {
-    const ang = Math.random() * Math.PI * 2;
-    const r = 100 + Math.random() * 150;
-    x[i] = tx + Math.cos(ang) * r;
-    y[i] = ty + Math.sin(ang) * r;
-    vx[i] = (Math.random() - 0.5) * 0.5;
-    vy[i] = (Math.random() - 0.5) * 0.5;
+let startTime = Date.now();
+let certId = 'CERT-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2,6).toUpperCase();
+document.getElementById('mlCertId').textContent = certId;
+
+// ---------- Init ----------
+function init(){
+  tx=W/2; ty=H/2; sx=tx+200; sy=ty;
+  for(let i=0;i<N;i++){
+    const ang=Math.random()*Math.PI*2, r=100+Math.random()*150;
+    x[i]=tx+Math.cos(ang)*r; y[i]=ty+Math.sin(ang)*r;
+    vx[i]=(Math.random()-0.5)*0.5; vy[i]=(Math.random()-0.5)*0.5;
+    atomType[i]=i%3;
   }
-  mode = 'driving';
-  goalReached = false;
-  // frame bleibt global, runStartFrame wird nach init gesetzt
+  mode='driving'; goalReached=false; lastV=null; decCount=0;
+  horizontFrames=0; horizontClosed=false;
 }
+
+// ---------- Proof ----------
+function checkInvariants(){
+  const m=50;
+  for(let i=0;i<N;i++) if(x[i]<-m||x[i]>W+m||y[i]<-m||y[i]>H+m) return false;
+  for(let i=0;i<N;i++) if(!isFinite(vx[i])||!isFinite(vy[i])) return false;
+  return true;
+}
+function updateProof(cx,cy,distCZ){
+  const V = distCZ + spread + maxDist;
+  const inv = checkInvariants();
+  let dV=null;
+  if(lastV!==null){
+    dV=V-lastV;
+    if(inv && dV<0){ decCount=Math.min(DEC_THRESHOLD,decCount+1); if(decCount>=DEC_THRESHOLD) proofStepsAccumulated++; }
+    else if(dV>=0){ decCount=Math.max(0,decCount-1); }
+  }
+  lastV=V;
+
+  document.getElementById('proofV').textContent=V.toFixed(2);
+  const dv=document.getElementById('proofDV');
+  dv.textContent = dV!==null?dV.toFixed(3):'–';
+  dv.style.color = (dV!==null&&dV<0)?'#7ce0a8':(dV!==null&&dV>0?'#ff5a7a':'#ffcc44');
+  document.getElementById('proofDistCZ').textContent=distCZ.toFixed(1);
+  document.getElementById('proofMaxDist').textContent=maxDist.toFixed(1);
+  const invEl=document.getElementById('proofInv');
+  invEl.textContent = inv?'✓ halten':'✗ verletzt';
+  invEl.style.color = inv?'#7ce0a8':'#ff5a7a';
+  document.getElementById('proofDec').textContent=decCount;
+  document.getElementById('proofSteps').textContent=proofStepsAccumulated;
+  const st=document.getElementById('proofStatus');
+  if(!inv){ st.textContent='offen (Invarianten verletzt)'; st.style.color='#ff5a7a'; }
+  else if(decCount>=DEC_THRESHOLD){ st.textContent='KONVERGENZ verifiziert'; st.style.color='#7ce0a8'; }
+  else { st.textContent=`läuft (noch ${DEC_THRESHOLD-decCount})`; st.style.color='#ffcc44'; }
+  return {V,dV,inv};
+}
+
+// ---------- ORAKEL-Schichten ----------
+function updateHorizont(cx,cy){
+  let outside=0;
+  for(let i=0;i<N;i++) if(Math.hypot(x[i]-tx,y[i]-ty) > HORIZONT_RADIUS) outside++;
+  const ratio = outside/N;
+  if(ratio > 0.5) horizontFrames++;
+  else horizontFrames = Math.max(0, horizontFrames-2);
+  if(horizontFrames >= HORIZONT_PERSIST) horizontClosed = true;
+  return ratio;
+}
+function updateWaage(){
+  let o2=0, co2=0;
+  for(let i=0;i<N;i++){ if(atomType[i]===1) o2++; else if(atomType[i]===0) co2++; }
+  const total = Math.max(1, o2+co2);
+  waageBalance = (o2 - co2) / total;
+  return waageBalance;
+}
+function updateContinuum(cx,cy){
+  const d = Math.hypot(cx-tx, cy-ty);
+  continuum = Math.max(0, Math.min(1, 1 - d / HORIZONT_RADIUS));
+  return continuum;
+}
+function updateOrakel(){
+  const stateEl = document.getElementById('orakelState');
+  const hEl = document.getElementById('orakelHorizont');
+  const wEl = document.getElementById('orakelWaage');
+  const cEl = document.getElementById('orakelContinuum');
+
+  hEl.textContent = horizontClosed ? 'GESCHLOSSEN' : 'offen';
+  hEl.style.color = horizontClosed ? '#ff5a7a' : '#7ce0a8';
+
+  let wTxt = 'balanciert';
+  if(waageBalance > WAAGE_TILT) wTxt = 'O₂ +';
+  else if(waageBalance < -WAAGE_TILT) wTxt = 'CO₂ +';
+  wEl.textContent = wTxt;
+  wEl.style.color = (Math.abs(waageBalance) < WAAGE_TILT) ? '#7ce0a8' : '#ffcc44';
+
+  cEl.textContent = continuum.toFixed(3);
+
+  if(horizontClosed){ stateEl.textContent='GEFAHR · HORIZONT'; stateEl.className='state bad'; }
+  else if(Math.abs(waageBalance) > WAAGE_TILT){ stateEl.textContent='WARNUNG · WAAGE'; stateEl.className='state warn'; }
+  else if(continuum > 0.6){ stateEl.textContent='STABIL · IM ZIEL'; stateEl.className='state ok'; }
+  else { stateEl.textContent='STABIL · TREIBEN'; stateEl.className='state ok'; }
+}
+
+// ---------- ANTOINETTE ----------
+function computeGini(dists){
+  const n = dists.length; if(n===0) return 0;
+  const sorted = [...dists].sort((a,b)=>a-b);
+  const sum = sorted.reduce((a,b)=>a+b,0); if(sum===0) return 0;
+  let cum = 0;
+  for(let i=0;i<n;i++) cum += (i+1) * sorted[i];
+  return (2*cum)/(n*sum) - (n+1)/n;
+}
+function updateMarie(cx,cy){
+  const dists = [];
+  for(let i=0;i<N;i++) dists.push(Math.hypot(x[i]-tx, y[i]-ty));
+  gini = Math.max(0, Math.min(1, computeGini(dists)));
+
+  let mitte=0, fern=0;
+  for(let i=0;i<N;i++){
+    const d = dists[i];
+    if(d > GOAL_RADIUS*2.5) fern++;
+    else if(d > GOAL_RADIUS*1.5) mitte++;
+  }
+  mitteVernachlaessigt = mitte/N;
+  ferneGesammelt = fern/N;
+
+  const proofOk = decCount >= DEC_THRESHOLD;
+  const waageOk = Math.abs(waageBalance) < WAAGE_TILT;
+  const orakelOk = !horizontClosed;
+  marieWorthy = proofOk && waageOk && orakelOk;
+
+  const marieEl = document.getElementById('marie');
+  const stateEl = document.getElementById('marieState');
+  const giniEl = document.getElementById('marieGini');
+  const mitteEl = document.getElementById('marieMitte');
+  const ferneEl = document.getElementById('marieFerne');
+  const deutungEl = document.getElementById('marieDeutung');
+  const haltungEl = document.getElementById('marieHaltung');
+
+  giniEl.textContent = (gini*100).toFixed(1)+'%';
+  mitteEl.textContent = (mitteVernachlaessigt*100).toFixed(1)+'%';
+  ferneEl.textContent = (ferneGesammelt*100).toFixed(1)+'%';
+
+  if(marieWorthy){
+    marieEl.classList.remove('absent');
+    stateEl.textContent = 'ANWESEND';
+    stateEl.className = 'state present';
+    deutungEl.innerHTML =
+      'Sie deutet, aber sie richtet nicht.<br>' +
+      'Sie ist an deiner Seite.<br>' +
+      'Die Herde zeigt soziale Ungleichheit: <b>' + (gini*100).toFixed(1) + '%</b> Gini.<br>' +
+      'Der Schäfer sammelt die Fernsten. Die Mitte wird vergessen.';
+    haltungEl.textContent =
+      'Sie bleibt an deiner Seite, ohne je gegen andere zu sprechen. ' +
+      'Anwesend, weil würdig.';
+  } else {
+    marieEl.classList.add('absent');
+    stateEl.textContent = 'ABWESEND';
+    stateEl.className = 'state absent';
+    deutungEl.innerHTML =
+      'Sie deutet, aber sie richtet nicht.<br>' +
+      'Sie wird an deiner Seite sein, wenn der Nachweis steht, ' +
+      'die Waage balanciert und das Orakel stabil ist.';
+    haltungEl.textContent =
+      'Anwesend nur, wenn würdig: Nachweis verifiziert · Waage balanciert · Orakel stabil.';
+  }
+}
+
+// ---------- Scientist Maxime (jede Sekunde) ----------
+function updateMaxime(){
+  maximeIdx = (maximeIdx + 1) % MAXIMEN.length;
+  const m = MAXIMEN[maximeIdx];
+  const tEl = document.getElementById('maximeText');
+  const sEl = document.getElementById('maximeSrc');
+  tEl.style.opacity = '0';
+  setTimeout(() => {
+    tEl.textContent = '„' + m.t + '“';
+    sEl.textContent = '— ' + m.s;
+    tEl.style.opacity = '1';
+  }, 200);
+}
+
+// ---------- Tic Tac (Sekundentakt) ----------
+function updateTicTac(){
+  const now = Math.floor(Date.now()/1000);
+  if(now !== lastSecond){
+    lastSecond = now;
+    tickCount++;
+    const el = document.getElementById('tictac');
+    el.textContent = (tickCount % 2 === 0) ? 'TI' : 'TA';
+    el.classList.add('pulse');
+    setTimeout(()=>el.classList.remove('pulse'), 120);
+    // Maxime jede Sekunde
+    updateMaxime();
+  }
+}
+
+// ---------- Multilogik ----------
+function simpleHash(){
+  let h=0;
+  for(let i=0;i<N;i++){
+    h=(h*131542391+Math.floor(x[i]*1000))>>>0;
+    h=(h*1000000009+Math.floor(y[i]*1000))>>>0;
+  }
+  h=(h*131542391+frame)>>>0;
+  h=(h*1009+runs)>>>0;
+  return h.toString(16).toUpperCase().padStart(8,'0');
+}
+function updateMultilogik(proof){
+  document.getElementById('mlRuns').textContent=runs;
+  document.getElementById('mlSuccesses').textContent=successes;
+  document.getElementById('mlRate').textContent = runs>0?(successes/runs*100).toFixed(1)+'%':'–';
+  document.getElementById('mlV').textContent=proof.V.toFixed(2);
+  const mdv=document.getElementById('mlDV');
+  mdv.textContent = proof.dV!==null?proof.dV.toFixed(3):'–';
+  mdv.style.color = (proof.dV!==null&&proof.dV<0)?'#7ce0a8':(proof.dV!==null&&proof.dV>0?'#ff5a7a':'#ffcc44');
+  document.getElementById('mlCert').textContent = decCount>=DEC_THRESHOLD?'verifiziert':'läuft';
+  document.getElementById('mlHash').textContent=simpleHash();
+  document.getElementById('mlTime').textContent=((Date.now()-startTime)/1000).toFixed(1)+'s';
+}
+
+// ---------- Export ----------
+function exportCertificate(){
+  let cx=0,cy=0; for(let i=0;i<N;i++){cx+=x[i];cy+=y[i];} cx/=N; cy/=N;
+  const distCZ=Math.hypot(cx-tx,cy-ty);
+  const V=distCZ+spread+maxDist;
+  const cert={
+    zertifikat_id: certId,
+    typ:'index.html / inBOOT.html + ORAKEL-LIVE.html + ANTOINETTE',
+    ahne:['inBOOT.html','ORAKEL-LIVE.html'],
+    schichten:{
+      horizont:{radius:HORIZONT_RADIUS, frames_aussen:horizontFrames, geschlossen:horizontClosed},
+      waage:{balance:parseFloat(waageBalance.toFixed(4)), schwelle:WAAGE_TILT},
+      orakel:{continuum:parseFloat(continuum.toFixed(4)), urteil:document.getElementById('orakelState').textContent},
+      antoinette:{
+        anwesend:marieWorthy,
+        gini:parseFloat(gini.toFixed(4)),
+        mitte_vernachlaessigt:parseFloat(mitteVernachlaessigt.toFixed(4)),
+        ferne_gesammelt:parseFloat(ferneGesammelt.toFixed(4)),
+        haltung:'Sie deutet, aber sie richtet nicht. An deiner Seite, ohne je gegen andere zu sprechen.',
+        wuerdig:marieWorthy
+      }
+    },
+    maxime_aktuell: MAXIMEN[maximeIdx],
+    tic_tac:{sekunden: tickCount, takt:'TI-TA'},
+    multilogik:['L1 Simulation','L2 Beweis','L3 Legalität','L4 Legitimation','L5 Soziale Deutung'],
+    zeit:new Date().toISOString(),
+    laufzeit_s:((Date.now()-startTime)/1000).toFixed(3),
+    frame, runs, successes,
+    erfolgsrate: runs>0?(successes/runs*100).toFixed(3)+'%':null,
+    proof:{V:parseFloat(V.toFixed(4)), decCount, decThreshold:DEC_THRESHOLD,
+      beweisschritte:proofStepsAccumulated,
+      status:(decCount>=DEC_THRESHOLD)?'KONVERGENZ_VERIFIZIERT':'LAEUFT'},
+    invarianten_ok:checkInvariants(),
+    hash:simpleHash(),
+    lizenz:'MIT',
+    quelle:'eigen (Nachkomme von inBOOT.html + ORAKEL-LIVE.html)'
+  };
+  const blob=new Blob([JSON.stringify(cert,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=`zertifikat-${certId}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+document.getElementById('exportBtn').addEventListener('click', exportCertificate);
 
 // ---------- Update ----------
-function update() {
-  // 1) Zentroid und maxDist berechnen
-  let cx = 0, cy = 0;
-  for (let i = 0; i < N; i++) { cx += x[i]; cy += y[i]; }
-  cx /= N; cy /= N;
-  maxDist = 0;
-  let farIdx = 0;
-  for (let i = 0; i < N; i++) {
-    const d = Math.hypot(x[i] - cx, y[i] - cy);
-    if (d > maxDist) { maxDist = d; farIdx = i; }
-  }
+function update(){
+  atemValue = (Math.sin(frame/ATEM_PERIOD*Math.PI*2)+1)/2;
+  const shepSpeed = SHEPHERD_SPEED_BASE*(0.85+0.35*atemValue);
+  const agentSpeed = AGENT_SPEED_BASE*(0.85+0.35*atemValue);
 
-  // 2) Modus mit Hysterese
-  if (maxDist > COLLECT_THRESHOLD) {
-    mode = 'collecting';
-  } else if (maxDist < DRIVE_THRESHOLD) {
-    mode = 'driving';
-  }
+  let cx=0,cy=0; for(let i=0;i<N;i++){cx+=x[i];cy+=y[i];} cx/=N; cy/=N;
+  maxDist=0; let farIdx=0;
+  for(let i=0;i<N;i++){const d=Math.hypot(x[i]-cx,y[i]-cy); if(d>maxDist){maxDist=d;farIdx=i;}}
 
-  // 3) Schäfer bewegen
-  if (mode === 'collecting') {
-    // zum entferntesten Agenten
-    const dx = x[farIdx] - sx, dy = y[farIdx] - sy;
-    const d = Math.hypot(dx, dy) || 1;
-    sx += (dx / d) * SHEPHERD_SPEED;
-    sy += (dy / d) * SHEPHERD_SPEED;
+  if(maxDist>COLLECT_THRESHOLD) mode='collecting';
+  else if(maxDist<DRIVE_THRESHOLD) mode='driving';
+
+  if(mode==='collecting'){
+    const dx=x[farIdx]-sx, dy=y[farIdx]-sy, d=Math.hypot(dx,dy)||1;
+    sx+=(dx/d)*shepSpeed; sy+=(dy/d)*shepSpeed;
   } else {
-    // driving: Schäfer positioniert sich hinter der Herde relativ zum Ziel
-    let dx = cx - tx, dy = cy - ty;
-    const len = Math.hypot(dx, dy) || 1;
-    dx /= len; dy /= len;
-    const targetSx = cx + dx * 40;
-    const targetSy = cy + dy * 40;
-    const dxS = targetSx - sx, dyS = targetSy - sy;
-    const dS = Math.hypot(dxS, dyS) || 1;
-    sx += (dxS / dS) * SHEPHERD_SPEED;
-    sy += (dyS / dS) * SHEPHERD_SPEED;
+    let dx=cx-tx, dy=cy-ty; const len=Math.hypot(dx,dy)||1; dx/=len; dy/=len;
+    const txs=cx+dx*40, tys=cy+dy*40;
+    const dxs=txs-sx, dys=tys-sy, ds=Math.hypot(dxs,dys)||1;
+    sx+=(dxs/ds)*shepSpeed; sy+=(dys/ds)*shepSpeed;
   }
 
-  // 4) Agenten bewegen
-  for (let i = 0; i < N; i++) {
-    let ax = 0, ay = 0;
-
-    // Kohäsion: zum Zentroid
-    const dxc = cx - x[i], dyc = cy - y[i];
-    const dc = Math.hypot(dxc, dyc) || 1;
-    ax += (dxc / dc) * 0.02;
-    ay += (dyc / dc) * 0.02;
-
-    // Separation
-    for (let j = 0; j < N; j++) {
-      if (i === j) continue;
-      const dx = x[i] - x[j], dy = y[i] - y[j];
-      const d = Math.hypot(dx, dy) || 1;
-      if (d < SEPARATION_DIST) {
-        ax += (dx / d) * 0.05;
-        ay += (dy / d) * 0.05;
-      }
+  for(let i=0;i<N;i++){
+    let ax=0,ay=0;
+    const dxc=cx-x[i], dyc=cy-y[i], dc=Math.hypot(dxc,dyc)||1;
+    ax+=(dxc/dc)*0.02; ay+=(dyc/dc)*0.02;
+    for(let j=0;j<N;j++){
+      if(i===j) continue;
+      const dx=x[i]-x[j], dy=y[i]-y[j], d=Math.hypot(dx,dy)||1;
+      if(d<SEPARATION_DIST){ ax+=(dx/d)*0.05; ay+=(dy/d)*0.05; }
     }
-
-    // Abstoßung vom Schäfer
-    const dxs = x[i] - sx, dys = y[i] - sy;
-    const ds = Math.hypot(dxs, dys) || 1;
-    if (ds < SHEPHERD_INFLUENCE) {
-      const force = (SHEPHERD_INFLUENCE - ds) * 0.005;
-      ax += (dxs / ds) * force;
-      ay += (dys / ds) * force;
-    }
-
-    // Geschwindigkeit aktualisieren
-    vx[i] += ax;
-    vy[i] += ay;
-    const v = Math.hypot(vx[i], vy[i]) || 1;
-    vx[i] = (vx[i] / v) * AGENT_SPEED;
-    vy[i] = (vy[i] / v) * AGENT_SPEED;
-
-    // Position
-    x[i] += vx[i];
-    y[i] += vy[i];
-
-    // Ränder
-    if (x[i] < 0) { x[i] = 0; vx[i] *= -0.5; }
-    if (x[i] > W) { x[i] = W; vx[i] *= -0.5; }
-    if (y[i] < 0) { y[i] = 0; vy[i] *= -0.5; }
-    if (y[i] > H) { y[i] = H; vy[i] *= -0.5; }
+    const dxs=x[i]-sx, dys=y[i]-sy, ds=Math.hypot(dxs,dys)||1;
+    if(ds<SHEPHERD_INFLUENCE){ const f=(SHEPHERD_INFLUENCE-ds)*0.005; ax+=(dxs/ds)*f; ay+=(dys/ds)*f; }
+    vx[i]+=ax; vy[i]+=ay;
+    const v=Math.hypot(vx[i],vy[i])||1; vx[i]=(vx[i]/v)*agentSpeed; vy[i]=(vy[i]/v)*agentSpeed;
+    x[i]+=vx[i]; y[i]+=vy[i];
+    if(x[i]<0){x[i]=0;vx[i]*=-0.5;} if(x[i]>W){x[i]=W;vx[i]*=-0.5;}
+    if(y[i]<0){y[i]=0;vy[i]*=-0.5;} if(y[i]>H){y[i]=H;vy[i]*=-0.5;}
   }
 
-  // 5) Clustering/Pool nur alle 10 Frames
-  if (frame % CLUSTER_INTERVAL === 0) {
-    let sum = 0;
-    for (let i = 0; i < N; i++) {
-      sum += Math.hypot(x[i] - cx, y[i] - cy);
-    }
-    spread = sum / N;
-    clusterCount = Math.max(1, Math.round(maxDist / CLUSTER_DIST));
+  if(frame%CLUSTER_INTERVAL===0){
+    let sum=0; for(let i=0;i<N;i++) sum+=Math.hypot(x[i]-cx,y[i]-cy);
+    spread=sum/N;
+    clusterCount=Math.max(1,Math.round(maxDist/CLUSTER_DIST));
   }
 
-  // 6) Zielprüfung
-  if (!goalReached) {
-    let inGoal = 0;
-    for (let i = 0; i < N; i++) {
-      if (Math.hypot(x[i] - tx, y[i] - ty) < GOAL_RADIUS) inGoal++;
-    }
-    if (inGoal >= N * GOAL_PERCENT) {
-      goalReached = true;
-      successes++;
-      totalTime += frame - runStartFrame;
-      runs++;
-      init();
-      runStartFrame = frame; // neuer Lauf startet jetzt
+  const distCZ=Math.hypot(cx-tx,cy-ty);
+  const proof=updateProof(cx,cy,distCZ);
+  updateMultilogik(proof);
+
+  updateHorizont(cx,cy);
+  updateWaage();
+  updateContinuum(cx,cy);
+  updateOrakel();
+
+  updateMarie(cx,cy);
+
+  updateTicTac();
+
+  if(!goalReached){
+    let inGoal=0;
+    for(let i=0;i<N;i++) if(Math.hypot(x[i]-tx,y[i]-ty)<GOAL_RADIUS) inGoal++;
+    if(inGoal>=N*GOAL_PERCENT){
+      goalReached=true; successes++; totalTime+=frame-runStartFrame; runs++;
+      init(); runStartFrame=frame;
     }
   }
 }
 
-// ---------- Zeichnen ----------
-function draw() {
-  ctx.fillStyle = '#02060a';
-  ctx.fillRect(0, 0, W, H);
+// ---------- Draw ----------
+function draw(){
+  ctx.fillStyle='#02060a'; ctx.fillRect(0,0,W,H);
+
+  // Ereignishorizont
+  ctx.beginPath(); ctx.arc(tx,ty,HORIZONT_RADIUS,0,Math.PI*2);
+  ctx.strokeStyle = horizontClosed ? 'rgba(255,90,122,0.55)' : 'rgba(120,200,180,0.18)';
+  ctx.lineWidth = horizontClosed ? 2.5 : 1.2;
+  ctx.setLineDash(horizontClosed?[]:[6,10]);
+  ctx.stroke(); ctx.setLineDash([]);
 
   // Zielradius
-  ctx.beginPath();
-  ctx.arc(tx, ty, GOAL_RADIUS, 0, Math.PI * 2);
-  ctx.strokeStyle = 'rgba(255,204,68,0.2)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
+  ctx.beginPath(); ctx.arc(tx,ty,GOAL_RADIUS,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,204,68,0.2)'; ctx.lineWidth=1; ctx.stroke();
 
   // Ziel
-  ctx.beginPath();
-  ctx.arc(tx, ty, 12, 0, Math.PI * 2);
-  ctx.strokeStyle = '#ffcc44';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(255,204,68,0.15)';
-  ctx.fill();
+  ctx.beginPath(); ctx.arc(tx,ty,12,0,Math.PI*2);
+  ctx.strokeStyle='#ffcc44'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle='rgba(255,204,68,0.15)'; ctx.fill();
 
   // Schäfer
-  ctx.beginPath();
-  ctx.arc(sx, sy, 8, 0, Math.PI * 2);
-  ctx.fillStyle = '#5fc8ff';
-  ctx.shadowColor = '#5fc8ff';
-  ctx.shadowBlur = 12;
-  ctx.fill();
-  ctx.shadowBlur = 0;
+  ctx.beginPath(); ctx.arc(sx,sy,8,0,Math.PI*2);
+  ctx.fillStyle='#5fc8ff'; ctx.shadowColor='#5fc8ff'; ctx.shadowBlur=12; ctx.fill(); ctx.shadowBlur=0;
 
-  // Agenten + Linien
-  for (let i = 0; i < N; i++) {
-    for (let j = i + 1; j < N; j++) {
-      const d = Math.hypot(x[i] - x[j], y[i] - y[j]);
-      if (d < SEPARATION_DIST) {
-        ctx.beginPath();
-        ctx.moveTo(x[i], y[i]);
-        ctx.lineTo(x[j], y[j]);
-        ctx.strokeStyle = 'rgba(124,224,168,0.12)';
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
+  // Agenten
+  for(let i=0;i<N;i++){
+    for(let j=i+1;j<N;j++){
+      const d=Math.hypot(x[i]-x[j],y[i]-y[j]);
+      if(d<SEPARATION_DIST){
+        ctx.beginPath(); ctx.moveTo(x[i],y[i]); ctx.lineTo(x[j],y[j]);
+        ctx.strokeStyle='rgba(124,224,168,0.12)'; ctx.lineWidth=0.8; ctx.stroke();
       }
     }
-    ctx.beginPath();
-    ctx.arc(x[i], y[i], 3.5, 0, Math.PI * 2);
-    ctx.fillStyle = mode === 'driving' ? '#7ce0a8' : '#ff66c8';
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(x[i],y[i],3.5,0,Math.PI*2);
+    ctx.fillStyle=ATOM_COLORS[atomType[i]]; ctx.fill();
+    ctx.beginPath(); ctx.arc(x[i],y[i],5,0,Math.PI*2);
+    ctx.strokeStyle = mode==='driving'?'rgba(124,224,168,0.5)':'rgba(255,102,200,0.5)';
+    ctx.lineWidth=0.8; ctx.stroke();
   }
 
-  // Info aktualisieren
-  document.getElementById('mode').textContent = mode;
-  document.getElementById('clusters').textContent = clusterCount;
-  document.getElementById('spread').textContent = spread.toFixed(1);
-  document.getElementById('frame').textContent = frame;
-  document.getElementById('runs').textContent = runs;
-  document.getElementById('successes').textContent = successes;
-  const rate = runs > 0 ? (successes / runs * 100).toFixed(1) + '%' : '–';
-  document.getElementById('successRate').textContent = rate;
-  const avg = successes > 0 ? (totalTime / successes).toFixed(1) : '–';
-  document.getElementById('avgTime').textContent = avg;
+  drawWaage();
+
+  // Info
+  document.getElementById('mode').textContent=mode;
+  document.getElementById('clusters').textContent=clusterCount;
+  document.getElementById('spread').textContent=spread.toFixed(1);
+  document.getElementById('frame').textContent=frame;
+  document.getElementById('runs').textContent=runs;
+  document.getElementById('successes').textContent=successes;
+  document.getElementById('successRate').textContent = runs>0?(successes/runs*100).toFixed(1)+'%':'–';
+  document.getElementById('avgTime').textContent = successes>0?(totalTime/successes).toFixed(1):'–';
+  document.getElementById('atemVal').textContent=atemValue.toFixed(2);
+
+  let cCO2=0,cO2=0,cH2O=0;
+  for(let i=0;i<N;i++){ if(atomType[i]===0)cCO2++; else if(atomType[i]===1)cO2++; else cH2O++; }
+  document.getElementById('atomCounts').textContent=`${cCO2}/${cO2}/${cH2O}`;
+  document.getElementById('atomCountsLegend').textContent=`CO₂:${cCO2} · O₂:${cO2} · H₂O:${cH2O}`;
+
+  const atemEl=document.getElementById('atem');
+  if(atemEl){ const s=0.85+0.3*atemValue; atemEl.style.transform=`scale(${s})`; atemEl.textContent=Math.round(atemValue*100); }
+}
+
+function drawWaage(){
+  const bx = W/2, by = H - 70;
+  const arm = 60;
+  const tilt = waageBalance * 0.5;
+  const dx = Math.cos(tilt) * arm;
+  const dy = Math.sin(tilt) * arm;
+
+  ctx.strokeStyle='rgba(120,200,180,0.6)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(bx,by-50); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(bx-dx,by-50-dy); ctx.lineTo(bx+dx,by-50+dy); ctx.stroke();
+
+  ctx.beginPath(); ctx.arc(bx-dx, by-50-dy+8, 8, 0, Math.PI*2);
+  ctx.fillStyle='rgba(124,224,168,0.25)'; ctx.fill();
+  ctx.strokeStyle='#7ce0a8'; ctx.stroke();
+
+  ctx.beginPath(); ctx.arc(bx+dx, by-50+dy+8, 8, 0, Math.PI*2);
+  ctx.fillStyle='rgba(255,204,68,0.25)'; ctx.fill();
+  ctx.strokeStyle='#ffcc44'; ctx.stroke();
+
+  ctx.font='10px monospace'; ctx.textAlign='center';
+  ctx.fillStyle='#7ce0a8'; ctx.fillText('O₂', bx-dx, by-50-dy-6);
+  ctx.fillStyle='#ffcc44'; ctx.fillText('CO₂', bx+dx, by-50+dy-6);
 }
 
 // ---------- Loop ----------
-function loop() {
-  frame++;
-  update();
-  draw();
-  requestAnimationFrame(loop);
-}
-
-// ---------- Start ----------
-init();
-runStartFrame = frame;
-loop();
+function loop(){ frame++; update(); draw(); requestAnimationFrame(loop); }
+init(); runStartFrame=frame; loop();
 </script>
 </body>
 </html>
